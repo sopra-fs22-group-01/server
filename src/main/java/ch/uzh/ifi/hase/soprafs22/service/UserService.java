@@ -43,7 +43,7 @@ public class UserService {
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
 
-    checkIfUserExists(newUser);
+    //checkIfUserExists(newUser);
 
     // saves the given entity but data is only persisted in the database once
     // flush() is called
@@ -64,7 +64,7 @@ public class UserService {
    * @throws org.springframework.web.server.ResponseStatusException
    * @see User
    */
-  private void checkIfUserExists(User userToBeCreated) {
+ /* private void checkIfUserExists(User userToBeCreated) {
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
     User userByName = userRepository.findByName(userToBeCreated.getName());
 
@@ -77,5 +77,5 @@ public class UserService {
     } else if (userByName != null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
     }
-  }
+  }*/
 }
