@@ -9,6 +9,7 @@ public class UserGetDTO {
   private String username;
   private UserStatus status;
   private String password;
+  private String date;
 
   public Long getId() {
     return id;
@@ -48,4 +49,9 @@ public class UserGetDTO {
   public void setPassword(String password){
       this.password = password;
     }
+
+  public String getDate(){return date;}
+
+  public void setDate(){this.date = date;}
+
 }

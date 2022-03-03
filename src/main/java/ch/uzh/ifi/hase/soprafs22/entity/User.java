@@ -40,6 +40,9 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = false)
+  private String date;
+
   public Long getId() {
     return id;
   }
@@ -85,7 +88,12 @@ public class User implements Serializable {
   public void setPassword(String password){
       this.password = password;
   }
+
   public String getPassword(){
       return password;
   }
+
+  public String getDate(){return date;}
+
+  public void setDate(){this.date = date;}
 }

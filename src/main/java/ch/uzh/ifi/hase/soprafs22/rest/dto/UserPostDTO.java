@@ -8,6 +8,8 @@ public class UserPostDTO {
 
   private String password;
 
+  private String date;
+
 /*  public String getName() {
     return name;
   }
@@ -31,4 +33,7 @@ public class UserPostDTO {
       this.password = password;
   }
 
+  public String getDate(){return date;}
+
+  public void setDate(){this.date = date;}
 }
