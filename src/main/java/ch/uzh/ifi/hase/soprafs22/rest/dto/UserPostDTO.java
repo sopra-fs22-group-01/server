@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
 public class UserPostDTO {
 
-  private String name;
+  //private String name;
 
   private String username;
 
