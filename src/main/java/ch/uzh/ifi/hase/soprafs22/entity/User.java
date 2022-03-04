@@ -95,5 +95,5 @@ public class User implements Serializable {
 
   public String getDate(){return date;}
 
-  public void setDate(){this.date = date;}
+  public void setDate(String date){this.date = date;}
 }
