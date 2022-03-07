@@ -2,6 +2,8 @@ package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
+import java.time.LocalDateTime;
+
 public class UserGetDTO {
 
   private Long id;
@@ -9,7 +11,7 @@ public class UserGetDTO {
   private String username;
   private UserStatus status;
   private String password;
-  private String date;
+  private LocalDateTime date;
 
   public Long getId() {
     return id;
@@ -50,8 +52,8 @@ public class UserGetDTO {
       this.password = password;
     }
 
-  public String getDate(){return date;}
+  public LocalDateTime getDate(){return date;}
 
-  public void setDate(String date){this.date = date;}
+  public void setDate(LocalDateTime date){this.date = date;}
 
 }

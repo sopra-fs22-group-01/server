@@ -42,7 +42,7 @@ public class UserController {
     return userGetDTOs; // returns array UserGetDTO with all users init
   }
 
-  @PostMapping("/users")
+  @PostMapping("/users") //creates a User object
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
@@ -51,6 +51,10 @@ public class UserController {
 
     // create user
     User createdUser = userService.createUser(userInput);
+
+    //set creation date of the user
+    createdUser.setDate();
+
 
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);

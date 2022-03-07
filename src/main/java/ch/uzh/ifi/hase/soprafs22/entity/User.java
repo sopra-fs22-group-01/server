@@ -4,6 +4,8 @@ import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Internal User Representation
@@ -41,7 +43,7 @@ public class User implements Serializable {
   private String password;
 
   @Column(nullable = false)
-  private String date;
+  private LocalDateTime date;
 
   public Long getId() {
     return id;
@@ -93,7 +95,11 @@ public class User implements Serializable {
       return password;
   }
 
-  public String getDate(){return date;}
+  public LocalDateTime getDate(){return date;}
 
-  public void setDate(String date){this.date = date;}
+  public void setDate(){
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    LocalDateTime now = LocalDateTime.now();
+    date = now;
+  }
 }
