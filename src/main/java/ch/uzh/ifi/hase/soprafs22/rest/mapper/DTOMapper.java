@@ -22,14 +22,14 @@ public interface DTOMapper {
 
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  //@Mapping(source = "name", target = "name")
   @Mapping(source = "username", target = "username")
+  //@Mapping(source = "password", target = "password") //how can the password still be saved in the database if it doesn't get mapped here??
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO); //takes userPostDTO and converts it to entity
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "status", target = "status")
-  //@Mapping(source = "date", target = "date")
+  //@Mapping(source = "password", target = "password")
   UserGetDTO convertEntityToUserGetDTO(User user); // takes User as input and converts it to entity of UserGetDTO
   //does this method map all the @mapping stuff from above?
 }

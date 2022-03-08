@@ -82,13 +82,5 @@ public class UserService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
     }*/
   }
-  /*private void checkIfPasswordCorrect(User userToBeLoggedIn, String insertedPassword){
-    String password = userToBeLoggedIn.getPassword();
 
-    String passwordFalseMessage = "The username or password you inserted is wrong!";
-    if(password != insertedPassword){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-              String.format(passwordFalseMessage));
-    }
-  }*/
 }
