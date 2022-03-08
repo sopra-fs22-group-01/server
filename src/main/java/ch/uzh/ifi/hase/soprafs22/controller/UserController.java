@@ -53,7 +53,7 @@ public class UserController {
 
     // create user
     User createdUser = userService.createUser(userInput);
-
+    createdUser.setStatus(UserStatus.ONLINE);
     //set creation date of the user
     //createdUser.setDate();
 
@@ -80,7 +80,7 @@ public class UserController {
         if(!user.getPassword().equals(userPostDTO.getPassword())){
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
         }
-        user.setStatus(UserStatus.ONLINE);
+        userPostDTO.setStatus(UserStatus.ONLINE);
         userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         return;
       }

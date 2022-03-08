@@ -41,7 +41,8 @@ public class UserService {
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.OFFLINE);
+    newUser.setStatus(UserStatus.ONLINE);
+
     newUser.setDate();
 
     checkIfUserExists(newUser);
@@ -76,11 +77,18 @@ public class UserService {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                   String.format(baseErrorMessage, "username ", "is"));
       }
-    /*     else if (userByUsername != null) {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "username", "is"));
-    } else if (userByName != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
-    }*/
+  }
+
+  public void logOutUser(User userToLogOut){
+    userToLogOut.setStatus(UserStatus.OFFLINE);
+    userRepository.flush();
+    log.debug("Logged out user %s", userToLogOut.getUsername());
+  }
+
+  public void logInUser(User userToLogIn){
+    userToLogIn.setStatus(UserStatus.ONLINE);
+    userRepository.flush();
+    log.debug("Logged in user %s", userToLogIn.getUsername());
   }
 
 }

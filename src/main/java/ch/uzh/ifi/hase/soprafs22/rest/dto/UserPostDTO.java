@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
+
 import java.time.LocalDateTime;
 
 public class UserPostDTO {
@@ -12,6 +14,7 @@ public class UserPostDTO {
 
   private LocalDateTime date;
 
+  private UserStatus status;
 /*  public String getName() {
     return name;
   }
@@ -38,4 +41,12 @@ public class UserPostDTO {
   public LocalDateTime getDate(){return date;}
 
   public void setDate(LocalDateTime date){this.date = date;}
+
+  public UserStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(UserStatus status) {
+    this.status = status;
+  }
 }
