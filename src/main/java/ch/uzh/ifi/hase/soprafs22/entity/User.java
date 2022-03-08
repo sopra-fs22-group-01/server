@@ -27,9 +27,6 @@ public class User implements Serializable {
   @GeneratedValue
   private Long id;
 
-  /*@Column(nullable = false)
-  private String name;
-*/
   @Column(nullable = false, unique = true)
   private String username;
 
@@ -42,7 +39,7 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
-  @Column(nullable = false)
+  @Column
   private LocalDateTime date;
 
   public Long getId() {
@@ -52,16 +49,7 @@ public class User implements Serializable {
   public void setId(Long id) {
     this.id = id;
   }
-/*
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-*/
 
   public String getUsername() {
     return username;
@@ -98,7 +86,7 @@ public class User implements Serializable {
   public LocalDateTime getDate(){return date;}
 
   public void setDate(){
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     LocalDateTime now = LocalDateTime.now();
     date = now;
   }

@@ -53,7 +53,7 @@ public class UserController {
     User createdUser = userService.createUser(userInput);
 
     //set creation date of the user
-    createdUser.setDate();
+    //createdUser.setDate();
 
 
     // convert internal representation of user back to API

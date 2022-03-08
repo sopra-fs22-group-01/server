@@ -42,6 +42,7 @@ public class UserService {
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
+    newUser.setDate();
 
     checkIfUserExists(newUser);
 
@@ -49,6 +50,8 @@ public class UserService {
     // flush() is called
     newUser = userRepository.save(newUser);
     userRepository.flush();
+
+
 
     log.debug("Created Information for User: {}", newUser);
     return newUser;

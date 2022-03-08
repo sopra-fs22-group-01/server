@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
+import java.time.LocalDateTime;
+
 public class UserPostDTO {
 
   //private String name;
@@ -8,7 +10,7 @@ public class UserPostDTO {
 
   private String password;
 
-  private String date;
+  private LocalDateTime date;
 
 /*  public String getName() {
     return name;
@@ -33,7 +35,7 @@ public class UserPostDTO {
       this.password = password;
   }
 
-  public String getDate(){return date;}
+  public LocalDateTime getDate(){return date;}
 
-  public void setDate(){this.date = date;}
+  public void setDate(LocalDateTime date){this.date = date;}
 }
