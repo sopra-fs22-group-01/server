@@ -30,7 +30,7 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  @Autowired
+  @Autowired //what does @Autowired do exactly?
   public UserService(@Qualifier("userRepository") UserRepository userRepository) {
     this.userRepository = userRepository;
   }
