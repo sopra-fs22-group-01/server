@@ -63,7 +63,7 @@ public class UserController {
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
 
-  
+
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
