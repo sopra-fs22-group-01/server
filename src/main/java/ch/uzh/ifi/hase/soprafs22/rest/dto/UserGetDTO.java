@@ -11,6 +11,7 @@ public class UserGetDTO {
   private UserStatus status;
   private String password;
   private LocalDateTime date;
+  private boolean isLoggedIn;
 
   public Long getId() {
     return id;
@@ -47,4 +48,10 @@ public class UserGetDTO {
 
   public void setDate(LocalDateTime date){this.date = date;}
 
+  public boolean getIsLoggedIn(){
+    return this.isLoggedIn;
+  }
+  public void setIsLoggedIn(boolean isLoggedIn){
+    this.isLoggedIn = isLoggedIn;
+  }
 }

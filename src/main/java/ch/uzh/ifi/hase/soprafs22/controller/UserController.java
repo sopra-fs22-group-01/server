@@ -62,11 +62,9 @@ public class UserController {
     // convert API user to internal representation
     User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-    // create user
+    // create user and logs in (does it make sense to log in here already?)
     User createdUser = userService.createUser(userInput);
-    createdUser.setStatus(UserStatus.ONLINE);
-    //set creation date of the user
-    //createdUser.setDate();
+    userService.logInUser(createdUser);
 
 
     // convert internal representation of user back to API
@@ -97,29 +95,5 @@ public class UserController {
     }
     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
   }
-
-
-/*
-  @PutMapping ("/{userid}")
-  @ResponseStatus(HttpStatus.CREATED)
-  @ResponseBody
-  public UserGetDTO logIn(@RequestBody UserPutDTO userPostDTO) {
-    // convert API user to internal representation
-    User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
-
-    // create user
-    User createdUser = userService.createUser(userInput);
-    createdUser.setStatus(UserStatus.ONLINE);
-    //set creation date of the user
-    //createdUser.setDate();
-
-
-    // convert internal representation of user back to API
-    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
-  }
-*/
-
-
-
 }
 

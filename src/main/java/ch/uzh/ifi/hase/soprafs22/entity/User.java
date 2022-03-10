@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Internal User Representation
@@ -41,6 +40,9 @@ public class User implements Serializable {
 
   @Column
   private LocalDateTime date;
+
+  @Column
+  private boolean isLoggedIn;
 
   public Long getId() {
     return id;
@@ -88,5 +90,12 @@ public class User implements Serializable {
   public void setDate(){
     LocalDateTime now = LocalDateTime.now();
     date = now;
+  }
+
+  public boolean getIsLoggedIn(){
+    return this.isLoggedIn;
+  }
+  public void setIsLoggedIn(boolean isLoggedIn){
+    this.isLoggedIn = isLoggedIn;
   }
 }
