@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -47,11 +46,11 @@ public class UserController {
 
 
   //gets a specific user from database through the user service and returns it as userGetDTO
-  @GetMapping("/users/fetch")
+  @GetMapping("/users/")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public UserGetDTO getUsername(@RequestParam String username) {
-    User requestedUser = userService.findUserData(username);
+  public UserGetDTO getUsername(@RequestParam long id) {
+    User requestedUser = userService.findUserData(id);
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
   }
 

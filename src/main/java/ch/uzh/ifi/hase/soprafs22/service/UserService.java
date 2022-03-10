@@ -92,8 +92,8 @@ public class UserService {
   }
 
   //searches for the requested user in the database
-  public User findUserData(String username) {
-    User requestedUser = userRepository.findByUsername(username);
+  public User findUserData(long id) {
+    User requestedUser = userRepository.findById(id);
     return requestedUser;
   }
 }
