@@ -13,8 +13,6 @@ public class UserPutDTO {
 
     private LocalDateTime date;
 
-    private UserStatus status;
-
 
     public String getUsername() {
         return username;
@@ -35,12 +33,6 @@ public class UserPutDTO {
 
     public void setDate(LocalDateTime date){this.date = date;}
 
-    public UserStatus getStatus() {
-        return status;
-    }
 
-    public void setStatus(UserStatus status) {
-        this.status = status;
-    }
 
 }

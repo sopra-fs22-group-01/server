@@ -14,16 +14,8 @@ public class UserPostDTO {
 
   private LocalDateTime date;
 
-  private UserStatus status;
-
   private boolean isLoggedIn;
-/*  public String getName() {
-    return name;
-  }
 
-  public void setName(String name) {
-    this.name = name;
-  }*/
 
   public String getUsername() {
     return username;
@@ -43,14 +35,6 @@ public class UserPostDTO {
   public LocalDateTime getDate(){return date;}
 
   public void setDate(LocalDateTime date){this.date = date;}
-
-  public UserStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
 
   public boolean getIsLoggedIn(){
     return this.isLoggedIn;

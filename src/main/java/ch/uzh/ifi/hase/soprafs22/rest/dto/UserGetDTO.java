@@ -8,7 +8,6 @@ public class UserGetDTO {
 
   private Long id;
   private String username;
-  private UserStatus status;
   private String password;
   private LocalDateTime date;
   private boolean isLoggedIn;
@@ -29,13 +28,6 @@ public class UserGetDTO {
     this.username = username;
   }
 
-  public UserStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
 
   public String getPassword(){
       return password;}

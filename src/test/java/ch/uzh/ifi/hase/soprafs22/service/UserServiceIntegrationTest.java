@@ -51,7 +51,7 @@ public class UserServiceIntegrationTest {
     //assertEquals(testUser.setPassword(), createdUser.getName());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertNotNull(createdUser.getToken());
-    assertEquals(UserStatus.ONLINE, createdUser.getStatus());
+    //assertFalse(createdUser.getIsLoggedIn()); //should probably be null at this point
   }
 
   @Test

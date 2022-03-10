@@ -41,7 +41,6 @@ public class UserService {
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.ONLINE);
 
     newUser.setDate();
 
@@ -80,14 +79,12 @@ public class UserService {
   }
 
   public void logOutUser(User userToLogOut){
-    userToLogOut.setStatus(UserStatus.OFFLINE);
     userToLogOut.setIsLoggedIn(false);
     userRepository.flush();
     log.debug("Logged out user %s", userToLogOut.getUsername());
   }
 
   public void logInUser(User userToLogIn){
-    userToLogIn.setStatus(UserStatus.ONLINE);
     userToLogIn.setIsLoggedIn(true);
     userRepository.flush();
     log.debug("Logged in user %s", userToLogIn.getUsername());

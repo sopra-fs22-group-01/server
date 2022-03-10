@@ -51,7 +51,7 @@ public class UserServiceTest {
     //assertEquals(testUser.getName(), createdUser.getName());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertNotNull(createdUser.getToken());
-    assertEquals(UserStatus.ONLINE, createdUser.getStatus());
+    assertFalse(createdUser.getIsLoggedIn()); //but should it be true though?
   }
 
 /*  @Test
