@@ -45,6 +45,17 @@ public class UserController {
     return userGetDTOs; // returns array UserGetDTO with all users init
   }
 
+
+  //gets a specific user from database through the user service and returns it as userGetDTO
+  @GetMapping("/users/fetch")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public UserGetDTO getUsername(@RequestParam String username) {
+    User requestedUser = userService.findUserData(username);
+    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
+  }
+
+
   @PostMapping("/users") //creates a User object
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody

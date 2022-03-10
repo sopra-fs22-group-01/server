@@ -91,4 +91,9 @@ public class UserService {
     log.debug("Logged in user %s", userToLogIn.getUsername());
   }
 
+  //searches for the requested user in the database
+  public User findUserData(String username) {
+    User requestedUser = userRepository.findByUsername(username);
+    return requestedUser;
+  }
 }
