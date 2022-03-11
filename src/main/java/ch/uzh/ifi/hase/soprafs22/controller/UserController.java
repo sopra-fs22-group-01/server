@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
@@ -72,10 +71,10 @@ public class UserController {
   }
 
 
-  @PutMapping("/users/")
+  @PostMapping("/users/")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public void loggIn(@RequestParam String username, @RequestParam String password) {
+  public UserGetDTO loggIn(@RequestBody UserPostDTO userPostDTO) {
     // fetch all users in the internal representation
     List<User> users = userService.getUsers();
     List<UserGetDTO> userGetDTOs = new ArrayList<>();
@@ -84,13 +83,13 @@ public class UserController {
     // convert each user to the API representation
     for (User user : users) {
       //check if user already exists
-      if(username.equals(user.getUsername())){ //checks if user provide matches a user in DB
-        if(!user.getPassword().equals(password)){
+      if(userPostDTO.getUsername().equals(user.getUsername())){ //checks if user provide matches a user in DB
+        if(!user.getPassword().equals(userPostDTO.getPassword())){
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
         }
         userService.logInUser(user);
-        userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-        return;
+        //userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
       }
     }
     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);

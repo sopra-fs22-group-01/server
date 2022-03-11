@@ -53,7 +53,7 @@ public class UserGetDTO {
     this.token = token;
   }
 
-  public String getToken(String token){
+  public String getToken(){
     return this.token;
   }
 
