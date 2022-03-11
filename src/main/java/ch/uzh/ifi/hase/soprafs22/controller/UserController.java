@@ -72,10 +72,10 @@ public class UserController {
   }
 
 
-  @PostMapping("/login")
+  @PutMapping("/users/")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public void checkPassword(@RequestBody UserPostDTO userPostDTO) {
+  public void checkPassword(@RequestParam String username, @RequestParam String password) {
     // fetch all users in the internal representation
     List<User> users = userService.getUsers();
     List<UserGetDTO> userGetDTOs = new ArrayList<>();
@@ -84,8 +84,8 @@ public class UserController {
     // convert each user to the API representation
     for (User user : users) {
       //check if user already exists
-      if(userPostDTO.getUsername().equals(user.getUsername())){ //checks if user provide matches a user in DB
-        if(!user.getPassword().equals(userPostDTO.getPassword())){
+      if(username.equals(user.getUsername())){ //checks if user provide matches a user in DB
+        if(!user.getPassword().equals(password)){
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
         }
         userService.logInUser(user);

@@ -12,6 +12,7 @@ public class UserPutDTO {
     private String password;
 
     private LocalDateTime date;
+    private boolean isLoggedIn;
 
 
     public String getUsername() {
@@ -33,6 +34,11 @@ public class UserPutDTO {
 
     public void setDate(LocalDateTime date){this.date = date;}
 
+    public void setIsLoggedIn(boolean isLoggedIn){
+        this.isLoggedIn = isLoggedIn;
+    }
 
-
+    public boolean getIsLoggedIn(){
+        return this.isLoggedIn;
+    }
 }
