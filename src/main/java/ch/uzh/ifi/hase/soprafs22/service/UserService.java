@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.service;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
+import org.hibernate.hql.internal.ast.SqlASTFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,4 +97,10 @@ public class UserService {
     User requestedUser = userRepository.findById(id);
     return requestedUser;
   }
+
+  public User findUserByToken(String token){
+    User requestedUser = userRepository.findByToken(token);
+    return requestedUser;
+  }
+
 }

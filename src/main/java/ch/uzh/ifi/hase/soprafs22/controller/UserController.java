@@ -94,5 +94,16 @@ public class UserController {
     }
     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
   }
+
+
+  @PutMapping("/users/")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public UserGetDTO loggOut(@RequestParam String token) {
+    User requestedUser = userService.findUserByToken(token);
+    userService.logOutUser(requestedUser);
+    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
+  }
+
 }
 
