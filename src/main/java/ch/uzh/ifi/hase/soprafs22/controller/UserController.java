@@ -75,7 +75,7 @@ public class UserController {
   @PutMapping("/users/")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public void checkPassword(@RequestParam String username, @RequestParam String password) {
+  public void loggIn(@RequestParam String username, @RequestParam String password) {
     // fetch all users in the internal representation
     List<User> users = userService.getUsers();
     List<UserGetDTO> userGetDTOs = new ArrayList<>();

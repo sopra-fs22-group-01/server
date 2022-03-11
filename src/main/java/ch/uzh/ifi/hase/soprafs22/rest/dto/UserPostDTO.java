@@ -15,6 +15,7 @@ public class UserPostDTO {
   private LocalDateTime date;
 
   private boolean isLoggedIn;
+  private String token;
 
 
   public String getUsername() {
@@ -41,5 +42,13 @@ public class UserPostDTO {
   }
   public void setIsLoggedIn(boolean isLoggedIn){
     this.isLoggedIn = isLoggedIn;
+  }
+
+  public void setToken(String token){
+    this.token = token;
+  }
+
+  public String getToken(String token){
+    return this.token;
   }
 }

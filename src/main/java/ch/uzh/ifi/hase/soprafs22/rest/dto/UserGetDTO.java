@@ -8,6 +8,7 @@ public class UserGetDTO {
 
   private Long id;
   private String username;
+  private String token;
   private String password;
   private LocalDateTime date;
   private boolean isLoggedIn;
@@ -43,7 +44,18 @@ public class UserGetDTO {
   public boolean getIsLoggedIn(){
     return this.isLoggedIn;
   }
-  public void setIsLoggedIn(boolean isLoggedIn){
+
+  public void setIsLoggedIn(boolean isLoggedIn) {
     this.isLoggedIn = isLoggedIn;
   }
+
+  public void setToken(String token){
+    this.token = token;
+  }
+
+  public String getToken(String token){
+    return this.token;
+  }
+
 }
+

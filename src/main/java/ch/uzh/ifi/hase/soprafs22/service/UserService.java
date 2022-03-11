@@ -85,6 +85,7 @@ public class UserService {
   }
 
   public void logInUser(User userToLogIn){
+    userToLogIn.setToken(UUID.randomUUID().toString());
     userToLogIn.setIsLoggedIn(true);
     userRepository.flush();
     log.debug("Logged in user %s", userToLogIn.getUsername());

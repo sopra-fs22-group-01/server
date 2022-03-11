@@ -25,18 +25,19 @@ public interface DTOMapper {
 
 
   @Mapping(source = "username", target = "username")
-  //@Mapping(source = "password", target = "password") //how can the password still be saved in the database if it doesn't get mapped here??
+  @Mapping(source = "password", target = "password") //how can the password still be saved in the database if it doesn't get mapped here??
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO); //takes userPostDTO and converts it to entity
 
-  @Mapping(source = "isLoggedIn", target = "isLoggedIn")
   @Mapping(source = "id", target = "id")
   @Mapping(source = "username", target = "username")
-    //@Mapping(source = "password", target = "password")
+  @Mapping(source = "token", target = "token")
+  @Mapping(source = "date", target = "date")
+  @Mapping(source = "isLoggedIn", target = "isLoggedIn")
   UserGetDTO convertEntityToUserGetDTO(User user); // takes User as input and converts it to entity of UserGetDTO
   //does this method map all the @mapping stuff from above?
 
 
-  //@Mapping(source = "isLoggedIn", target = "isLoggedIn")
+  @Mapping(source = "isLoggedIn", target = "isLoggedIn")
   @Mapping(source = "username", target = "username")
   UserPutDTO convertEntityToUserPutDTO(User user);
 
