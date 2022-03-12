@@ -1,10 +1,8 @@
 package ch.uzh.ifi.hase.soprafs22.entity;
 
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Internal User Representation
@@ -37,7 +35,7 @@ public class User implements Serializable {
   private String password;
 
   @Column
-  private LocalDateTime date;
+  private Date creation_date;
 
   @Column
   private boolean isLoggedIn;
@@ -76,11 +74,11 @@ public class User implements Serializable {
       return password;
   }
 
-  public LocalDateTime getDate(){return date;}
+  public Date getCreation_date(){return creation_date;}
 
-  public void setDate(){
-    LocalDateTime now = LocalDateTime.now();
-    date = now;
+  public void setCreation_date(Date date){
+    this.creation_date = date;
+
   }
 
   public boolean getIsLoggedIn(){

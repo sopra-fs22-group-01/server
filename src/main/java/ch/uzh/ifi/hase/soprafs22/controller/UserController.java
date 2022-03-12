@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -95,8 +96,18 @@ public class UserController {
     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
   }
 
+  //Maps data from profile changes
+  @PutMapping("/users/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseBody
+  public void saveChanges(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
+    userService.findUserById(id);
+    userService.updateUser(userPutDTO);
+  }
 
-  @PutMapping("/users/")
+
+  //mapper for the logout with token
+  @PutMapping("/logout/")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public UserGetDTO loggOut(@RequestParam String token) {

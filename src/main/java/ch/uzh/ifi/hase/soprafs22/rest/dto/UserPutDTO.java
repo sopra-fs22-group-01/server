@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.rest.dto;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class UserPutDTO {
 //private String name;
@@ -11,7 +12,9 @@ public class UserPutDTO {
 
     private String password;
 
-    private LocalDateTime date;
+    private long id;
+
+    private Date date;
     private boolean isLoggedIn;
 
 
@@ -30,9 +33,9 @@ public class UserPutDTO {
         this.password = password;
     }
 
-    public LocalDateTime getDate(){return date;}
+    public Date getDate(){return date;}
 
-    public void setDate(LocalDateTime date){this.date = date;}
+    public void setDate(Date date){this.date = date;}
 
     public void setIsLoggedIn(boolean isLoggedIn){
         this.isLoggedIn = isLoggedIn;
@@ -40,5 +43,13 @@ public class UserPutDTO {
 
     public boolean getIsLoggedIn(){
         return this.isLoggedIn;
+    }
+
+    public void setId(long id){
+        this.id = id;
+    }
+
+    public long getId() {
+        return this.id;
     }
 }

@@ -1,9 +1,10 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
-import org.hibernate.hql.internal.ast.SqlASTFactory;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +45,9 @@ public class UserService {
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
 
-    newUser.setDate();
+    //sets date and time to the moment it gets created
+    Date date = new Date();
+    newUser.setCreation_date(date);
 
     checkIfUserExists(newUser);
 
@@ -103,4 +107,20 @@ public class UserService {
     return requestedUser;
   }
 
+  public User findUserById(long id) {
+    User requestedUser = userRepository.findById(id);
+    return requestedUser;
+  }
+
+  //search for user by id and change birthdate and or username
+  public void updateUser(UserPutDTO userPutDTO) {
+    long userID = userPutDTO.getId();
+    User userToUpdate= userRepository.findById(userID);
+
+    //updates username from user if username provided is not null
+    if(userPutDTO.getUsername()!= null){
+      userToUpdate.setUsername(userPutDTO.getUsername());
+    }
+
+  }
 }
