@@ -113,19 +113,20 @@ public class UserService {
     return requestedUser;
   }
 
-  //search for user by id and change birthdate and or username
   public void updateUser(UserPutDTO userPutDTO) {
     /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-MM");*/
     long userID = userPutDTO.getId();
     User userToUpdate= userRepository.findById(userID);
 
-    //updates username from user if username provided is not null
-    if(userPutDTO.getUsername().length() > 0 && userPutDTO.getUsername().trim().length() >0){
+    //updates username from user if username provided has length >0 and is not space
+    if(userPutDTO.getUsername().length()>0 && userPutDTO.getUsername().trim().length()>0){
       userToUpdate.setUsername(userPutDTO.getUsername());
     }
     if(userPutDTO.getBirthday()!=null){
       userToUpdate.setBirthday(userPutDTO.getBirthday());
+      }
     }
-    throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User Not Found");
-  }
+
+
+  //search for user by id and change birthdate and or username
 }
