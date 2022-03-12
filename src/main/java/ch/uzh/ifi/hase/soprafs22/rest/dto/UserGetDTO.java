@@ -13,6 +13,7 @@ public class UserGetDTO {
   private String password;
   private Date date;
   private boolean isLoggedIn;
+  private Date birthday;
 
   public Long getId() {
     return id;
@@ -58,5 +59,13 @@ public class UserGetDTO {
     return this.token;
   }
 
+  public Date getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(Date birthday) {
+    this.birthday = birthday;
+  }
+  
 }
 

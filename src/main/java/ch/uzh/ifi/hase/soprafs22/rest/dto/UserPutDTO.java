@@ -15,7 +15,11 @@ public class UserPutDTO {
     private long id;
 
     private Date date;
+
     private boolean isLoggedIn;
+
+    private Date birthday;
+
 
 
     public String getUsername() {
@@ -52,4 +56,12 @@ public class UserPutDTO {
     public long getId() {
         return this.id;
     }
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
 }

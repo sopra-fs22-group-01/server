@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -114,13 +115,17 @@ public class UserService {
 
   //search for user by id and change birthdate and or username
   public void updateUser(UserPutDTO userPutDTO) {
+    /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-MM");*/
     long userID = userPutDTO.getId();
     User userToUpdate= userRepository.findById(userID);
 
     //updates username from user if username provided is not null
-    if(userPutDTO.getUsername()!= null){
+    if(userPutDTO.getUsername().length() > 0 && userPutDTO.getUsername().trim().length() >0){
       userToUpdate.setUsername(userPutDTO.getUsername());
     }
-
+    if(userPutDTO.getBirthday()!=null){
+      userToUpdate.setBirthday(userPutDTO.getBirthday());
+    }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User Not Found");
   }
 }

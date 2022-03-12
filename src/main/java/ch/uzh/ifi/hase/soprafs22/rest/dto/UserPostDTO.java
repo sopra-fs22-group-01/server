@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.rest.dto;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class UserPostDTO {
 
@@ -16,6 +17,7 @@ public class UserPostDTO {
 
   private boolean isLoggedIn;
   private String token;
+  private Date birthday;
 
 
   public String getUsername() {
@@ -51,4 +53,14 @@ public class UserPostDTO {
   public String getToken(String token){
     return this.token;
   }
+
+
+  public Date getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(Date birthday) {
+    this.birthday = birthday;
+  }
+
 }

@@ -40,6 +40,9 @@ public class User implements Serializable {
   @Column
   private boolean isLoggedIn;
 
+  @Column
+  private Date birthday;
+
   public Long getId() {
     return id;
   }
@@ -86,5 +89,13 @@ public class User implements Serializable {
   }
   public void setIsLoggedIn(boolean isLoggedIn){
     this.isLoggedIn = isLoggedIn;
+  }
+
+  public Date getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(Date birthday) {
+    this.birthday = birthday;
   }
 }

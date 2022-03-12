@@ -33,6 +33,7 @@ public interface DTOMapper {
   @Mapping(source = "token", target = "token")
   @Mapping(source = "creation_date", target = "date")
   @Mapping(source = "isLoggedIn", target = "isLoggedIn")
+  @Mapping(source = "birthday", target = "birthday")
   UserGetDTO convertEntityToUserGetDTO(User user); // takes User as input and converts it to entity of UserGetDTO
   //does this method map all the @mapping stuff from above?
 
@@ -41,6 +42,7 @@ public interface DTOMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "isLoggedIn", target = "isLoggedIn")
   @Mapping(source = "username", target = "username")
+  @Mapping(source = "birthday", target = "birthday")
   UserPutDTO convertEntityToUserPutDTO(User user);
 
 }
