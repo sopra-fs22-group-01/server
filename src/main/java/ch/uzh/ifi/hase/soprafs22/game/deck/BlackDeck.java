@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import java.util.ArrayList;
 
 public class BlackDeck implements Deck{
+    //content can't be in the interface as it isn't a constant
     private ArrayList<Card> content = new ArrayList<Card>();
 
     public Deck createDeck() {
