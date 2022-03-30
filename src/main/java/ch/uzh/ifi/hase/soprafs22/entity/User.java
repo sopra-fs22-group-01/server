@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs22.entity;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.Hand;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -42,6 +45,19 @@ public class User implements Serializable {
 
   @Column
   private Date birthday;
+
+  //For the game isReady, score and hand was added
+  @Column
+  private ReadyStatus isReady;
+
+  @Column
+  private int score;
+
+  /*
+  doesn't work as Hand isn't a basic type
+  @Column
+  private Hand hand;
+  */
 
   public Long getId() {
     return id;
