@@ -9,7 +9,7 @@ public class Lobby{
 
     private ArrayList<User> currentPlayers;
 
-    public boolean checkIfAlready(ArrayList<User> players){
+    public boolean checkIfAllReady(ArrayList<User> players){
         return false;
     }
 
