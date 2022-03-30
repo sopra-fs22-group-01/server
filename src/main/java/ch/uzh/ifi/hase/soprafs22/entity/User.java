@@ -114,4 +114,20 @@ public class User implements Serializable {
   public void setBirthday(Date birthday) {
     this.birthday = birthday;
   }
+
+  public ReadyStatus getIsReady(){
+      return isReady;
+  }
+
+  public void setIsReady(ReadyStatus isReady){
+      this.isReady = isReady;
+  }
+
+  public int getScore(){
+      return score;
+  }
+
+  public void setScore(int score){
+      this.score = score;
+  }
 }
