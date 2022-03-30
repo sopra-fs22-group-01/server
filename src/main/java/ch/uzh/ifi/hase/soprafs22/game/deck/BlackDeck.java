@@ -4,7 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 
 import java.util.ArrayList;
 
-public class BlackDeck implements Deck{
+public class BlackDeck implements Deck, IterableCard{
     //content can't be in the interface as it isn't a constant
     private ArrayList<Card> content = new ArrayList<Card>();
 
@@ -18,5 +18,10 @@ public class BlackDeck implements Deck{
     }
 
     public void shuffle() {}
+
+    @Override
+    public IteratorCard iterator() {
+        return null;
+    }
     //here comes black deck implementation
 }

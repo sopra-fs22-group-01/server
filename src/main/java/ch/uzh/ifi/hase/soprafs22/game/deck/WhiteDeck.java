@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 
 import java.util.ArrayList;
 
-public class WhiteDeck implements Deck{
+public class WhiteDeck implements Deck, IterableCard{
     private ArrayList<Card> content = new ArrayList<Card>();
 
     public Deck createDeck() {
@@ -16,4 +16,9 @@ public class WhiteDeck implements Deck{
     public Card draw() {return null; }
 
     public void shuffle(){}
+
+    @Override
+    public IteratorCard iterator() {
+        return null;
+    }
 }
