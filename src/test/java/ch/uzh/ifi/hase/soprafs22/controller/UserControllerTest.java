@@ -49,7 +49,7 @@ public class UserControllerTest {
     User user = new User();
     //user.setName("Firstname Lastname");
     user.setUsername("firstname@lastname");
-    user.setIsLoggedIn(false);
+    user.setUserStatus(UserStatus.OFFLINE);
 
     List<User> allUsers = Collections.singletonList(user);
 
@@ -65,7 +65,7 @@ public class UserControllerTest {
         .andExpect(jsonPath("$", hasSize(1)))
         //.andExpect(jsonPath("$[0].name", is(user.getName())))
         .andExpect(jsonPath("$[0].username", is(user.getUsername())))
-        .andExpect(jsonPath("$[0].isLoggedIn", is(user.getIsLoggedIn())));
+        .andExpect(jsonPath("$[0].userStatus", is(user.getUserStatus().toString())));
   }
 
   @Test
@@ -74,7 +74,7 @@ public class UserControllerTest {
     User user = new User();
     user.setId(1L);
     user.setUsername("testUsername");
-    user.setIsLoggedIn(false);
+    user.setUserStatus(UserStatus.OFFLINE);
 
     // this mocks the UserService -> we define above what the userService should
     // return when getUsers() is called
@@ -98,7 +98,7 @@ public class UserControllerTest {
     //user.setName("Test User");
     user.setUsername("testUsername");
     user.setToken("1");
-    user.setIsLoggedIn(true);
+    user.setUserStatus(UserStatus.ONLINE);
 
     UserPostDTO userPostDTO = new UserPostDTO();
     userPostDTO.setUsername("testUsername");
@@ -117,7 +117,7 @@ public class UserControllerTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id", is(user.getId().intValue())))
         .andExpect(jsonPath("$.username", is(user.getUsername())))
-        .andExpect(jsonPath("$.isLoggedIn", is(user.getIsLoggedIn())));
+        .andExpect(jsonPath("$.userStatus", is(user.getUserStatus().toString())));
   }
 
   @Test
@@ -128,7 +128,7 @@ public class UserControllerTest {
     //user.setName("Test User");
     user.setUsername("testUsername");
     user.setToken("1");
-    user.setIsLoggedIn(true);
+    user.setUserStatus(UserStatus.ONLINE);
 
     UserPostDTO userPostDTO1 = new UserPostDTO();
     userPostDTO1.setUsername("testUsername");
@@ -187,7 +187,7 @@ public class UserControllerTest {
     user.setUsername("bob");
     user.setPassword("testPassword");
     user.setToken("1");
-    user.setIsLoggedIn(true);
+    user.setUserStatus(UserStatus.ONLINE);
     userService.createUser(user);
     //creation date is created upon user creation and has not to be hardcoded
 
@@ -210,7 +210,7 @@ public class UserControllerTest {
     UserPutDTO userPutDTO = new UserPutDTO();
     userPutDTO.setUsername("newBob");
     userPutDTO.setId(user.getId());
-    userPutDTO.setIsLoggedIn(user.getIsLoggedIn());
+    userPutDTO.setUserStatus(user.getUserStatus());
     userPutDTO.setDate(user.getCreation_date());
     userPutDTO.setBirthday(null);
 

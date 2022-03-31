@@ -17,7 +17,6 @@ public class UserPostDTO {
 
   private UserStatus userStatus;
 
-  private boolean isLoggedIn;
 
   private String token;
 
@@ -43,12 +42,6 @@ public class UserPostDTO {
 
   public void setDate(LocalDateTime date){this.date = date;}
 
-  public boolean getIsLoggedIn(){
-    return this.isLoggedIn;
-  }
-  public void setIsLoggedIn(boolean isLoggedIn){
-    this.isLoggedIn = isLoggedIn;
-  }
 
   public void setToken(String token){
     this.token = token;

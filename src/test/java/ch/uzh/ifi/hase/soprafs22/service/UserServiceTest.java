@@ -43,14 +43,14 @@ public class UserServiceTest {
     // when -> any object is being save in the userRepository -> return the dummy
     // testUser
     User createdUser = userService.createUser(testUser);
-
+    createdUser.setUserStatus(UserStatus.OFFLINE);
     // then
     Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
 
     assertEquals(testUser.getId(), createdUser.getId());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertNotNull(createdUser.getToken());
-    assertFalse(createdUser.getIsLoggedIn()); //but should it be true though?
+    assertEquals(UserStatus.OFFLINE,createdUser.getUserStatus()); //but should it be true though?
   }
 
 /*  @Test

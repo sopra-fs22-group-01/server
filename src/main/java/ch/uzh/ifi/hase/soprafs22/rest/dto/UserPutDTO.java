@@ -17,7 +17,6 @@ public class UserPutDTO {
 
     private UserStatus userStatus;
 
-    private boolean isLoggedIn;
 
     private Date birthday;
 
@@ -42,13 +41,6 @@ public class UserPutDTO {
 
     public void setDate(Date date){this.date = date;}
 
-    public void setIsLoggedIn(boolean isLoggedIn){
-        this.isLoggedIn = isLoggedIn;
-    }
-
-    public boolean getIsLoggedIn(){
-        return this.isLoggedIn;
-    }
 
     public void setId(long id){
         this.id = id;
@@ -57,6 +49,7 @@ public class UserPutDTO {
     public long getId() {
         return this.id;
     }
+
     public Date getBirthday() {
         return birthday;
     }

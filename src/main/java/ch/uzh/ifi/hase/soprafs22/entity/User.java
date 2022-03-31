@@ -44,8 +44,6 @@ public class User implements Serializable {
   @Column
   private UserStatus userStatus;
 
-  @Column
-  private boolean isLoggedIn;
 
   @Column
   private Date birthday;
@@ -104,12 +102,6 @@ public class User implements Serializable {
 
   }
 
-  public boolean getIsLoggedIn(){
-    return this.isLoggedIn;
-  }
-  public void setIsLoggedIn(boolean isLoggedIn){
-    this.isLoggedIn = isLoggedIn;
-  }
 
   public Date getBirthday() {
     return birthday;

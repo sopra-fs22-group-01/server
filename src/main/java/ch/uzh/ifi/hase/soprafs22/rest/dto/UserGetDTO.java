@@ -14,7 +14,6 @@ public class UserGetDTO {
 
 
   private UserStatus userStatus;
-  private boolean isLoggedIn;
   private Date birthday;
 
   public Long getId() {
@@ -45,13 +44,6 @@ public class UserGetDTO {
 
   public void setDate(Date date){this.date = date;}
 
-  public boolean getIsLoggedIn(){
-    return this.isLoggedIn;
-  }
-
-  public void setIsLoggedIn(boolean isLoggedIn) {
-    this.isLoggedIn = isLoggedIn;
-  }
 
   public void setToken(String token){
     this.token = token;
