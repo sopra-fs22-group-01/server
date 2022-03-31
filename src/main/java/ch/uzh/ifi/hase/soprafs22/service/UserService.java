@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
+import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -83,6 +84,7 @@ public class UserService {
 
   public void logOutUser(User userToLogOut){
     userToLogOut.setIsLoggedIn(false);
+    userToLogOut.setUserStatus(UserStatus.OFFLINE);
     userRepository.flush();
     log.debug("Logged out user %s", userToLogOut.getUsername());
   }
@@ -90,6 +92,7 @@ public class UserService {
   public void logInUser(User userToLogIn){
     //userToLogIn.setToken(UUID.randomUUID().toString());
     userToLogIn.setIsLoggedIn(true);
+    userToLogIn.setUserStatus(UserStatus.ONLINE);
     userRepository.flush();
     log.debug("Logged in user %s", userToLogIn.getUsername());
   }
