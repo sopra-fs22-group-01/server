@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.entity;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
-import ch.uzh.ifi.hase.soprafs22.game.Hand;
+import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,6 +39,10 @@ public class User implements Serializable {
 
   @Column
   private Date creation_date;
+
+
+  @Column
+  private UserStatus userStatus;
 
   @Column
   private boolean isLoggedIn;
@@ -130,4 +134,14 @@ public class User implements Serializable {
   public void setScore(int score){
       this.score = score;
   }
+
+  public UserStatus getUserStatus() {
+    return userStatus;
+  }
+
+  public void setUserStatus(UserStatus status) {
+    this.userStatus = status;
+  }
+
+
 }

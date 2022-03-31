@@ -15,8 +15,12 @@ public class UserPostDTO {
 
   private LocalDateTime date;
 
+  private UserStatus userStatus;
+
   private boolean isLoggedIn;
+
   private String token;
+
   private Date birthday;
 
 
@@ -61,6 +65,14 @@ public class UserPostDTO {
 
   public void setBirthday(Date birthday) {
     this.birthday = birthday;
+  }
+
+  public UserStatus getUserStatus() {
+    return userStatus;
+  }
+
+  public void setUserStatus(UserStatus userStatus) {
+    this.userStatus = userStatus;
   }
 
 }

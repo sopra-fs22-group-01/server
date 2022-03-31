@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserPutDTO {
@@ -15,6 +14,8 @@ public class UserPutDTO {
     private long id;
 
     private Date date;
+
+    private UserStatus userStatus;
 
     private boolean isLoggedIn;
 
@@ -64,4 +65,12 @@ public class UserPutDTO {
         this.birthday = birthday;
     }
 
+
+    public UserStatus getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+    }
 }

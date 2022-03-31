@@ -32,6 +32,7 @@ public interface DTOMapper {
   @Mapping(source = "username", target = "username")
   @Mapping(source = "token", target = "token")
   @Mapping(source = "creation_date", target = "date")
+  @Mapping(source = "userStatus", target = "userStatus")
   @Mapping(source = "isLoggedIn", target = "isLoggedIn")
   @Mapping(source = "birthday", target = "birthday")
   UserGetDTO convertEntityToUserGetDTO(User user); // takes User as input and converts it to entity of UserGetDTO
@@ -40,6 +41,7 @@ public interface DTOMapper {
 
   @Mapping(source = "password", target = "password")
   @Mapping(source = "id", target = "id")
+  @Mapping(source = "userStatus", target = "userStatus")
   @Mapping(source = "isLoggedIn", target = "isLoggedIn")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "birthday", target = "birthday")
