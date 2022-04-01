@@ -21,7 +21,7 @@ public class ReadJSONFile {
             JSONArray a = (JSONArray) obj;
             for(Object o: a){
                 JSONPObject card = (JSONPObject) o;
-                String text = (String) card.getValue();
+                String text = (String) card.get("text");
                 System.out.println("Text: " + text);
             }
 
@@ -35,3 +35,11 @@ public class ReadJSONFile {
         }
     }
 }
+
+/*
+* json = response.json()
+* print(json['items'][0]['volumeInfo']['title'])
+* for x in range(nr_books):
+*   print(json['items'][x]['volumeInfo']['authors'])
+*
+* */
