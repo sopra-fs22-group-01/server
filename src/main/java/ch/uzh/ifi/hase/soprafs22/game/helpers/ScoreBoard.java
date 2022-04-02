@@ -16,7 +16,7 @@ public class ScoreBoard {
     }
 
 
-    public ArrayList<User> getWinner(User[] players) {
+    public ArrayList<User> getWinner(ArrayList<User> players) {
         //finds the players with the highest score
 
         /*changed return value to an Array of players
@@ -41,12 +41,21 @@ public class ScoreBoard {
         return winners;
     }
 
-    public HashMap getRanking(User[] players){
+    public HashMap getRanking(ArrayList<User> players){
         /* not using users as keys as the user can change during the game (e.g. score of user),
          * instead using the username as it isn't possible to change it when a game is ongoing
          * The ranking of the user as value of the hashmap */
+
         HashMap<String, Integer> ranking = new HashMap();
-        for (User player: players){
+        //first all players with first rank gets saved, then all second rank players and so forth
+        Integer rank = 1;
+        while (!players.isEmpty()){
+            ArrayList<User> users = getWinner(players);
+            for(User user: users){
+                ranking.put(user.getUsername(), rank);
+                players.remove(user); //removing all user of the same rank from players
+            }
+            rank ++;
         }
         return ranking;
     }
