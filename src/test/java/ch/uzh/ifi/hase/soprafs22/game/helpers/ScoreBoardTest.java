@@ -10,6 +10,7 @@ class ScoreBoardTest {
 
     @BeforeEach
     void setUp() {
+
     }
 
     @AfterEach
@@ -21,7 +22,13 @@ class ScoreBoardTest {
     }
 
     @Test
-    void getWinner() {
+    void getWinnerOneWinner() {
+        //tests if the correct winner is returned
+    }
+
+    @Test
+    void getWinnerSeveralWinner() {
+        //tests if the correct winner is returned
     }
 
     @Test
