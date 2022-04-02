@@ -22,14 +22,10 @@ class ScoreBoardTest {
     }
 
     @Test
-    void getWinnerOneWinner() {
+    void getPlayersOfHighestRank() {
         //tests if the correct winner is returned
     }
 
-    @Test
-    void getWinnerSeveralWinner() {
-        //tests if the correct winner is returned
-    }
 
     @Test
     void getRanking() {
