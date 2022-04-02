@@ -41,9 +41,14 @@ public class ScoreBoard {
         return winners;
     }
 
-    public HashMap getRanking(){
-        //just example so returns something
-        return new HashMap();
+    public HashMap getRanking(User[] players){
+        /* not using users as keys as the user can change during the game (e.g. score of user),
+         * instead using the username as it isn't possible to change it when a game is ongoing
+         * The ranking of the user as value of the hashmap */
+        HashMap<String, Integer> ranking = new HashMap();
+        for (User player: players){
+        }
+        return ranking;
     }
 
 }
