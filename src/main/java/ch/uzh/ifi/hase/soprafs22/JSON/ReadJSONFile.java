@@ -51,7 +51,7 @@ public class ReadJSONFile {
 
                     System.out.println(white.get("text"));
                     String cardText = (String) white.get("text");
-                    WhiteCard whiteCard = new WhiteCard(cardText);
+                    //WhiteCard whiteCard = new WhiteCard(cardText);
 
                 }
 

@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.deck.WhiteDeck;
 
 import java.util.ArrayList;
 
@@ -10,12 +11,31 @@ public class Hand {
 
     private ArrayList<WhiteCard> hand = new ArrayList<WhiteCard>();
     private WhiteCard chosenCard;
+    private User owner;
+
+    public Hand(User owner) {
+        this.owner = owner;
+    }
 
     //should draw ten white cards from the deck and save it in the hand
-    public Hand createHand(){
-        //10 Cards create and checking if the texts are unique
-        //newCard.text != allCardsInHand.text --> Hand.add(newCard)
-        return new Hand();}
+    public void createHand(){
+        int numberOfCards = 0;
+        while (numberOfCards < 10){
+            WhiteCard newCard = new WhiteCard(owner);
+            newCard.createCard(); //setting owner and text for the card
+            boolean cardWithSameText = false;
+            for (WhiteCard card: hand){
+                if(newCard.getText() == card.getText()){
+                    cardWithSameText = true;
+                    break;
+                }
+            }
+            if (!cardWithSameText){
+                hand.add(newCard);
+                numberOfCards++;
+            }
+        }
+    }
 
     public void addingCard(){}
 }

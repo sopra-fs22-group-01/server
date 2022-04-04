@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.game.deck;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.Card;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public class WhiteDeck implements Deck, IterableCard{
         return newDeck;
     }
 
-    public Card draw() {return null; }
+    public WhiteCard draw() {return null; }
 
     public void shuffle(){}
 
