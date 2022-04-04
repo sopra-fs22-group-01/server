@@ -69,7 +69,7 @@ public class ReadJSONFile {
         }
     }
 
-    // Public methods to provide with a text String for cards
+    // Public methods to provide with a String text for cards
     public String getWhiteCardText(){
         iteratorWhite++;
         return whiteCardTexts.get(iteratorWhite-1);

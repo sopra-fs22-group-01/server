@@ -10,8 +10,10 @@ public class WhiteCard implements Card {
     private CardType cardType = CardType.EMPTY;
     private String text = "";
 
-    public WhiteCard(String text){
-        this.text = text;
+    public WhiteCard(){}
+
+    public WhiteCard(User owner){
+        this.owner = owner;
     }
 
     public CardType getCardType(){
@@ -22,8 +24,10 @@ public class WhiteCard implements Card {
         return text;
     }
 
-    public Card createCard(String text){
-        //ReadJSONFile.getWhiteCardText()
-        return new WhiteCard(text);
+    public void createCard(){
+        //setting score to 0
+        score = 0;
+        //setting text by getting the text from the ReadJSONFile
+        //text = ReadJSONFile.getWhiteCardText()
     }
 }
