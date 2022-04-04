@@ -21,9 +21,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/*
+* Don't create instances, create an array list and a method which returns a randomized string (cardText)
+* */
+
 public class ReadJSONFile {
-    private WhiteCard whiteCard;
-    private BlackCard blackCard;
 
     public static void main(String[] args) {
         // create a parser for JSON
@@ -48,7 +50,8 @@ public class ReadJSONFile {
                     JSONObject white = (JSONObject) w;
 
                     System.out.println(white.get("text"));
-                    //whiteCard.createCard((String) white.get("text"));
+                    String cardText = (String) white.get("text");
+                    WhiteCard whiteCard = new WhiteCard(cardText);
 
                 }
 

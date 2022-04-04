@@ -6,7 +6,7 @@ public class BlackCard implements Card {
     private CardType cardType = CardType.EMPTY;
     private String text = "";
 
-    private BlackCard(String text){
+    public BlackCard(String text){
         this.text = text;
     }
 

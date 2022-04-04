@@ -10,7 +10,7 @@ public class WhiteCard implements Card {
     private CardType cardType = CardType.EMPTY;
     private String text = "";
 
-    private WhiteCard(String text){
+    public WhiteCard(String text){
         this.text = text;
     }
 
@@ -23,6 +23,7 @@ public class WhiteCard implements Card {
     }
 
     public Card createCard(String text){
+        //ReadJSONFile.getWhiteCardText()
         return new WhiteCard(text);
     }
 }

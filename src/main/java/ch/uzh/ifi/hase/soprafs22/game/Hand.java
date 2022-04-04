@@ -12,7 +12,10 @@ public class Hand {
     private WhiteCard chosenCard;
 
     //should draw ten white cards from the deck and save it in the hand
-    public Hand createHand(){return new Hand();}
+    public Hand createHand(){
+        //10 Cards create and checking if the texts are unique
+        //newCard.text != allCardsInHand.text --> Hand.add(newCard)
+        return new Hand();}
 
     public void addingCard(){}
 }
