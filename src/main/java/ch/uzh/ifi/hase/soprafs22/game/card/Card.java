@@ -6,5 +6,5 @@ public interface Card {
     //mistake in UML: interface can only contain constant variables but each card has to have different texts etc.
     CardType getCardType();
     String getText();
-    Card createCard();
+    Card createCard(String text);
 }

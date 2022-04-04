@@ -10,6 +10,10 @@ public class WhiteCard implements Card {
     private CardType cardType = CardType.EMPTY;
     private String text = "";
 
+    private WhiteCard(String text){
+        this.text = text;
+    }
+
     public CardType getCardType(){
         return cardType;
     }
@@ -18,9 +22,7 @@ public class WhiteCard implements Card {
         return text;
     }
 
-    public Card createCard(){
-        Card newCard = new WhiteCard();
-        return newCard;
+    public Card createCard(String text){
+        return new WhiteCard(text);
     }
-
 }

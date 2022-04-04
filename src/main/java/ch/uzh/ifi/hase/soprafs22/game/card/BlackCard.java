@@ -6,6 +6,10 @@ public class BlackCard implements Card {
     private CardType cardType = CardType.EMPTY;
     private String text = "";
 
+    private BlackCard(String text){
+        this.text = text;
+    }
+
     public CardType getCardType(){
         return cardType;
     }
@@ -14,8 +18,7 @@ public class BlackCard implements Card {
         return text;
     }
 
-    public Card createCard(){
-        Card newCard = new BlackCard();
-        return newCard;
+    public Card createCard(String text){
+        return new BlackCard(text);
     }
 }

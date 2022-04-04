@@ -1,6 +1,11 @@
 /**
  * This class is merely for reading JSON Against Humanity file
  * It creates cards instances out of JSON Objects
+ *
+ * Complexity: O(n^2)
+ *
+ * Problems:
+ * 2-Static Method
  * */
 
 package ch.uzh.ifi.hase.soprafs22.JSON;
@@ -9,18 +14,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class ReadJSONFile {
+    private WhiteCard whiteCard;
+    private BlackCard blackCard;
+
     public static void main(String[] args) {
         // create a parser for JSON
         JSONParser parser = new JSONParser();
 
         // try to read the file, else, catch exceptions
-        try (FileReader reader = new FileReader("C:\\Users\\okkes\\SoPra-Group-01\\server\\src\\main\\java\\ch\\uzh\\ifi\\hase\\soprafs22\\JSON\\cah-cards-full.json")){
+        try (FileReader reader = new FileReader("src/main/java/ch/uzh/ifi/hase/soprafs22/JSON/cah-cards-full.json")){
             // create an object by parsing and convert the object to JSONArray
             Object obj = parser.parse(reader);
             JSONArray a = (JSONArray) obj;
@@ -35,15 +45,17 @@ public class ReadJSONFile {
 
                 // iterate over white cards
                 for(Object w: whiteCards){
-                    JSONObject whiteCard = (JSONObject) w;
+                    JSONObject white = (JSONObject) w;
 
-                    System.out.println(whiteCard.get("text"));
+                    System.out.println(white.get("text"));
+                    //whiteCard.createCard((String) white.get("text"));
+
                 }
 
                 // iterate over black cards
                 for(Object b: blackCards){
-                    JSONObject blackCard = (JSONObject) b;
-                    System.out.println(blackCard.get("text"));
+                    JSONObject black = (JSONObject) b;
+                    System.out.println((String) black.get("text"));
                 }
             }
         } catch (FileNotFoundException e){
