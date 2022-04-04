@@ -1,6 +1,5 @@
 /**
  * This class is merely for reading JSON Against Humanity file
- * It creates cards instances out of JSON Objects
  *
  * How to use the class?
  * Create a ReadJSONFile instance, and it will read JSON file for you.
