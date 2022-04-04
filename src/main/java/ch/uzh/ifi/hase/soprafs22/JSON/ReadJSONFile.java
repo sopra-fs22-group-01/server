@@ -2,32 +2,36 @@
  * This class is merely for reading JSON Against Humanity file
  * It creates cards instances out of JSON Objects
  *
- * Complexity: O(n^2)
+ * How to use the class?
+ * Create a ReadJSONFile instance, and it will read JSON file for you.
+ * Use methods getWhiteCardText and getBlackCardText to get a String
  *
- * Problems:
- * 2-Static Method
  * */
 
 package ch.uzh.ifi.hase.soprafs22.JSON;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
-import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/*
-* Don't create instances, create an array list and a method which returns a randomized string (cardText)
-* */
 
 public class ReadJSONFile {
+    ArrayList<String> whiteCardTexts = new ArrayList<String>();
+    ArrayList<String> blackCardTexts = new ArrayList<String>();
+    private int iteratorWhite = 0;
+    private int iteratorBlack = 0;
 
-    public static void main(String[] args) {
+    public ReadJSONFile(){
+        readJSON();
+    }
+
+    // private method to read the JSON file
+    private void readJSON(){
         // create a parser for JSON
         JSONParser parser = new JSONParser();
 
@@ -48,26 +52,31 @@ public class ReadJSONFile {
                 // iterate over white cards
                 for(Object w: whiteCards){
                     JSONObject white = (JSONObject) w;
-
-                    System.out.println(white.get("text"));
                     String cardText = (String) white.get("text");
-                    WhiteCard whiteCard = new WhiteCard(cardText);
-
+                    whiteCardTexts.add(cardText);
                 }
 
                 // iterate over black cards
                 for(Object b: blackCards){
                     JSONObject black = (JSONObject) b;
-                    System.out.println((String) black.get("text"));
+                    String cardText = (String) black.get("text");
+                    blackCardTexts.add(cardText);
                 }
             }
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (ParseException | IOException e){
             e.printStackTrace();
         }
-        catch (ParseException e) {
-            e.printStackTrace();
-        }
+    }
+
+    // Public methods to provide with a text String for cards
+    public String getWhiteCardText(){
+        iteratorWhite++;
+        return whiteCardTexts.get(iteratorWhite-1);
+    }
+
+    public String getBlackCardText(){
+        iteratorBlack++;
+        return blackCardTexts.get(iteratorBlack-1);
     }
 }
