@@ -2,7 +2,7 @@
  * This class is merely for reading JSON Against Humanity file
  *
  * How to use the class?
- * Create a ReadJSONFile instance, and it will read JSON file for you.
+ * Get a ReadJSONFile instance, and it will read JSON file for you.
  * Use methods getWhiteCardText and getBlackCardText to get a String
  *
  * */
@@ -19,14 +19,28 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-public class ReadJSONFile {
-    ArrayList<String> whiteCardTexts = new ArrayList<String>();
-    ArrayList<String> blackCardTexts = new ArrayList<String>();
-    private int iteratorWhite = 0;
-    private int iteratorBlack = 0;
+public final class ReadJSONFile {
+    private static ArrayList<String> whiteCardTexts = new ArrayList<String>();
+    private static ArrayList<String> blackCardTexts = new ArrayList<String>();
+    private static int iteratorWhite = 0;
+    private static int iteratorBlack = 0;
 
-    public ReadJSONFile(){
+    // create an object of ReadJSONFile
+    private volatile static ReadJSONFile uniqueInstance = new ReadJSONFile();
+
+    private ReadJSONFile(){
         readJSON();
+    }
+
+    public static ReadJSONFile getInstance(){
+        if(uniqueInstance == null){
+            synchronized (ReadJSONFile.class){
+                if(uniqueInstance == null){
+                    uniqueInstance = new ReadJSONFile();
+                }
+            }
+        }
+        return uniqueInstance;
     }
 
     // private method to read the JSON file

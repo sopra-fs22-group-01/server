@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.game.card;
 
+import ch.uzh.ifi.hase.soprafs22.JSON.ReadJSONFile;
 import ch.uzh.ifi.hase.soprafs22.constant.CardType;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 
