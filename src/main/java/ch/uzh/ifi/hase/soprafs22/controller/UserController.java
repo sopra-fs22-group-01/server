@@ -105,6 +105,15 @@ public class UserController {
     userService.updateUser(userPutDTO);
   }
 
+//Maps data from ready-status changes
+    @PutMapping("/lobby/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void updateReadyStatus(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
+        userService.findUserById(id);
+        userService.updateUser(userPutDTO);
+    }
+
 
   //mapper for the logout with token
   @PutMapping("/logout/")

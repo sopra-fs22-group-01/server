@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import java.util.Date;
@@ -11,6 +12,8 @@ public class UserGetDTO {
   private String token;
   private String password;
   private Date date;
+
+  private ReadyStatus isReady;
 
 
   private UserStatus userStatus;
@@ -64,6 +67,9 @@ public class UserGetDTO {
   public void setBirthday(Date birthday) {
     this.birthday = birthday;
   }
+
+  public ReadyStatus getIsReady() {return isReady;}
+  public void setIsReady(ReadyStatus readyStatus) {this.isReady = readyStatus;}
   
 }
 

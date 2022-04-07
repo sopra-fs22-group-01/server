@@ -127,6 +127,9 @@ public class UserService {
               if (userPutDTO.getBirthday() != null) {
                   user.setBirthday(userPutDTO.getBirthday());
               }
+              if (userPutDTO.getIsReady() != null) {
+                  user.setIsReady(userPutDTO.getIsReady());
+              }
               return "User successfully updated";
           }
       }
