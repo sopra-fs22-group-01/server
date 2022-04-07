@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ScoreBoardTest {
     private User testUser;
-    private User testUser2 = new User();
-    private User testUser3 = new User();
+    private User testUser2;
+    private User testUser3;
     private ScoreBoard scoreBoard = new ScoreBoard();
     private ArrayList<User> players;
 

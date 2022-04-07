@@ -10,7 +10,7 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.Timer;
 import java.util.ArrayList;
 
 public class Game{
-    private ArrayList<User> players = new ArrayList<User>();
+    private ArrayList<User> players = new ArrayList<>();
     private GameStatus gameStatus;
     private BlackDeck blackDeck;
     private WhiteDeck whiteDeck;
@@ -21,10 +21,11 @@ public class Game{
     private Timer timer;
     private Round round;
 
-    public Game getInstance(){
-        //just some implementation so the method returns of type game
-        //should we really use singleton?
-        Game game = new Game();
+    private static Game game = null;
+    public static Game getInstance(){
+        if (game == null){
+            game = new Game();
+        }
         return game;
     }
 
@@ -51,6 +52,11 @@ public class Game{
     public ArrayList<User> getGamePlayers(){
         return players;
     }
+
+    public void setGamePlayers(ArrayList<User> users){
+        this.players = users;
+    }
+
 
 
 }
