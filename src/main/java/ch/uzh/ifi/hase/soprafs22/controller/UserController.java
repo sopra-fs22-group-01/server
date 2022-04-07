@@ -116,17 +116,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
     }
 
-    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
-  }
 
-  //Maps data from profile changes
-  @PutMapping("/users/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ResponseBody
-  public void saveChanges(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
-    userService.findUserById(id);
-    userService.updateUser(userPutDTO);
-  }
 
 //Maps data from ready-status changes
     @PutMapping("/lobby/users/{id}")
@@ -137,17 +127,5 @@ public class UserController {
         userService.updateUser(userPutDTO);
     }
 
-
-  //mapper for the logout with token
-  @PutMapping("/logout/")
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public UserGetDTO loggOut(@RequestParam String token) {
-    User requestedUser = userService.findUserByToken(token);
-    userService.logOutUser(requestedUser);
-    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
-  }
-
-  
 }   
 
