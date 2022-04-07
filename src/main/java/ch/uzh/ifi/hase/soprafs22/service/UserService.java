@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
@@ -91,6 +92,7 @@ public class UserService {
   public void logInUser(User userToLogIn){
     //userToLogIn.setToken(UUID.randomUUID().toString());
     userToLogIn.setUserStatus(UserStatus.ONLINE);
+    userToLogIn.setIsReady(ReadyStatus.UNREADY);
     userRepository.flush();
     log.debug("Logged in user %s", userToLogIn.getUsername());
   }
