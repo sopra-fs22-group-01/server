@@ -64,7 +64,6 @@ public class User implements Serializable {
   public Long getId() {
     return id;
   }
-
   public void setId(Long id) {
     this.id = id;
   }
@@ -73,7 +72,6 @@ public class User implements Serializable {
   public String getUsername() {
     return username;
   }
-
   public void setUsername(String username) {
     this.username = username;
   }
@@ -81,7 +79,6 @@ public class User implements Serializable {
   public String getToken() {
     return this.token;
   }
-
   public void setToken(String token) {
     this.token = token;
   }
@@ -90,23 +87,18 @@ public class User implements Serializable {
   public void setPassword(String password){
       this.password = password;
   }
-
   public String getPassword(){
       return password;
   }
 
   public Date getCreation_date(){return creation_date;}
-
   public void setCreation_date(Date date){
     this.creation_date = date;
-
   }
-
 
   public Date getBirthday() {
     return birthday;
   }
-
   public void setBirthday(Date birthday) {
     this.birthday = birthday;
   }
@@ -114,7 +106,6 @@ public class User implements Serializable {
   public ReadyStatus getIsReady(){
       return isReady;
   }
-
   public void setIsReady(ReadyStatus isReady){
       this.isReady = isReady;
   }
@@ -122,7 +113,6 @@ public class User implements Serializable {
   public int getScore(){
       return score;
   }
-
   public void setScore(int score){
       this.score = score;
   }
@@ -130,7 +120,6 @@ public class User implements Serializable {
   public UserStatus getUserStatus() {
     return userStatus;
   }
-
   public void setUserStatus(UserStatus status) {
     this.userStatus = status;
   }

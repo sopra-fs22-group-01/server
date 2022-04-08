@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class UserPutDTO {
 
 
     private Date birthday;
+    private ReadyStatus isReady;
 
 
 
@@ -63,4 +65,9 @@ public class UserPutDTO {
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
+
+    public ReadyStatus getIsReady() {
+        return isReady;
+    }
+    public void setIsReady(ReadyStatus readyStatus) {this.isReady = readyStatus;}
 }
