@@ -38,14 +38,24 @@ public class GameService {
     public ArrayList<String> getRulesFromText() throws Exception{
         ArrayList<String> ruleArrayList = new ArrayList<String>();
 
-        File file = new File("src/main/java/ch/uzh/ifi/hase/soprafs22/game/helpers/rules.txt");
-        Scanner sc = new Scanner(file);
 
-        while(sc.hasNextLine()){
-            ruleArrayList.add(sc.nextLine());
+        try{
+            File file = new File("src/main/java/ch/uzh/ifi/hase/soprafs22/game/helpers/rules.txt");
+            Scanner sc = new Scanner(file);
+
+            while(sc.hasNextLine()){
+                ruleArrayList.add(sc.nextLine());
+            }
+
+
+        }
+        catch (Exception e){
+            System.out.println("file not found");
         }
 
-        return ruleArrayList;
+    return ruleArrayList;
+
+
     }
 
 }
