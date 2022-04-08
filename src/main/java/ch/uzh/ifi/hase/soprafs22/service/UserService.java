@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.service;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
@@ -85,6 +86,7 @@ public class UserService {
 
   public void logOutUser(User userToLogOut){
     userToLogOut.setUserStatus(UserStatus.OFFLINE);
+    userToLogOut.setIsReady(ReadyStatus.UNREADY);
     userRepository.flush();
     log.debug("Logged out user %s", userToLogOut.getUsername());
   }
@@ -137,6 +139,16 @@ public class UserService {
       }
 
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+  }
+
+    public GameStatus getGameStatus() {
+        List<User> users = getUsers();
+        for (User user : users){
+            if (user.getIsReady()== ReadyStatus.UNREADY){
+                return GameStatus.Waiting;
+            }
+        }
+        return GameStatus.All_Set;
   }
 
 
