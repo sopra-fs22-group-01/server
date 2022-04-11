@@ -7,37 +7,36 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BlackCardTest {
-    BlackCard testBlackCard;
+class WhiteCardTest {
+    WhiteCard testWhiteCard;
 
     @BeforeEach
     void setUp() {
-        this.testBlackCard = new BlackCard();
+        this.testWhiteCard = new WhiteCard();
     }
 
     @AfterEach
     void tearDown() {
-        this.testBlackCard = null;
+        this.testWhiteCard = null;
     }
 
     @Test
     void testGetCardType() {
-        CardType actual = testBlackCard.getCardType();
+        CardType actual = testWhiteCard.getCardType();
         CardType expected = CardType.EMPTY;
-        assertEquals(actual, expected);
+        assertEquals(expected, actual);
     }
 
     @Test
     void testGetNoText() {
-        String actual = testBlackCard.getText();
-        String expected = "";
-        assertEquals(actual, expected);
+        String actual = testWhiteCard.getText();
+        assertEquals("", actual);
     }
 
     @Test
     void testCreateCard() {
-        testBlackCard.createCard();
-        String actual = testBlackCard.getText();
+        testWhiteCard.createCard();
+        String actual = testWhiteCard.getText();
         assertNotEquals("", actual);
     }
 }
