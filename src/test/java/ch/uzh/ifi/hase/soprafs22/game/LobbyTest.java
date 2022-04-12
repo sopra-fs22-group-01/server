@@ -39,9 +39,16 @@ class LobbyTest {
     }
 
     @Test
-    void checkIfAllReady() {
+    void checkIfAllReadyFalse() {
         boolean actual = lobby.checkIfAllReady(players);
         assertEquals(false, actual);
+    }
+
+    @Test
+    void checkIfAllReadyTrue() {
+        testUser2.setIsReady(ReadyStatus.READY);
+        boolean actual = lobby.checkIfAllReady(players);
+        assertEquals(true, actual);
     }
 
     @Test
