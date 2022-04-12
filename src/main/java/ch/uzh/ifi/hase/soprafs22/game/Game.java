@@ -1,8 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.game.deck.BlackDeck;
-import ch.uzh.ifi.hase.soprafs22.game.deck.WhiteDeck;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Timer;
@@ -12,8 +10,6 @@ import java.util.ArrayList;
 public class Game{
     private ArrayList<User> players = new ArrayList<>();
     private GameStatus gameStatus;
-    private BlackDeck blackDeck;
-    private WhiteDeck whiteDeck;
     private ArrayList<Hand> allPlayersHands;
 
     //not explicitly in UML, but needed
