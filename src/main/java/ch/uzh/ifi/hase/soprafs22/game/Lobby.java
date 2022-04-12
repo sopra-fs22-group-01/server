@@ -39,8 +39,8 @@ public class Lobby{
 
 
     public void setGamePlayers(){
-        Game game = Game.getInstance();
-        game.setGamePlayers(currentPlayers);
+        Match match = Match.getInstance();
+        match.setGamePlayers(currentPlayers);
 
     }
 }

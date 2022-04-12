@@ -7,7 +7,7 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.Timer;
 
 import java.util.ArrayList;
 
-public class Game{
+public class Match {
     private ArrayList<User> players = new ArrayList<>();
     private GameStatus gameStatus;
     private ArrayList<Hand> allPlayersHands;
@@ -18,12 +18,12 @@ public class Game{
     private Timer timer;
     private Round round;
 
-    private static Game game = null;
-    public static Game getInstance(){
-        if (game == null){
-            game = new Game();
+    private static Match match = null;
+    public static Match getInstance(){
+        if (match == null){
+            match = new Match();
         }
-        return game;
+        return match;
     }
 
     public void setGameStatus(GameStatus gameStatus) {

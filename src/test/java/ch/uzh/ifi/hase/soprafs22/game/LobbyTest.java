@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,12 +76,12 @@ class LobbyTest {
 
     @Test
     void setGamePlayers() {
-        Game game = Game.getInstance();
+        Match match = Match.getInstance();
         ArrayList<User> expected = players;
         lobby.addPlayers(testUser);
         lobby.addPlayers(testUser2);
         lobby.setGamePlayers();
-        assertEquals(expected, game.getGamePlayers());
+        assertEquals(expected, match.getGamePlayers());
 
     }
 }
