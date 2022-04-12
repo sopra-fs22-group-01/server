@@ -14,6 +14,7 @@ public class Game{
     private GameStatus gameStatus;
     private BlackDeck blackDeck;
     private WhiteDeck whiteDeck;
+    private ArrayList<Hand> allPlayersHands;
 
     //not explicitly in UML, but needed
     private Lobby lobby;
@@ -41,8 +42,12 @@ public class Game{
     public void createDeck(){
     }
 
-    public void createHands(ArrayList<User> players){
-
+    public void createHands(){
+        for (User player: players) {
+            Hand hand = new Hand(player);
+            hand.createHand(); //Creating a hand with 10 cards
+            allPlayersHands.add(hand);
+        }
     }
 
     public int getRound(){

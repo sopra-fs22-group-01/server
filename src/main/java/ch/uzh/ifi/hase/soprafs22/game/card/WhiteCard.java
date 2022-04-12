@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.game.card;
 
+import ch.uzh.ifi.hase.soprafs22.JSON.ReadJSONFile;
 import ch.uzh.ifi.hase.soprafs22.constant.CardType;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 
@@ -10,6 +11,12 @@ public class WhiteCard implements Card {
     private CardType cardType = CardType.EMPTY;
     private String text = "";
 
+    public WhiteCard(){}
+
+    public WhiteCard(User owner){
+        this.owner = owner;
+    }
+
     public CardType getCardType(){
         return cardType;
     }
@@ -18,9 +25,12 @@ public class WhiteCard implements Card {
         return text;
     }
 
-    public Card createCard(){
-        Card newCard = new WhiteCard();
-        return newCard;
-    }
+    public void createCard(){
+        // setting score to 0
+        score = 0;
 
+        // setting text by getting the text from the ReadJSONFile
+        ReadJSONFile readJSONFile = ReadJSONFile.getInstance();
+        this.text = readJSONFile.getWhiteCardText();
+    }
 }
