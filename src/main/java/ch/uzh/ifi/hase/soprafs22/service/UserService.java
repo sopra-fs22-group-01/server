@@ -120,16 +120,24 @@ public class UserService {
     return requestedUser;
   }
 
+  public User findUserByUsername(String username){
+      User requestedUser = userRepository.findByUsername(username);
+      return requestedUser;
+  }
+
   public String updateUser(UserPutDTO userPutDTO) {
       List<User> users = getUsers();
       for(User user:users) {
           if (user.getId() == userPutDTO.getId()) {
-              //updates username from user if username provided has length >0 and is not space
-              if (userPutDTO.getUsername().length() > 0 && userPutDTO.getUsername().trim().length() > 0) {
-                  user.setUsername(userPutDTO.getUsername());
+              if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) {
+                  User userToCheck = findUserByUsername(userPutDTO.getUsername());
+                  if (userToCheck != null) {
+                      checkIfUserExists(userToCheck);
+                      user.setUsername(userPutDTO.getUsername());
+                  }
               }
-              if (userPutDTO.getBirthday() != null) {
-                  user.setBirthday(userPutDTO.getBirthday());
+              if (userPutDTO.getPassword() != null) {
+                  user.setPassword(userPutDTO.getPassword());
               }
               if (userPutDTO.getIsReady() != null) {
                   user.setIsReady(userPutDTO.getIsReady());

@@ -69,5 +69,8 @@ public class UserPutDTO {
     public ReadyStatus getIsReady() {
         return isReady;
     }
+
+    public String getPassword(){return password;}
+
     public void setIsReady(ReadyStatus readyStatus) {this.isReady = readyStatus;}
 }
