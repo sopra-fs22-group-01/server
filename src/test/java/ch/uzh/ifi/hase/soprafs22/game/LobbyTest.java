@@ -25,7 +25,7 @@ class LobbyTest {
         this.players = new ArrayList<>();
         this.players.add(testUser);
         this.players.add(testUser2);
-        this.lobby = new Lobby();
+        this.lobby = new Lobby(2L);
 
     }
 
@@ -74,6 +74,7 @@ class LobbyTest {
         assertEquals(true, actual);
     }
 
+    /*
     @Test
     void setGamePlayers() {
         Match match = Match.getInstance();
@@ -84,4 +85,5 @@ class LobbyTest {
         assertEquals(expected, match.getGamePlayers());
 
     }
+    */
 }
