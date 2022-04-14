@@ -37,12 +37,18 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<HashMap>getScores(@PathVariable long matchId) throws Exception{
-        Match match = gameManager.getMatch(matchId);//gets correct match from gameManager
+  /*      Match match = gameManager.getMatch(matchId);//gets correct match from gameManager
         ScoreBoard currentScoreBoard = match.getScoreBoard();//gets scoreboard of correct match
 
         //gets hashmap which contains player name as key and player score as value
         HashMap scoresHashMap = currentScoreBoard.getCurrentScores(match.getGamePlayers());
-        return ResponseEntity.ok(scoresHashMap);
+        */
+
+        // JUST A MOCK! Doesnt work now, since no match gets initialized until now
+        HashMap hardCodedMap = new HashMap();
+        hardCodedMap.put("Player1", 1);
+
+        return ResponseEntity.ok(hardCodedMap);
     }
 }
 
