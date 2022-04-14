@@ -25,7 +25,7 @@ class LobbyTest {
         this.players = new ArrayList<>();
         this.players.add(testUser);
         this.players.add(testUser2);
-        this.lobby = new Lobby();
+        this.lobby = new Lobby(2L);
 
     }
 

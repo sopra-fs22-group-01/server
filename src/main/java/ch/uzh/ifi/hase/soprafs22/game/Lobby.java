@@ -11,6 +11,10 @@ public class Lobby{
     private ArrayList<User> currentPlayers = new ArrayList<>();
     private final int minimumNumberOfPlayers = 5;
 
+    public Lobby(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,10 +45,9 @@ public class Lobby{
         return false;
     }
 
-/*
     public void setGamePlayers(){
-        Match match = Match.getInstance();
-        match.setGamePlayers(currentPlayers);
+       GameManager gameManager = GameManager.getInstance();
+       gameManager.createMatch(currentPlayers);
     }
-*/
+
 }

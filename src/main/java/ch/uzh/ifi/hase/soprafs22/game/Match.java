@@ -16,6 +16,10 @@ public class Match {
     private Timer timer;
     private Round round;
 
+    public Match(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -39,7 +43,6 @@ public class Match {
     public void setGamePlayers(ArrayList<User> users){
         this.players = users;
     }
-
 
 
 }
