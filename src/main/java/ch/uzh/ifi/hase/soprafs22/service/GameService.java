@@ -1,8 +1,9 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.game.GameManager;
-import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -11,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -39,6 +42,8 @@ public class GameService {
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
         ArrayList<String> ruleArrayList = new ArrayList<String>();
+
+
         try{
             File file = new File("src/main/java/ch/uzh/ifi/hase/soprafs22/game/helpers/rules.txt");
             Scanner sc = new Scanner(file);
@@ -46,14 +51,35 @@ public class GameService {
             while(sc.hasNextLine()){
                 ruleArrayList.add(sc.nextLine());
             }
+
+
         }
         catch (Exception e){
             System.out.println("file not found");
         }
+
     return ruleArrayList;
+
+
     }
 
-    /*public Match findMatchById(long matchId){
-        return 0;
-    }*/
+    public LobbyStatus getLobbyStatus() {
+        List<User> users = userRepository.findAll();
+        for (User user : users){
+            if (user.getIsReady()== ReadyStatus.UNREADY){
+                return LobbyStatus.Waiting;
+            }
+        }
+        return LobbyStatus.All_Ready;
+    }
+
+    // NOT COMPLETE -> doesn't account for matchId yet
+    public static String getBlackCard(Long matchId){
+        BlackCard black = new BlackCard();
+        black.createCard();
+        return black.getText();
+    }
+
+
+
 }
