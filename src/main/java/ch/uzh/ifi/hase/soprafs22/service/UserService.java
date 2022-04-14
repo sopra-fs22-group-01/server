@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
@@ -84,6 +85,17 @@ public class UserService {
       }
   }
 
+  private void checkIfUsernameUnique(String username){
+      List<User> allUsers=getUsers();
+      for(User user:allUsers){
+          if(user.getUsername().equals(username)){
+              String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                      String.format(baseErrorMessage, "username ", "is"));
+          }
+      }
+  }
+
   public void logOutUser(User userToLogOut){
     userToLogOut.setUserStatus(UserStatus.OFFLINE);
     userToLogOut.setIsReady(ReadyStatus.UNREADY);
@@ -117,42 +129,64 @@ public class UserService {
 
   public User findUserById(long id) {
     User requestedUser = userRepository.findById(id);
+    if (requestedUser==null){
+        String baseErrorMessage = "User not found!";
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                String.format(baseErrorMessage));
+    }
     return requestedUser;
   }
 
-  public String updateUser(UserPutDTO userPutDTO) {
-      List<User> users = getUsers();
-      for(User user:users) {
-          if (user.getId() == userPutDTO.getId()) {
-              //updates username from user if username provided has length >0 and is not space
-              if (userPutDTO.getUsername().length() > 0 && userPutDTO.getUsername().trim().length() > 0) {
-                  user.setUsername(userPutDTO.getUsername());
-              }
-              if (userPutDTO.getBirthday() != null) {
-                  user.setBirthday(userPutDTO.getBirthday());
-              }
-              if (userPutDTO.getIsReady() != null) {
-                  user.setIsReady(userPutDTO.getIsReady());
-              }
-              return "User successfully updated";
-          }
-      }
-
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+  public User findUserByUsername(String username){
+      User requestedUser = userRepository.findByUsername(username);
+      return requestedUser;
   }
 
-    public GameStatus getGameStatus() {
+  public void updateUserUsername(UserPutDTO userPutDTO){
+      User databaseUser=findUserById(userPutDTO.getId());
+      if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) { //if a username gets entered in the frontend and it is not an empty space
+          if (databaseUser != null) { //if it finds the user corresponding to the userid
+              checkIfUsernameUnique(userPutDTO.getUsername()); //if username is unique
+              databaseUser.setUsername(userPutDTO.getUsername()); //change username
+          }
+      }
+  }
+
+  public void updateUserPassword(UserPutDTO userPutDTO){
+      User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
+      if(userPutDTO.getPassword()!=null){
+          databaseUser.setPassword(userPutDTO.getPassword());
+      }
+    }
+
+    public void updateUserReadyStatus(UserPutDTO userPutDTO){
+        User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
+        if(userPutDTO.getIsReady()!=null){
+            if(userPutDTO.getIsReady().equals(ReadyStatus.READY)){
+                databaseUser.setIsReady(ReadyStatus.UNREADY);
+            }
+            else{
+                databaseUser.setIsReady(ReadyStatus.READY);
+            }
+        }
+    }
+
+
+  public String updateUser(UserPutDTO userPutDTO) {
+      updateUserUsername(userPutDTO);
+      updateUserPassword(userPutDTO);
+      updateUserReadyStatus(userPutDTO);
+      return "User successfully updated";
+  }
+
+    public LobbyStatus getLobbyStatus() {
         List<User> users = getUsers();
         for (User user : users){
             if (user.getIsReady()== ReadyStatus.UNREADY){
-                return GameStatus.Waiting;
+                return LobbyStatus.Waiting;
             }
         }
-        return GameStatus.All_Set;
+        return LobbyStatus.All_Ready;
   }
 
-
-
-
-  //search for user by id and change birthdate and or username
 }

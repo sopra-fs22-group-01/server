@@ -1,12 +1,3 @@
-/**
- * This class is merely for reading JSON Against Humanity file
- *
- * How to use the class?
- * Get a ReadJSONFile instance, and it will read JSON file for you.
- * Use methods getWhiteCardText and getBlackCardText to get a String
- *
- * */
-
 package ch.uzh.ifi.hase.soprafs22.JSON;
 
 import java.io.FileReader;
@@ -18,6 +9,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * This class is merely for reading JSON Against Humanity file
+ *
+ * How to use the class?
+ * Get a ReadJSONFile instance, and it will read JSON file for you.
+ * Use methods getWhiteCardText and getBlackCardText to get a String
+ *
+ * */
 
 public final class ReadJSONFile {
     private static ArrayList<String> whiteCardTexts = new ArrayList<String>();

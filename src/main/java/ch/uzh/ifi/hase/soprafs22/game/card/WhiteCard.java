@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.JSON.ReadJSONFile;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 
 public class WhiteCard implements Card {
+    // maybe id should be static, which is a class variable to keep track of the cards?
     private Long id;
     private User owner;
     private int score;
