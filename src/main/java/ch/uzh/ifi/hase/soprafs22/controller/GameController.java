@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 public class GameController {
 
     private final GameService gameService;
+    //GameManager gameManager = GameManager.getInstance()
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
@@ -36,6 +38,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<HashMap>getScores() throws Exception{
+        //Match match = gameManager.getMatch(matchId);
         HashMap scoresHashMap = new HashMap();
         return ResponseEntity.ok(scoresHashMap);
     }
