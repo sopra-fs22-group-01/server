@@ -7,9 +7,13 @@ import java.util.ArrayList;
 
 public class Lobby{
 
+    private Long id;
     private ArrayList<User> currentPlayers = new ArrayList<>();
     private final int minimumNumberOfPlayers = 5;
 
+    public Long getId() {
+        return id;
+    }
 
     public boolean checkIfAllReady(ArrayList<User> players){
         for (User player: players){
