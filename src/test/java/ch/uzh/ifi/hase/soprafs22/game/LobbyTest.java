@@ -79,7 +79,7 @@ class LobbyTest {
         assertEquals(true, actual);
     }
 
-
+/*
     @Test
     void setGamePlayers() throws Exception {
         ArrayList<User> expected = players;
@@ -90,4 +90,6 @@ class LobbyTest {
         assertEquals(expected, match.getMatchPlayers());
 
     }
+
+ */
 }
