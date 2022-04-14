@@ -19,18 +19,18 @@ public class GameManager {
     }
 
     public void createMatch(ArrayList<User> players){
-        //generating a unique ID for the Match, with UUID?
+        //generating a unique ID for the Match, solved by always increasing the new id
         Long matchId = newMatchIdNumber;
         newMatchIdNumber ++;
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
-        generatedMatch.setGamePlayers(players);
+        generatedMatch.setMatchPlayers(players);
         //saving the Match in matches
         matches.add(generatedMatch);
     }
 
     public void createLobby(){
-        //generating a unique ID for the Lobby, with UUID?
+        //generating a unique ID for the Lobby, solved by always increasing the new id
         Long lobbyId = newLobbyIdNumber;
         newLobbyIdNumber++;
         Lobby generatedLobby = new Lobby(lobbyId);

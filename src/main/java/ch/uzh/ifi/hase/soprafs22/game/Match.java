@@ -32,11 +32,11 @@ public class Match {
         return round;
     }
 
-    public ArrayList<User> getGamePlayers(){
+    public ArrayList<User> getMatchPlayers(){
         return players;
     }
 
-    public void setGamePlayers(ArrayList<User> users){
+    public void setMatchPlayers(ArrayList<User> users){
         this.players = users;
     }
 
