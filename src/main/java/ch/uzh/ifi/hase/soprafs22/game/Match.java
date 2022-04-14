@@ -3,7 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.Timer;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class Match {
     //not explicitly in UML, but needed
     private Lobby lobby;
     private ScoreBoard scoreBoard;
-    private Timer timer;
+    private Countdown timer;
     private Round round;
 
     private static Match match = null;
