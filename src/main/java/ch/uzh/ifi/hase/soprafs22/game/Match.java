@@ -52,11 +52,4 @@ public class Match {
         }
     }
 
-
-    //returns a copy of the current scoreboard
-    public ScoreBoard getScoreBoard(){
-        ScoreBoard scoreBoardCopy = new ScoreBoard();
-        scoreBoardCopy = this.scoreBoard;
-        return scoreBoardCopy;
-    }
 }
