@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -57,5 +59,12 @@ public class GameService {
 
 
     }
+    public void addPlayerToLobby(long lobbyId, User user) throws Exception {
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.addPlayer(user);
+    }
+
+
 
 }

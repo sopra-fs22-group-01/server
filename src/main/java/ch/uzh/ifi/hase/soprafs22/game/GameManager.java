@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 
 import java.util.ArrayList;
 
@@ -38,21 +39,21 @@ public class GameManager {
         lobbies.add(generatedLobby);
     }
 
-    public Lobby getLobby(Long lobbyId) throws Exception {
+    public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
             if (lobby.getId() == lobbyId){
                 return lobby;
             }
         }
-        throw new Exception("The lobby was not found");
+        throw new IncorrectIdException("The lobby was not found");
     }
 
-    public Match getMatch(Long matchId) throws Exception{
+    public Match getMatch(Long matchId) throws IncorrectIdException{
         for (Match match: matches){
             if (match.getId() == matchId){
                 return match;
             }
         }
-        throw new Exception("The match was not found");
+        throw new IncorrectIdException("The match was not found");
     }
 }

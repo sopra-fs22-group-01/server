@@ -28,13 +28,21 @@ public class Lobby{
         return true;
     }
 
-    public void addPlayers(User user){
-        currentPlayers.add(user);
+    public void addPlayer(User user) throws Exception {
+        if (!currentPlayers.contains(user)){
+            currentPlayers.add(user);
+        }
+        else {
+            throw new Exception("The user is already in the lobby");
+        }
     }
 
-    public void removePlayer(User user){
+    public void removePlayer(User user) throws Exception {
         if(currentPlayers.contains(user)){
             currentPlayers.remove(user);
+        }
+        else {
+            throw new Exception("The user doesn't exist in the lobby");
         }
     }
 
