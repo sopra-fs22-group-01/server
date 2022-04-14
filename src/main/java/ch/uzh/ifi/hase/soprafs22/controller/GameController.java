@@ -1,14 +1,13 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 public class GameController {
 
     private final GameService gameService;
-    //GameManager gameManager = GameManager.getInstance()
+    GameManager gameManager = GameManager.getInstance();
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
@@ -37,9 +36,12 @@ public class GameController {
     @GetMapping("/matches/{matchId}/scores")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<HashMap>getScores() throws Exception{
-        //Match match = gameManager.getMatch(matchId);
-        HashMap scoresHashMap = new HashMap();
+    public ResponseEntity<HashMap>getScores(@PathVariable long matchId) throws Exception{
+        Match match = gameManager.getMatch(matchId);//gets correct match from gameManager
+        ScoreBoard currentScoreBoard = match.getScoreBoard();//gets scoreboard of correct match
+
+        //gets hashmap which contains player name as key and player score as value
+        HashMap scoresHashMap = currentScoreBoard.getCurrentScores(match.getGamePlayers());
         return ResponseEntity.ok(scoresHashMap);
     }
 }
