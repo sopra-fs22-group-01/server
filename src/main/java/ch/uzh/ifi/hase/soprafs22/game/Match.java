@@ -20,6 +20,26 @@ public class Match {
         this.id = id;
     }
 
+    public ScoreBoard getScoreBoard() {
+        return scoreBoard;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public Round getRound(){
+        return round;
+    }
+
+    public ArrayList<User> getMatchPlayers(){
+        return players;
+    }
+
+    public void setMatchPlayers(ArrayList<User> users){
+        this.players = users;
+    }
+
     public Long getId() {
         return id;
     }
@@ -30,18 +50,6 @@ public class Match {
             hand.createHand(); //Creating a hand with 10 cards
             allPlayersHands.add(hand);
         }
-    }
-
-    public Round getRound(){
-        return round;
-    }
-
-    public ArrayList<User> getGamePlayers(){
-        return players;
-    }
-
-    public void setGamePlayers(ArrayList<User> users){
-        this.players = users;
     }
 
 

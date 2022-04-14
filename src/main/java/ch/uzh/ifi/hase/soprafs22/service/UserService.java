@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
@@ -161,7 +162,12 @@ public class UserService {
     public void updateUserReadyStatus(UserPutDTO userPutDTO){
         User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
         if(userPutDTO.getIsReady()!=null){
-            databaseUser.setIsReady(userPutDTO.getIsReady());
+            if(userPutDTO.getIsReady().equals(ReadyStatus.READY)){
+                databaseUser.setIsReady(ReadyStatus.UNREADY);
+            }
+            else{
+                databaseUser.setIsReady(ReadyStatus.READY);
+            }
         }
     }
 
@@ -173,14 +179,14 @@ public class UserService {
       return "User successfully updated";
   }
 
-    public GameStatus getGameStatus() {
+    public LobbyStatus getLobbyStatus() {
         List<User> users = getUsers();
         for (User user : users){
             if (user.getIsReady()== ReadyStatus.UNREADY){
-                return GameStatus.Waiting;
+                return LobbyStatus.Waiting;
             }
         }
-        return GameStatus.All_Set;
+        return LobbyStatus.All_Ready;
   }
 
 }
