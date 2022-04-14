@@ -84,6 +84,17 @@ public class UserService {
       }
   }
 
+  private void checkIfUsernameUnique(String username){
+      List<User> allUsers=getUsers();
+      for(User user:allUsers){
+          if(user.getUsername().equals(username)){
+              String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                      String.format(baseErrorMessage, "username ", "is"));
+          }
+      }
+  }
+
   public void logOutUser(User userToLogOut){
     userToLogOut.setUserStatus(UserStatus.OFFLINE);
     userToLogOut.setIsReady(ReadyStatus.UNREADY);
@@ -117,6 +128,11 @@ public class UserService {
 
   public User findUserById(long id) {
     User requestedUser = userRepository.findById(id);
+    if (requestedUser==null){
+        String baseErrorMessage = "User not found!";
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                String.format(baseErrorMessage));
+    }
     return requestedUser;
   }
 
@@ -125,28 +141,36 @@ public class UserService {
       return requestedUser;
   }
 
-  public String updateUser(UserPutDTO userPutDTO) {
-      List<User> users = getUsers();
-      for(User user:users) {
-          if (user.getId() == userPutDTO.getId()) {
-              if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) {
-                  User userToCheck = findUserByUsername(userPutDTO.getUsername());
-                  if (userToCheck != null) {
-                      checkIfUserExists(userToCheck);
-                      user.setUsername(userPutDTO.getUsername());
-                  }
-              }
-              if (userPutDTO.getPassword() != null) {
-                  user.setPassword(userPutDTO.getPassword());
-              }
-              if (userPutDTO.getIsReady() != null) {
-                  user.setIsReady(userPutDTO.getIsReady());
-              }
-              return "User successfully updated";
+  public void updateUserUsername(UserPutDTO userPutDTO){
+      User databaseUser=findUserById(userPutDTO.getId());
+      if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) { //if a username gets entered in the frontend and it is not an empty space
+          if (databaseUser != null) { //if it finds the user corresponding to the userid
+              checkIfUsernameUnique(userPutDTO.getUsername()); //if username is unique
+              databaseUser.setUsername(userPutDTO.getUsername()); //change username
           }
       }
+  }
 
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+  public void updateUserPassword(UserPutDTO userPutDTO){
+      User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
+      if(userPutDTO.getPassword()!=null){
+          databaseUser.setPassword(userPutDTO.getPassword());
+      }
+    }
+
+    public void updateUserReadyStatus(UserPutDTO userPutDTO){
+        User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
+        if(userPutDTO.getIsReady()!=null){
+            databaseUser.setIsReady(userPutDTO.getIsReady());
+        }
+    }
+
+
+  public String updateUser(UserPutDTO userPutDTO) {
+      updateUserUsername(userPutDTO);
+      updateUserPassword(userPutDTO);
+      updateUserReadyStatus(userPutDTO);
+      return "User successfully updated";
   }
 
     public GameStatus getGameStatus() {
@@ -159,8 +183,4 @@ public class UserService {
         return GameStatus.All_Set;
   }
 
-
-
-
-  //search for user by id and change birthdate and or username
 }
