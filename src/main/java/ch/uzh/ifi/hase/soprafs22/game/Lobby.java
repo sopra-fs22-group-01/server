@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 
 import java.util.ArrayList;
 
-public class Lobby{
+public class Lobby {
 
     private Long id;
     private ArrayList<User> currentPlayers = new ArrayList<>();
@@ -19,9 +19,9 @@ public class Lobby{
         return id;
     }
 
-    public boolean checkIfAllReady(ArrayList<User> players){
-        for (User player: players){
-            if (player.getIsReady().equals(ReadyStatus.UNREADY)){
+    public boolean checkIfAllReady() {
+        for (User player : currentPlayers) {
+            if (player.getIsReady().equals(ReadyStatus.UNREADY)) {
                 return false;
             }
         }
@@ -29,7 +29,7 @@ public class Lobby{
     }
 
     public void addPlayer(User user) throws Exception {
-        if (!currentPlayers.contains(user)){
+        if (!currentPlayers.contains(user)) {
             currentPlayers.add(user);
         }
         else {
@@ -38,7 +38,7 @@ public class Lobby{
     }
 
     public void removePlayer(User user) throws Exception {
-        if(currentPlayers.contains(user)){
+        if (currentPlayers.contains(user)) {
             currentPlayers.remove(user);
         }
         else {
@@ -46,16 +46,24 @@ public class Lobby{
         }
     }
 
-    public boolean checkIfEnoughPlayers(){
-        if(currentPlayers.size() >= minimumNumberOfPlayers){
+    public boolean checkIfEnoughPlayers() {
+        if (currentPlayers.size() >= minimumNumberOfPlayers) {
             return true;
         }
         return false;
     }
 
-    public void setGamePlayers(){
-       GameManager gameManager = GameManager.getInstance();
-       gameManager.createMatch(currentPlayers);
+    public void setGamePlayers() {
+        GameManager gameManager = GameManager.getInstance();
+        //the belonging match to the lobby has the same id as the lobby
+        gameManager.createMatch(currentPlayers, id);
     }
 
+    public void setReadyStatus(long userId, ReadyStatus readyStatus) {
+        for (User player : currentPlayers) {
+            if (player.getId().equals(userId)) {
+                player.setIsReady(readyStatus);
+            }
+        }
+    }
 }

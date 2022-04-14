@@ -19,10 +19,12 @@ public class GameManager {
         return gameManager;
     }
 
-    public void createMatch(ArrayList<User> players){
+    public void createMatch(ArrayList<User> players, Long matchId){
         //generating a unique ID for the Match, solved by always increasing the new id
+        /*
         Long matchId = newMatchIdNumber;
         newMatchIdNumber ++;
+         */
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);

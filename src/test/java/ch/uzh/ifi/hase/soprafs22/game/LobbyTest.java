@@ -41,15 +41,19 @@ class LobbyTest {
     }
 
     @Test
-    void checkIfAllReadyFalse() {
-        boolean actual = lobby.checkIfAllReady(players);
+    void checkIfAllReadyFalse() throws Exception {
+        lobby.addPlayer(testUser);
+        lobby.addPlayer(testUser2);
+        boolean actual = lobby.checkIfAllReady();
         assertEquals(false, actual);
     }
 
     @Test
-    void checkIfAllReadyTrue() {
+    void checkIfAllReadyTrue() throws Exception {
         testUser2.setIsReady(ReadyStatus.READY);
-        boolean actual = lobby.checkIfAllReady(players);
+        lobby.addPlayer(testUser);
+        lobby.addPlayer(testUser2);
+        boolean actual = lobby.checkIfAllReady();
         assertEquals(true, actual);
     }
 

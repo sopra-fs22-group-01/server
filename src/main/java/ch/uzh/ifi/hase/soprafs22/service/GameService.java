@@ -1,8 +1,11 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -13,9 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -59,12 +60,44 @@ public class GameService {
 
 
     }
+
     public void addPlayerToLobby(long lobbyId, User user) throws Exception {
         GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.addPlayer(user);
     }
 
+    public void removePlayerFromLobby(long lobbyId, User user) throws Exception{
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.removePlayer(user);
+    }
+
+    public boolean checkIfMinimumNumberOfPlayers(long lobbyId) throws IncorrectIdException {
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        boolean result = requestedLobby.checkIfEnoughPlayers();
+        return result;
+    }
+
+    public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.setReadyStatus(userId, readyStatus);
+    }
 
 
+    public boolean checkIfAllPlayersReady(long lobbyId) throws IncorrectIdException {
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        return  requestedLobby.checkIfAllReady();
+    }
+
+    public void startMatch(long lobbyId) throws IncorrectIdException{
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.setGamePlayers();
+        Match match = gameManager.getMatch(requestedLobby.getId()); //the started match from the lobby has the same id
+        match.createHands();
+    }
 }
