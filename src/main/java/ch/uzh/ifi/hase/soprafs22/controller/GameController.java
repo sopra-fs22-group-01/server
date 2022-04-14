@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 public class GameController {
@@ -29,6 +30,14 @@ public class GameController {
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(rules);
+    }
+
+    @GetMapping("/matches/{matchId}/scores")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<HashMap>getScores() throws Exception{
+        HashMap scoresHashMap = new HashMap();
+        return ResponseEntity.ok(scoresHashMap);
     }
 }
 

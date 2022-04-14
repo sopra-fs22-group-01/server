@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -37,8 +39,6 @@ public class GameService {
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
         ArrayList<String> ruleArrayList = new ArrayList<String>();
-
-
         try{
             File file = new File("src/main/java/ch/uzh/ifi/hase/soprafs22/game/helpers/rules.txt");
             Scanner sc = new Scanner(file);
@@ -46,16 +46,14 @@ public class GameService {
             while(sc.hasNextLine()){
                 ruleArrayList.add(sc.nextLine());
             }
-
-
         }
         catch (Exception e){
             System.out.println("file not found");
         }
-
     return ruleArrayList;
-
-
     }
 
+    /*public Match findMatchById(long matchId){
+        return 0;
+    }*/
 }
