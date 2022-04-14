@@ -46,7 +46,8 @@ public class GameController {
 
         // JUST A MOCK! Doesnt work now, since no match gets initialized until now
         HashMap hardCodedMap = new HashMap();
-        hardCodedMap.put("Player1", 1);
+        hardCodedMap.put("bobThebuilder", 1);
+        hardCodedMap.put("LarryLarington", 3);
 
         return ResponseEntity.ok(hardCodedMap);
     }

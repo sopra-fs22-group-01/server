@@ -15,6 +15,7 @@ public class UserGetDTO {
     private ReadyStatus isReady;
     private UserStatus userStatus;
     private Date birthday;
+    private int score;
 
     public Long getId() {
         return id;
@@ -35,6 +36,7 @@ public class UserGetDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
     public String getPassword() {
         return password;
@@ -81,5 +83,12 @@ public class UserGetDTO {
         this.isReady = readyStatus;
     }
 
+    public int getScore(){
+        return score;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
 }
 
