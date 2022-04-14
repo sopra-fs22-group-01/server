@@ -74,6 +74,7 @@ class LobbyTest {
         assertEquals(true, actual);
     }
 
+    /*
     @Test
     void setGamePlayers() {
         Match match = Match.getInstance();
@@ -84,4 +85,5 @@ class LobbyTest {
         assertEquals(expected, match.getGamePlayers());
 
     }
+    */
 }

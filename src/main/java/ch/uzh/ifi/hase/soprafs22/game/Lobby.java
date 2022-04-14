@@ -41,10 +41,10 @@ public class Lobby{
         return false;
     }
 
-
+/*
     public void setGamePlayers(){
         Match match = Match.getInstance();
         match.setGamePlayers(currentPlayers);
-
     }
+*/
 }
