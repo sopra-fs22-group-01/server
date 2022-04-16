@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -103,7 +104,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void saveChanges(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
-        userService.findUserById(id);
+        userService.findUserById(id); //throws exception if userid doesnt exist
         userService.updateUser(userPutDTO);
     }
 
@@ -120,26 +121,28 @@ public class UserController {
 
 
 
-//Maps data from ready-status changes
+    //Maps data from ready-status changes
     @PutMapping("/lobby/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateReadyStatus(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
-        userService.findUserById(id);
+        userService.findUserById(id); //throws exception if userid doesnt exist
         userService.updateUser(userPutDTO);
     }
 
     // check if all users are Ready
-    @GetMapping("/game/status")
+    /*
+    @GetMapping("/lobby/status")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<GameStatus> getGameStatus() throws Exception {
+    public ResponseEntity<LobbyStatus> getLobbyStatus() throws Exception {
 
-        GameStatus gameStat = userService.getGameStatus();
+        LobbyStatus lobbyStatus = userService.getLobbyStatus();
 
         //.ok sets the HTTP status to OK (200)
-        return ResponseEntity.ok(gameStat) ;
+        return ResponseEntity.ok(lobbyStatus);
     }
+     */
 
 }   
 

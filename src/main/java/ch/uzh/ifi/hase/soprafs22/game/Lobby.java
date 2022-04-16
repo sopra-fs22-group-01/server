@@ -7,9 +7,17 @@ import java.util.ArrayList;
 
 public class Lobby{
 
+    private Long id;
     private ArrayList<User> currentPlayers = new ArrayList<>();
     private final int minimumNumberOfPlayers = 5;
 
+    public Lobby(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public boolean checkIfAllReady(ArrayList<User> players){
         for (User player: players){
@@ -37,10 +45,9 @@ public class Lobby{
         return false;
     }
 
-
     public void setGamePlayers(){
-        Match match = Match.getInstance();
-        match.setGamePlayers(currentPlayers);
-
+       GameManager gameManager = GameManager.getInstance();
+       gameManager.createMatch(currentPlayers);
     }
+
 }

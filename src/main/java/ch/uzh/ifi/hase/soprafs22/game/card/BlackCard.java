@@ -8,8 +8,9 @@ public class BlackCard implements Card {
     public BlackCard(){
     }
 
-    public String getText(){
-        return text;
+    public String getText(){//
+        String s = text.replace("_", "____");
+        return s;
     }
 
     public void createCard() {
