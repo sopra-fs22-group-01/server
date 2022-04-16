@@ -3,32 +3,31 @@ package ch.uzh.ifi.hase.soprafs22.game.helpers;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This class is for timer
+ * Usage: create an instance of this class
+ * and call startTimer();
+ *
+ * It will count down asynchronous while main program runs
+ * */
+
 public class Countdown extends TimerTask {
 
     private static int time = 31;
+    private Timer timer;
 
-    public void setTimer(){
-        Timer timer = new Timer();
-        TimerTask task = new Countdown();
-
-        timer.schedule(task, 1000, 1000);
-    }
-
+    // call this method to start the timer
     public void startTimer(){
-    }
-    public int getTimeLeft(){
-        return time;
+        this.timer = new Timer();
+        timer.scheduleAtFixedRate(this, 1500, 1000);
     }
 
-
+    // Method which will be executed periodically by the timer
     @Override
     public void run() {
         System.out.println("Time left: " + --time);
-        if(time == 0) cancel();
-    }
-
-    public static void main(String[] args) {
-        Countdown countdown = new Countdown();
-        countdown.setTimer();
+        if(time == 0)
+            // cancel() returns a boolean value (can be used to stop card voting)
+            timer.cancel();
     }
 }
