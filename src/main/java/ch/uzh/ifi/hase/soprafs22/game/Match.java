@@ -24,7 +24,7 @@ public class Match {
         return scoreBoard;
     }
 
-    public Timer getTimer() {
+    public Countdown getTimer() {
         return timer;
     }
 
