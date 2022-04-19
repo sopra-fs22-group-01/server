@@ -107,6 +107,7 @@ public class GameController {
     public boolean checkIfMatchCanGetStarted(@PathVariable long lobbyId){
         String baseErrorMessage1 = "No lobby with this id could be found.";
         try {
+            //instead of only checking if all ready also checking if min. number reached?
             boolean outcome = gameService.checkIfAllPlayersReady(lobbyId);
             return outcome;
         }
