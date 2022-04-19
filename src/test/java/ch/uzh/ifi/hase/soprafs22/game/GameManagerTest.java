@@ -28,7 +28,7 @@ class GameManagerTest {
     void tearDown() {
         this.testUser = null;
         this.testUser2 = null;
-        this.gameManager = null;
+        this.gameManager.resetGameManager();
         players.clear();
     }
 

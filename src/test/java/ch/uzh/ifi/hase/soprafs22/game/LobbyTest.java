@@ -38,7 +38,7 @@ class LobbyTest {
         this.testUser = null;
         this.testUser2 = null;
         this.lobby = null;
-        this.gameManager = null;
+        this.gameManager.resetGameManager();
         players.clear();
     }
 
