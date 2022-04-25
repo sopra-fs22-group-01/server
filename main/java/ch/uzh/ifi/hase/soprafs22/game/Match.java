@@ -16,7 +16,7 @@ public class Match {
     private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 
     private ScoreBoard scoreBoard;
-    private Countdown timer;
+    private Timer timer;
     private Round round;
 
     public Match(Long id) {
@@ -27,7 +27,7 @@ public class Match {
         return scoreBoard;
     }
 
-    public Countdown getTimer() {
+    public Timer getTimer() {
         return timer;
     }
 
