@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -80,17 +81,29 @@ public class GameService {
         return result;
     }
 
-    public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
-        GameManager gameManager = GameManager.getInstance();
-        Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        requestedLobby.setReadyStatus(userId, readyStatus);
-    }
-
-
     public boolean checkIfAllPlayersReady(long lobbyId) throws IncorrectIdException {
         GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         return  requestedLobby.checkIfAllReady();
+    }
+
+    public void checkIfLobbyStatusChanged(long lobbyId) throws IncorrectIdException {
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        boolean outcomeMinimumPlayers = checkIfMinimumNumberOfPlayers(lobbyId);
+        boolean outcomeReadyPlayers = checkIfAllPlayersReady(lobbyId);
+        if (outcomeMinimumPlayers && outcomeReadyPlayers){
+            requestedLobby.setLobbyStatus(LobbyStatus.All_Ready);
+        }
+        else {
+            requestedLobby.setLobbyStatus(LobbyStatus.Waiting);
+        }
+    }
+
+    public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.setReadyStatus(userId, readyStatus);
     }
 
     public void startMatch(long lobbyId) throws IncorrectIdException{
@@ -99,5 +112,11 @@ public class GameService {
         requestedLobby.setGamePlayers();
         Match match = gameManager.getMatch(requestedLobby.getId()); //the started match from the lobby has the same id
         match.createHands();
+    }
+
+    public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
+        GameManager gameManager = GameManager.getInstance();
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        return requestedLobby.getLobbyStatus();
     }
 }

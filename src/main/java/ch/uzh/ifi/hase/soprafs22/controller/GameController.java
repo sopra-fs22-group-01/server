@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
@@ -71,6 +72,7 @@ public class GameController {
         }
     }
 
+/*
     //Retrieves if the smallest number of players is reached or not
     @GetMapping("/lobbies/{lobbyId}/players/minimum")
     @ResponseStatus(HttpStatus.OK)
@@ -85,6 +87,7 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
+*/
 
     //Updates the ready status of a certain user
     @PutMapping("/lobbies/{lobbyId}/users/{userId}")
@@ -100,16 +103,16 @@ public class GameController {
         }
     }
 
-    //Retrieves if all current players in the lobby are ready or not
+    //Retrieves if all current players in the lobby are ready or not and if the minimum number of player was reached
     @GetMapping("/lobbies/{lobbyId}/status")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public boolean checkIfMatchCanGetStarted(@PathVariable long lobbyId){
+    public ResponseEntity<LobbyStatus> checkIfMatchCanGetStarted(@PathVariable long lobbyId){
         String baseErrorMessage1 = "No lobby with this id could be found.";
         try {
-            //instead of only checking if all ready also checking if min. number reached?
-            boolean outcome = gameService.checkIfAllPlayersReady(lobbyId);
-            return outcome;
+            gameService.checkIfLobbyStatusChanged(lobbyId);
+            LobbyStatus lobbyStatus = gameService.getLobbyStatus(lobbyId);
+            return ResponseEntity.ok(lobbyStatus);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);

@@ -2,12 +2,14 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 
 import java.util.ArrayList;
 
 public class Lobby {
 
     private Long id;
+    private LobbyStatus lobbyStatus;
     private ArrayList<User> currentPlayers = new ArrayList<>();
     private final int minimumNumberOfPlayers = 5;
 
@@ -17,6 +19,14 @@ public class Lobby {
 
     public Long getId() {
         return id;
+    }
+
+    public LobbyStatus getLobbyStatus() {
+        return lobbyStatus;
+    }
+
+    public void setLobbyStatus(LobbyStatus lobbyStatus) {
+        this.lobbyStatus = lobbyStatus;
     }
 
     public boolean checkIfAllReady() {

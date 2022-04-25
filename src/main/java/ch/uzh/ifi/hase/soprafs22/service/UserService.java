@@ -179,6 +179,7 @@ public class UserService {
       return "User successfully updated";
   }
 
+  /*
     public LobbyStatus getLobbyStatus() {
         List<User> users = getUsers();
         for (User user : users){
@@ -188,5 +189,6 @@ public class UserService {
         }
         return LobbyStatus.All_Ready;
   }
+  */
 
 }
