@@ -31,7 +31,7 @@ class GameManagerTest {
         this.gameManager.resetGameManager();
         players.clear();
     }
-
+/*
     @Test
     void createMatch() throws Exception {
         gameManager.createMatch(players);
@@ -43,6 +43,7 @@ class GameManagerTest {
         assertEquals(expectedMatch.getId(), actualMatch.getId());
         assertEquals(expectedMatch.getMatchPlayers(), actualMatch.getMatchPlayers());
     }
+    */
 
     @Test
     void createLobby() throws Exception {
