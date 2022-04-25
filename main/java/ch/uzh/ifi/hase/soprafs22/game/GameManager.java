@@ -4,7 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 
 import java.util.ArrayList;
 
-public class GameManager {
+public class GameManager {//TEST
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private ArrayList<Match> matches = new ArrayList<>();
     private long newMatchIdNumber = 0;

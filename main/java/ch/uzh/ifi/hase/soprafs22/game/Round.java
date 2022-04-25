@@ -6,7 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 //
 import java.util.ArrayList;
 
-public class Round {
+public class Round {//TEST
 
     private BlackCard blackCard;
     //private ArrayList<User> players;

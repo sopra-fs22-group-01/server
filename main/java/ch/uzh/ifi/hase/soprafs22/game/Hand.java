@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 
 import java.util.ArrayList;
 
-//Not yet sure if Hand should be in game
+//Not yet sure if Hand should be in game//TEST
 public class Hand {
 
     private ArrayList<WhiteCard> userHand = new ArrayList<WhiteCard>();

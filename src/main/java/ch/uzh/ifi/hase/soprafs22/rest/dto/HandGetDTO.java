@@ -9,7 +9,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class HandGetDTO {
+public class HandGetDTO {//TEST
 
     private ArrayList<WhiteCard> userHand = new ArrayList<WhiteCard>();
     private WhiteCard chosenCard;

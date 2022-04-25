@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 
 import java.util.ArrayList;
 
-public class Lobby{
+public class Lobby{//TEST
 
     private Long id;
     private ArrayList<User> currentPlayers = new ArrayList<>();

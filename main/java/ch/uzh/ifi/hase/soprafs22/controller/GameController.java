@@ -83,7 +83,7 @@ public class GameController {
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand);
-    }
+    }//TEST
 
 
 

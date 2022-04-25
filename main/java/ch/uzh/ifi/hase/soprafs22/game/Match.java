@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Match {
-    private Long id;
+    private Long id;//TEST
     private ArrayList<User> players = new ArrayList<>();
     private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 

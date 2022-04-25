@@ -16,7 +16,7 @@ public class WhiteCardGetDTO {
         this.id = id;
     }
 
-    public Long getId() {
+    public Long getId() {//TEST
         return this.id;
     }
 

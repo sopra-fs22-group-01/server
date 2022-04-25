@@ -19,7 +19,7 @@ import org.mapstruct.factory.Mappers;
  * creating information (POST).
  */
 @Mapper
-public interface DTOMapper {
+public interface DTOMapper {//TEST
 
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 

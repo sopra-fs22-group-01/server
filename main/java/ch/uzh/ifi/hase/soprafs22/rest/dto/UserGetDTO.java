@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import java.util.Date;
 
-public class UserGetDTO {
+public class UserGetDTO {//TEST
 
     private Long id;
     private String username;
