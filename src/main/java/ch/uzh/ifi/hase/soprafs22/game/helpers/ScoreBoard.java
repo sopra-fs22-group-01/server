@@ -64,4 +64,15 @@ public class ScoreBoard {
         return ranking;
     }
 
+    //returns arraylist of users with their current score (key= users, val = score)
+    public HashMap getCurrentScores(ArrayList<User> players){
+        HashMap<String, Integer> playerScores = new HashMap();
+        while (!players.isEmpty()){
+            for(User player: players){
+                playerScores.put(player.getUsername(), player.getScore());
+            }
+        }
+        return playerScores;
+    }
+
 }

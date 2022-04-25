@@ -26,8 +26,11 @@ class LobbyTest {
         this.players = new ArrayList<>();
         this.players.add(testUser);
         this.players.add(testUser2);
-        this.lobby = new Lobby(0L);
+        this.lobby = new Lobby(2L);
         this.gameManager = GameManager.getInstance();
+
+
+
     }
 
     @AfterEach
@@ -35,25 +38,20 @@ class LobbyTest {
         this.testUser = null;
         this.testUser2 = null;
         this.lobby = null;
-        this.gameManager = null;
+        this.gameManager.resetGameManager();
         players.clear();
-        this.players = null;
     }
 
     @Test
-    void checkIfAllReadyFalse() throws Exception {
-        lobby.addPlayer(testUser);
-        lobby.addPlayer(testUser2);
-        boolean actual = lobby.checkIfAllReady();
+    void checkIfAllReadyFalse() {
+        boolean actual = lobby.checkIfAllReady(players);
         assertEquals(false, actual);
     }
 
     @Test
-    void checkIfAllReadyTrue() throws Exception {
+    void checkIfAllReadyTrue() {
         testUser2.setIsReady(ReadyStatus.READY);
-        lobby.addPlayer(testUser);
-        lobby.addPlayer(testUser2);
-        boolean actual = lobby.checkIfAllReady();
+        boolean actual = lobby.checkIfAllReady(players);
         assertEquals(true, actual);
     }
 
@@ -66,32 +64,32 @@ class LobbyTest {
     }
 
     @Test
-    void checkIfEnoughPlayersNotEnough() throws Exception {
-        lobby.addPlayer(testUser);
+    void checkIfEnoughPlayersNotEnough() {
+        lobby.addPlayers(testUser);
         boolean actual = lobby.checkIfEnoughPlayers();
         assertEquals(false, actual);
     }
 
-    /*
     @Test
-    void checkIfEnoughPlayersEnough() throws Exception {
+    void checkIfEnoughPlayersEnough() {
         for (int i = 0; i < 5; i++){
-            lobby.addPlayer(testUser);
+            lobby.addPlayers(testUser);
         }
         boolean actual = lobby.checkIfEnoughPlayers();
         assertEquals(true, actual);
     }
-    */
 
+/*
     @Test
     void setGamePlayers() throws Exception {
         ArrayList<User> expected = players;
-        lobby.addPlayer(testUser);
-        lobby.addPlayer(testUser2);
+        lobby.addPlayers(testUser);
+        lobby.addPlayers(testUser2);
         lobby.setGamePlayers();
         Match match = gameManager.getMatch(0L);
-        //expected.clear();
         assertEquals(expected, match.getMatchPlayers());
 
     }
+
+ */
 }

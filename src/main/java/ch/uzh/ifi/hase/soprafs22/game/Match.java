@@ -3,7 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.Timer;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Match {
     private ArrayList<Hand> allPlayersHands;
 
     private ScoreBoard scoreBoard;
-    private Timer timer;
+    private Countdown timer;
     private Round round;
 
     public Match(Long id) {
@@ -24,7 +24,7 @@ public class Match {
         return scoreBoard;
     }
 
-    public Timer getTimer() {
+    public Countdown getTimer() {
         return timer;
     }
 
@@ -51,6 +51,5 @@ public class Match {
             allPlayersHands.add(hand);
         }
     }
-
 
 }

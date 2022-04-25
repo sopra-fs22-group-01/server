@@ -19,6 +19,10 @@ public class GameManager {
         return gameManager;
     }
 
+    public static void resetGameManager(){
+        gameManager = null;
+    }
+
     public void createMatch(ArrayList<User> players, Long matchId){
         //generating a unique ID for the Match, solved by always increasing the new id
         /*

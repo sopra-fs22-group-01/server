@@ -28,6 +28,7 @@ public interface DTOMapper {
   @Mapping(source = "password", target = "password") //how can the password still be saved in the database if it doesn't get mapped here??
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO); //takes userPostDTO and converts it to entity
 
+  @Mapping(source = "score", target = "score")
   @Mapping(source = "id", target = "id")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "password", target = "password")
