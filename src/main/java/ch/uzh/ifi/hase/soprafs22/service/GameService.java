@@ -33,6 +33,8 @@ public class GameService {
 
     private final UserRepository userRepository;
 
+    private GameManager gameManager = GameManager.getInstance();
+
     @Autowired //what does @Autowired do exactly?
     public GameService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -63,32 +65,27 @@ public class GameService {
     }
 
     public void addPlayerToLobby(long lobbyId, User user) throws Exception {
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.addPlayer(user);
     }
 
     public void removePlayerFromLobby(long lobbyId, User user) throws Exception{
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.removePlayer(user);
     }
 
     public boolean checkIfMinimumNumberOfPlayers(long lobbyId) throws IncorrectIdException {
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         boolean result = requestedLobby.checkIfEnoughPlayers();
         return result;
     }
 
     public boolean checkIfAllPlayersReady(long lobbyId) throws IncorrectIdException {
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         return  requestedLobby.checkIfAllReady();
     }
 
     public void checkIfLobbyStatusChanged(long lobbyId) throws IncorrectIdException {
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         boolean outcomeMinimumPlayers = checkIfMinimumNumberOfPlayers(lobbyId);
         boolean outcomeReadyPlayers = checkIfAllPlayersReady(lobbyId);
@@ -101,13 +98,11 @@ public class GameService {
     }
 
     public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.setReadyStatus(userId, readyStatus);
     }
 
     public void startMatch(long lobbyId) throws IncorrectIdException{
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.setGamePlayers();
         Match match = gameManager.getMatch(requestedLobby.getId()); //the started match from the lobby has the same id
@@ -115,7 +110,6 @@ public class GameService {
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
-        GameManager gameManager = GameManager.getInstance();
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         return requestedLobby.getLobbyStatus();
     }
