@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.Card;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 //
 import java.util.ArrayList;
 
@@ -10,7 +11,9 @@ public class Round {
 
     private BlackCard blackCard;
     //private ArrayList<User> players;
-    private Card chosenCard;
+
+    // cards that are played by the players (cards in the middle)
+    private ArrayList<WhiteCard> chosenCards;
     private ArrayList<Hand> hands;
 
     public Round(ArrayList<Hand> hands) {
@@ -34,9 +37,16 @@ public class Round {
         return new ArrayList<Card>();
     }
 
+    // return the owner of the white card with the highest score
     public User getRoundWinner(){
-        //just example, so something gets returned
-        return new User();
+        WhiteCard winnerCard = new WhiteCard();
+        winnerCard.setScore(0);
+        for (WhiteCard chosenCard : chosenCards) {
+            if (chosenCard.getScore() > winnerCard.getScore()) {
+                winnerCard = chosenCard;
+            }
+        }
+        return winnerCard.getOwner();
     }
 
 }
