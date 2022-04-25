@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Match {
     private Long id;
     private ArrayList<User> players = new ArrayList<>();
-    private ArrayList<Hand> allPlayersHands;
+    private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 
     private ScoreBoard scoreBoard;
     private Countdown timer;

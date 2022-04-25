@@ -1,9 +1,9 @@
 package ch.uzh.ifi.hase.soprafs22.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs22.game.Hand;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -48,5 +48,15 @@ public interface DTOMapper {
   @Mapping(source = "birthday", target = "birthday")
   @Mapping(source = "isReady", target = "isReady")
   UserPutDTO convertEntityToUserPutDTO(User user);
+
+  @Mapping(source = "chosenCard", target = "chosenCard")
+  @Mapping(source = "owner", target = "owner")
+  HandGetDTO convertEntityToHandGetDTO(Hand hand);
+
+  @Mapping(source = "id", target = "id")
+  @Mapping(source = "owner", target = "owner")
+  @Mapping(source = "score", target = "score")
+  @Mapping(source = "text", target = "text")
+  WhiteCardGetDTO convertEntityToWhiteCardGetDTO(WhiteCard whiteCard);
 
 }

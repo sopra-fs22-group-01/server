@@ -10,14 +10,24 @@ public class WhiteCard implements Card {
     private int score;
     private String text = "";
 
+    public Long getId(){return this.id;}
+    public void setId(Long id){this.id = id;}
+
+    public User getOwner(){return this.owner;}
+    public void setOwner(User owner){this.owner = owner;}
+
+    public int getScore(){return this.score;}
+    public void setScore(int score){this.score = score;}
+
+    public String getText(){return this.text;}
+    public void setText(String text){this.text = text;}
+
+
+
     public WhiteCard(){}
 
     public WhiteCard(User owner){
         this.owner = owner;
-    }
-
-    public String getText(){
-        return text;
     }
 
     public void createCard(){
