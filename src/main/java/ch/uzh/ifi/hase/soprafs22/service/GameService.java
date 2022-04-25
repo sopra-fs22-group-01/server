@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.service;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
@@ -38,6 +39,11 @@ public class GameService {
     public GameService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    public ArrayList<User> test_getUsers() {
+        return (ArrayList<User>) this.userRepository.findAll();
+    }
+
 
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
@@ -79,6 +85,13 @@ public class GameService {
         black.createCard();
         return black.getText();
     }
+
+    // get hand by userID and matchId
+    public static void getHandByUserId_matchId(Long matchId, Long userId){
+
+    }
+
+
 
 
 

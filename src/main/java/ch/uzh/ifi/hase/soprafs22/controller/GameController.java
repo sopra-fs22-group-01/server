@@ -30,7 +30,7 @@ import java.util.List;
 public class GameController {
 
     private final GameService gameService;
-    GameManager gameManager = GameManager.getInstance();
+    private final GameManager gameManager = GameManager.getInstance();
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
@@ -69,7 +69,22 @@ public class GameController {
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(s);
     }
-    //test
+
+    // get hand by user
+    @GetMapping("/matches/{matchId}/hands/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+        ArrayList<User> allUsers = gameService.test_getUsers();
+
+        gameManager.createMatch(allUsers);
+        Match test_match = gameManager.getMatch(matchId);
+        Hand test_hand = test_match.getHandByUserId(userId);
+
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(test_hand);
+    }
+
 
 
 }

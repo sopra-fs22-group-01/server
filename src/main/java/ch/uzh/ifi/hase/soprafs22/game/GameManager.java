@@ -29,6 +29,7 @@ public class GameManager {
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);
+        generatedMatch.createHands();
         //saving the Match in matches
         matches.add(generatedMatch);
     }

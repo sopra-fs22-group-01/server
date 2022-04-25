@@ -36,5 +36,9 @@ public class Hand {
         }
     }
 
+    public User getOwner(){
+        return this.owner;
+    }
+
     public void addingCard(){}
 }
