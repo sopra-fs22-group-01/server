@@ -39,13 +39,22 @@ public class GameManager {
         matches.add(generatedMatch);
     }
 
-    public void createLobby(){
+    public Lobby createLobby(){
         //generating a unique ID for the Lobby, solved by always increasing the new id
         Long lobbyId = newLobbyIdNumber;
         newLobbyIdNumber++;
         Lobby generatedLobby = new Lobby(lobbyId);
         //saving the Lobby in lobbies
         lobbies.add(generatedLobby);
+        return generatedLobby;
+    }
+
+    public ArrayList<Long> getLobbiesId() {
+        ArrayList<Long> lobbiesId = new ArrayList<>();
+        for (Lobby lobby: lobbies){
+            lobbiesId.add(lobby.getId());
+        }
+        return lobbiesId;
     }
 
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
@@ -64,5 +73,13 @@ public class GameManager {
             }
         }
         throw new IncorrectIdException("The match was not found");
+    }
+
+    public void deleteLobby(long lobbyId) {
+        for (Lobby lobby: lobbies){
+            if (lobby.getId() == lobbyId){
+                lobbies.remove(lobby);
+            }
+        }
     }
 }
