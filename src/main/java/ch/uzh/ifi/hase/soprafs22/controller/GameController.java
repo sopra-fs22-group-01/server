@@ -55,12 +55,14 @@ public class GameController {
     @PostMapping("/lobbies/{lobbyId}/players")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void addUserToLobby(@PathVariable long lobbyId, @RequestBody UserPostDTO userPostDTO){
+    public ResponseEntity<ArrayList<User>> addUserToLobby(@PathVariable long lobbyId, @RequestBody UserPostDTO userPostDTO){
         String baseErrorMessage1 = "No lobby with this id could be found.";
         String baseErrorMessage2 = "The same user is already existing in the lobby ";
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
             gameService.addPlayerToLobby(lobbyId, userInput);
+            ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
+            return ResponseEntity.ok(allUsers);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
@@ -69,7 +71,7 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage2);
         }
     }
-
+//test
     //Removes a user from the list of all current players in the lobby
     @DeleteMapping("/lobbies/{lobbyId}/players")
     @ResponseStatus(HttpStatus.OK)

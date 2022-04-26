@@ -29,6 +29,8 @@ public class Lobby {
         this.lobbyStatus = lobbyStatus;
     }
 
+    public ArrayList<User> getCurrentPlayers(){return this.currentPlayers;}
+
     public boolean checkIfAllReady() {
         for (User player : currentPlayers) {
             if (player.getIsReady().equals(ReadyStatus.UNREADY)) {
