@@ -20,9 +20,21 @@ public class WhiteCard implements Card {
         return text;
     }
 
+    public int getScore(){
+        return score;
+    }
+
+    public void setScore(int s){
+        this.score = s;
+    }
+
+    public User getOwner(){
+        return owner;
+    }
+
     public void createCard(){
         // setting score to 0
-        score = 0;
+        setScore(0);
 
         // setting text by getting the text from the ReadJSONFile
         ReadJSONFile readJSONFile = ReadJSONFile.getInstance();

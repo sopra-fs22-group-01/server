@@ -11,7 +11,9 @@ public class Round {
 
     private BlackCard blackCard;
     //private ArrayList<User> players;
-    private Card chosenCard;
+
+    // cards that are played by the players (cards in the middle)
+    private ArrayList<WhiteCard> chosenCards;
     private ArrayList<Hand> hands;
 
     public Round(ArrayList<Hand> hands) {
@@ -35,9 +37,16 @@ public class Round {
         return new ArrayList<WhiteCard>();
     }
 
+    // return the owner of the white card with the highest score
     public User getRoundWinner(){
-        //just example, so something gets returned
-        return new User();
+        WhiteCard winnerCard = new WhiteCard();
+        winnerCard.setScore(0);
+        for (WhiteCard chosenCard : chosenCards) {
+            if (chosenCard.getScore() > winnerCard.getScore()) {
+                winnerCard = chosenCard;
+            }
+        }
+        return winnerCard.getOwner();
     }
 
 
