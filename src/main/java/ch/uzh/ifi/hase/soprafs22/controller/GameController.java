@@ -3,6 +3,8 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import ch.uzh.ifi.hase.soprafs22.game.Hand;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -171,12 +173,19 @@ public class GameController {
         return ResponseEntity.ok(s);
     }
 
-    //increments the score of a white card by one
-    @PutMapping("matches/{matchId}/white-cards/{cardId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    // get hand by user
+    @GetMapping("/matches/{matchId}/hands/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
-        gameService.incrementCardScore(matchId,cardId);
+    public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+        ArrayList<User> allUsers = (ArrayList<User>) gameService.test_getUsers();
+
+        gameManager.createMatch(allUsers,matchId);
+        Match test_match = gameManager.getMatch(matchId);
+        Hand test_hand = test_match.getHandByUserId(userId);
+
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(test_hand);
     }
 
 }

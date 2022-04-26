@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @Service
@@ -33,6 +34,10 @@ public class GameService {
     @Autowired //what does @Autowired do exactly?
     public GameService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public List<User> test_getUsers() {
+        return this.userRepository.findAll();
     }
 
     //reads Rules textfile from game/helpers/rules
