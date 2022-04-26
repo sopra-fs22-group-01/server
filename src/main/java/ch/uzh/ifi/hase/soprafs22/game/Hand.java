@@ -40,6 +40,17 @@ public class Hand {
 
     public void addingCard(){}
 
+
+    public void setChosenCard(WhiteCard card){
+        this.chosenCard = card;
+    }
+
+    //maybe not good design? Should we at least return copy?
+    public WhiteCard getChosenCard(){
+        return chosenCard;
+    }
+
+
     public WhiteCard getWhiteCardById(long id) throws Exception{
         for(WhiteCard whiteCard:hand) {
             if (whiteCard.getId() == id) {
