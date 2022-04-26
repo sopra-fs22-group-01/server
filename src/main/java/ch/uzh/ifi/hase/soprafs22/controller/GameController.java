@@ -46,7 +46,7 @@ public class GameController {
 
         ArrayList<String> rules = gameService.getRulesFromText();
 
-        //.ok sets the HTTP status to OK (200)
+        //.ok sets the HTTP status to OK (200)/
         return ResponseEntity.ok(rules);
     }
 
