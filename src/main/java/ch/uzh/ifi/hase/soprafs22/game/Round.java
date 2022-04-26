@@ -33,8 +33,12 @@ public class Round {
     public void setChosenCard(long cardId, User owner){}
 
     public ArrayList<WhiteCard> getAllChosenCards(){
+        //iterate over each hand and get the chosen cards and append them to the chosenCards list.
+        for(Hand hand: hands){
+            chosenCards.add(hand.getChosenCard());
+        }
         //just example, so something gets returned
-        return new ArrayList<WhiteCard>();
+        return chosenCards;
     }
 
     // return the owner of the white card with the highest score
