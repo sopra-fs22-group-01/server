@@ -99,6 +99,8 @@ public class GameService {
     public void startMatch(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.setGamePlayers();
+        //delete of the lobby after entering the corresponding match
+        gameManager.deleteLobby(lobbyId);
         Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
         match.createHands();
     }

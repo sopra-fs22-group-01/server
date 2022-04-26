@@ -62,4 +62,12 @@ public class GameManager {
         }
         throw new IncorrectIdException("The match was not found");
     }
+
+    public void deleteLobby(long lobbyId) {
+        for (Lobby lobby: lobbies){
+            if (lobby.getId() == lobbyId){
+                lobbies.remove(lobby);
+            }
+        }
+    }
 }
