@@ -38,4 +38,7 @@ public class WhiteCard implements Card { //TEST
         ReadJSONFile readJSONFile = ReadJSONFile.getInstance();
         this.text = readJSONFile.getWhiteCardText();
     }
+    public void incrementCard(){
+        this.score = score + 1;
+    }
 }

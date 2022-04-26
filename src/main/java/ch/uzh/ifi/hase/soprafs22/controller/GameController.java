@@ -182,7 +182,7 @@ public class GameController {
         gameService.incrementCardScore(matchId,cardId);
     }
 
-    // get hand by user
+    // get hand by userid
     @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
