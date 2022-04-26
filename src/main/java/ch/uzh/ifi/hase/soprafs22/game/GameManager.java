@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+
 
 import java.util.ArrayList;
 
@@ -32,6 +34,7 @@ public class GameManager {
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);
+        generatedMatch.createHands();
         //saving the Match in matches
         matches.add(generatedMatch);
     }

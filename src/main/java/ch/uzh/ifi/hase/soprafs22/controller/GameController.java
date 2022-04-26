@@ -3,12 +3,13 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import ch.uzh.ifi.hase.soprafs22.game.Hand;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
-import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -167,7 +168,7 @@ public class GameController {
     @GetMapping("/matches/{matchId}/blackCard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<String> getBlackCard(@PathVariable long matchId) {
+    public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
         String s = GameService.getBlackCard(matchId);
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(s);
@@ -181,5 +182,21 @@ public class GameController {
         gameService.incrementCardScore(matchId,cardId);
     }
 
+    // get hand by user
+    @GetMapping("/matches/{matchId}/hands/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+        ArrayList<User> allUsers = (ArrayList<User>) gameService.test_getUsers();
+
+        gameManager.createMatch(allUsers,matchId);
+        Match test_match = gameManager.getMatch(matchId);
+        Hand test_hand = test_match.getHandByUserId(userId);
+
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(test_hand);
+    }
+
 }
+
 

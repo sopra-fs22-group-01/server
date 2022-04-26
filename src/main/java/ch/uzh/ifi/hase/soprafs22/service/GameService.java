@@ -50,6 +50,10 @@ public class GameService {
         this.userRepository = userRepository;
     }
 
+    public List<User> test_getUsers() {
+        return this.userRepository.findAll();
+    }
+
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
         ArrayList<String> ruleArrayList = new ArrayList<>();
