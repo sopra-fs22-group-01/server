@@ -59,7 +59,7 @@ public class GameManager {
 
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
-            if (lobby.getId() == lobbyId){
+            if (lobby.getId().equals(lobbyId)){
                 return lobby;
             }
         }

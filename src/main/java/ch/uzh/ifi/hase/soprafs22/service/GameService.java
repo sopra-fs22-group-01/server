@@ -78,6 +78,16 @@ public class GameService {
 
     }
 
+    public User findUserById(long id) {
+        User requestedUser = userRepository.findById(id);
+        if (requestedUser==null){
+            String baseErrorMessage = "User not found!";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format(baseErrorMessage));
+        }
+        return requestedUser;
+    }
+
     public void addPlayerToLobby(long lobbyId, User user) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.addPlayer(user);
@@ -110,9 +120,9 @@ public class GameService {
         }
     }
 
-    public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
+    public void updateUserReadyStatus(long lobbyId, long userId) throws IncorrectIdException {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        requestedLobby.setReadyStatus(userId, readyStatus);
+        requestedLobby.setReadyStatus(userId);
     }
 
     public void startMatch(long lobbyId) throws IncorrectIdException{

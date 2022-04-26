@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
@@ -36,6 +37,7 @@ public class GameController {
     private final GameService gameService;
     GameManager gameManager = GameManager.getInstance();
 
+
     public GameController(GameService gameService) {
         this.gameService = gameService;
     }
@@ -52,15 +54,16 @@ public class GameController {
     }
 
     //Adds a user to the list of all current players in the lobby
-    @PostMapping("/lobbies/{lobbyId}/players")
+    @PostMapping("/lobbies/{lobbyId}/lists/players/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ArrayList<User>> addUserToLobby(@PathVariable long lobbyId, @RequestBody UserPostDTO userPostDTO){
+    public ResponseEntity<ArrayList<User>> addUserToLobby(@PathVariable long lobbyId, @PathVariable long userId){
         String baseErrorMessage1 = "No lobby with this id could be found.";
         String baseErrorMessage2 = "The same user is already existing in the lobby ";
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User user = gameService.findUserById(userId);
+        //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
-            gameService.addPlayerToLobby(lobbyId, userInput);
+            gameService.addPlayerToLobby(lobbyId, user);
             ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
             return ResponseEntity.ok(allUsers);
         }
@@ -112,10 +115,10 @@ public class GameController {
     @PutMapping("/lobbies/{lobbyId}/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId, @RequestBody ReadyStatus readyStatus){
+    public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId){
         String baseErrorMessage1 = "No lobby with this id could be found.";
         try {
-            gameService.updateUserReadyStatus(lobbyId, userId, readyStatus);
+            gameService.updateUserReadyStatus(lobbyId, userId);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);

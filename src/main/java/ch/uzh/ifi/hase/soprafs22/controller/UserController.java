@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
@@ -122,12 +123,12 @@ public class UserController {
 
 /*
     //Maps data from ready-status changes
-    @PutMapping("/lobby/users/{id}")
+    @PutMapping("/lobbies/{lobbyId}/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateReadyStatus(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
-        userService.findUserById(id); //throws exception if userid doesnt exist
-        userService.updateUser(userPutDTO);
+    public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
+        User user = userService.findUserById(userId); //throws exception if userid doesnt exist
+        userService.updateUserReadyStatus(user);
     }
 
     // check if all users are Ready

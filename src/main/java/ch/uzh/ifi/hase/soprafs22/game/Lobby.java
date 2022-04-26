@@ -3,6 +3,9 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -71,11 +74,28 @@ public class Lobby {
         gameManager.createMatch(currentPlayers, id);
     }
 
-    public void setReadyStatus(long userId, ReadyStatus readyStatus) {
+    public void setReadyStatus(long userId) {
+
         for (User player : currentPlayers) {
             if (player.getId().equals(userId)) {
-                player.setIsReady(readyStatus);
+                player.setIsReady(ReadyStatus.READY);
             }
+                /*if (player.getIsReady().equals(ReadyStatus.READY)){
+
+                   player.setIsReady(ReadyStatus.UNREADY);
+                   return true;
+                }
+
+                else if (player.getIsReady().equals(ReadyStatus.UNREADY)){
+                    player.setIsReady(ReadyStatus.READY);
+                    return true;
+                }
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+
+            }
+        }
+        return false;*/
         }
     }
 }

@@ -160,10 +160,10 @@ public class UserService {
       }
     }
 
-    public void updateUserReadyStatus(UserPutDTO userPutDTO){
-        User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
-        if(userPutDTO.getIsReady()!=null){
-            if(userPutDTO.getIsReady().equals(ReadyStatus.READY)){
+    public void updateUserReadyStatus(User user){
+        User databaseUser=findUserById(user.getId()); //user in database for id
+        if(user.getIsReady()!=null){
+            if(user.getIsReady().equals(ReadyStatus.READY)){
                 databaseUser.setIsReady(ReadyStatus.UNREADY);
             }
             else{
@@ -176,7 +176,7 @@ public class UserService {
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);
       updateUserPassword(userPutDTO);
-      updateUserReadyStatus(userPutDTO);
+      //updateUserReadyStatus(userPutDTO);
       return "User successfully updated";
   }
 
