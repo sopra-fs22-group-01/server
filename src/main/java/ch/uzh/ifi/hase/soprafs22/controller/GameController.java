@@ -75,7 +75,7 @@ public class GameController {
     @PutMapping("matches/{matchId}/white-cards/{cardId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void saveChanges(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
+    public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
         gameService.incrementCardScore(matchId,cardId);
     }
 
