@@ -7,7 +7,12 @@ import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Lobby;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -40,7 +45,6 @@ public class GameService {
 
     private GameManager gameManager = GameManager.getInstance();
 
-
     @Autowired //what does @Autowired do exactly?
     public GameService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -48,7 +52,7 @@ public class GameService {
 
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
-        ArrayList<String> ruleArrayList = new ArrayList<String>();
+        ArrayList<String> ruleArrayList = new ArrayList<>();
 
 
         try{
@@ -70,6 +74,55 @@ public class GameService {
 
     }
 
+    public void addPlayerToLobby(long lobbyId, User user) throws Exception {
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.addPlayer(user);
+    }
+
+    public void removePlayerFromLobby(long lobbyId, User user) throws Exception {
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.removePlayer(user);
+    }
+
+    public boolean checkIfMinimumNumberOfPlayers(long lobbyId) throws IncorrectIdException {
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        return requestedLobby.checkIfEnoughPlayers();
+    }
+
+    public boolean checkIfAllPlayersReady(long lobbyId) throws IncorrectIdException {
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        return  requestedLobby.checkIfAllReady();
+    }
+
+    public void checkIfLobbyStatusChanged(long lobbyId) throws IncorrectIdException {
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        boolean outcomeMinimumPlayers = checkIfMinimumNumberOfPlayers(lobbyId);
+        boolean outcomeReadyPlayers = checkIfAllPlayersReady(lobbyId);
+        if (outcomeMinimumPlayers && outcomeReadyPlayers){
+            requestedLobby.setLobbyStatus(LobbyStatus.All_Ready);
+        }
+        else {
+            requestedLobby.setLobbyStatus(LobbyStatus.Waiting);
+        }
+    }
+
+    public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.setReadyStatus(userId, readyStatus);
+    }
+
+    public void startMatch(long lobbyId) throws IncorrectIdException{
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        requestedLobby.setGamePlayers();
+        Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
+        match.createHands();
+    }
+
+    public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
+        Lobby requestedLobby = gameManager.getLobby(lobbyId);
+        return requestedLobby.getLobbyStatus();
+    }
+    /*
     public LobbyStatus getLobbyStatus() {
         List<User> users = userRepository.findAll();
         for (User user : users){
@@ -79,6 +132,7 @@ public class GameService {
         }
         return LobbyStatus.All_Ready;
     }
+    */
 
     // NOT COMPLETE -> doesn't account for matchId yet
     public static String getBlackCard(Long matchId){
