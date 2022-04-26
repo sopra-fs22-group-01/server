@@ -91,7 +91,15 @@ public class GameService {
     public void incrementCardScore (long matchId, long cardId) throws Exception {
         Match match = gameManager.getMatch(matchId);
         Round currentRound = match.getRound();
-        currentRound.
+        ArrayList<WhiteCard> allChosenCards = currentRound.getAllChosenCards();
+
+        //iterates through all chosen cards and increments the wanted card by 1
+        for(WhiteCard card : allChosenCards){
+            if(card.getId() == cardId){
+                card.incrementCard(); //increments the card score by 1
+            }
+        }
+
     }
 
 
