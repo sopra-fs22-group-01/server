@@ -1,13 +1,16 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
+import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+
 
 import java.util.ArrayList;
 
 public class GameManager {
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private ArrayList<Match> matches = new ArrayList<>();
-    private long newMatchIdNumber = 0;
+    //private long newMatchIdNumber = 0;
     private long newLobbyIdNumber = 0;
 
     private static GameManager gameManager = null;
@@ -22,41 +25,61 @@ public class GameManager {
         gameManager = null;
     }
 
-    public void createMatch(ArrayList<User> players){
+    public void createMatch(ArrayList<User> players, Long matchId){
         //generating a unique ID for the Match, solved by always increasing the new id
+        /*
         Long matchId = newMatchIdNumber;
         newMatchIdNumber ++;
+         */
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);
+        generatedMatch.createHands();
         //saving the Match in matches
         matches.add(generatedMatch);
     }
 
-    public void createLobby(){
+    public Lobby createLobby(){
         //generating a unique ID for the Lobby, solved by always increasing the new id
         Long lobbyId = newLobbyIdNumber;
         newLobbyIdNumber++;
         Lobby generatedLobby = new Lobby(lobbyId);
         //saving the Lobby in lobbies
         lobbies.add(generatedLobby);
+        return generatedLobby;
     }
 
-    public Lobby getLobby(Long lobbyId) throws Exception {
+    public ArrayList<Long> getLobbiesId() {
+        ArrayList<Long> lobbiesId = new ArrayList<>();
+        for (Lobby lobby: lobbies){
+            lobbiesId.add(lobby.getId());
+        }
+        return lobbiesId;
+    }
+
+    public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
             if (lobby.getId() == lobbyId){
                 return lobby;
             }
         }
-        throw new Exception("The lobby was not found");
+        throw new IncorrectIdException("The lobby was not found");
     }
 
-    public Match getMatch(Long matchId) throws Exception{
+    public Match getMatch(Long matchId) throws IncorrectIdException{
         for (Match match: matches){
             if (match.getId() == matchId){
                 return match;
             }
         }
-        throw new Exception("The match was not found");
+        throw new IncorrectIdException("The match was not found");
+    }
+
+    public void deleteLobby(long lobbyId) {
+        for (Lobby lobby: lobbies){
+            if (lobby.getId() == lobbyId){
+                lobbies.remove(lobby);
+            }
+        }
     }
 }

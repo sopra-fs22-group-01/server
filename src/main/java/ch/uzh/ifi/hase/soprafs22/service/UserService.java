@@ -34,6 +34,7 @@ public class UserService {
   private final Logger log = LoggerFactory.getLogger(UserService.class);
 
   private final UserRepository userRepository;
+  public UserRepository getUserRepository(){return this.userRepository;}
 
   @Autowired //what does @Autowired do exactly?
   public UserService(@Qualifier("userRepository") UserRepository userRepository) {
@@ -178,7 +179,8 @@ public class UserService {
       updateUserReadyStatus(userPutDTO);
       return "User successfully updated";
   }
-    /*
+
+  /*
     public LobbyStatus getLobbyStatus() {
         List<User> users = getUsers();
         for (User user : users){
@@ -188,6 +190,6 @@ public class UserService {
         }
         return LobbyStatus.All_Ready;
   }
-     */
+  */
 
 }

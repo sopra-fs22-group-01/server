@@ -24,17 +24,21 @@ public class Round {
 
     public void setRoundPlayers(){}
 
-    public void setBlackCard(){}
+    public void setBlackCard(BlackCard blackCard){this.blackCard = blackCard;}
 
-    public void getBlackCard(){}
+    public BlackCard getBlackCard(){return this.blackCard;}
 
     public void updateHands(){} //Hand.addingCard();
 
     public void setChosenCard(long cardId, User owner){}
 
-    public ArrayList<Card> getAllChosenCards(){
+    public ArrayList<WhiteCard> getAllChosenCards(){
+        //iterate over each hand and get the chosen cards and append them to the chosenCards list.
+        for(Hand hand: hands){
+            chosenCards.add(hand.getChosenCard());
+        }
         //just example, so something gets returned
-        return new ArrayList<Card>();
+        return chosenCards;
     }
 
     // return the owner of the white card with the highest score
@@ -48,5 +52,7 @@ public class Round {
         }
         return winnerCard.getOwner();
     }
+
+
 
 }
