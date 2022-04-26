@@ -12,6 +12,7 @@ import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,13 @@ public class GameController {
         return ResponseEntity.ok(s);
     }
 
+    //increments the score of a white card by one
+    @PutMapping("matches/{matchId}/white-cards/{cardId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void saveChanges(@PathVariable long matchId, @PathVariable long cardId) {
+
+    }
 
 }
 

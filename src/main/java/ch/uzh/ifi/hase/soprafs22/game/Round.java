@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.Card;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 //
 import java.util.ArrayList;
 
@@ -29,14 +30,16 @@ public class Round {
 
     public void setChosenCard(long cardId, User owner){}
 
-    public ArrayList<Card> getAllChosenCards(){
+    public ArrayList<WhiteCard> getAllChosenCards(){
         //just example, so something gets returned
-        return new ArrayList<Card>();
+        return new ArrayList<WhiteCard>();
     }
 
     public User getRoundWinner(){
         //just example, so something gets returned
         return new User();
     }
+
+
 
 }

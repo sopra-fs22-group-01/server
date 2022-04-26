@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -37,4 +39,14 @@ public class Hand {
     }
 
     public void addingCard(){}
+
+    public WhiteCard getWhiteCardById(long id) throws Exception{
+        for(WhiteCard whiteCard:hand) {
+            if (whiteCard.getId() == id) {
+                return whiteCard;
+            }
+        }
+        //specify better exception later
+        throw new Exception();
+    }
 }

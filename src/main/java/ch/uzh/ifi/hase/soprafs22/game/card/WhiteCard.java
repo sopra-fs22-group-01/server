@@ -28,4 +28,8 @@ public class WhiteCard implements Card {
         ReadJSONFile readJSONFile = ReadJSONFile.getInstance();
         this.text = readJSONFile.getWhiteCardText();
     }
+
+    public long getId(){
+        return id;
+    }
 }
