@@ -154,6 +154,7 @@ public class GameController {
         }
     }
 
+    /*
     // check if all users are Ready
     @GetMapping("/lobby/status")
     @ResponseStatus(HttpStatus.OK)
@@ -165,6 +166,7 @@ public class GameController {
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(lobbyStatus);
     }
+     */
 
     // NOT COMPLETE -> doesn't account for matchId
     // retrieve text for black Card

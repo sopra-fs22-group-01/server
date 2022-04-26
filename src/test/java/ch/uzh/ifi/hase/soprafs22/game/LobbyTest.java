@@ -44,14 +44,14 @@ class LobbyTest {
 
     @Test
     void checkIfAllReadyFalse() {
-        boolean actual = lobby.checkIfAllReady(players);
+        boolean actual = lobby.checkIfAllReady();
         assertEquals(false, actual);
     }
 
     @Test
     void checkIfAllReadyTrue() {
         testUser2.setIsReady(ReadyStatus.READY);
-        boolean actual = lobby.checkIfAllReady(players);
+        boolean actual = lobby.checkIfAllReady();
         assertEquals(true, actual);
     }
 
