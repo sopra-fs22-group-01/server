@@ -15,8 +15,9 @@ class RoundTest {
 
     @BeforeEach
     void setUp() {
+        /*
         testRound.startNewRound();
-        testWhiteCards = new ArrayList<>();
+        testWhiteCards = new ArrayList<>();*/
     }
 
     @AfterEach
