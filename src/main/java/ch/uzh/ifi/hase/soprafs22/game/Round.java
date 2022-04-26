@@ -24,9 +24,9 @@ public class Round {
 
     public void setRoundPlayers(){}
 
-    public void setBlackCard(){}
+    public void setBlackCard(BlackCard blackCard){this.blackCard = blackCard;}
 
-    public void getBlackCard(){}
+    public BlackCard getBlackCard(){return this.blackCard;}
 
     public void updateHands(){} //Hand.addingCard();
 
