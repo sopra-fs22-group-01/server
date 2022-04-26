@@ -6,7 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-
+//nevio du hesch nid rächt. oder doch?
 //Not yet sure if Hand should be in game
 public class Hand {
 
