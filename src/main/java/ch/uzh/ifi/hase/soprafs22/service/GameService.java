@@ -168,4 +168,9 @@ public class GameService {
         return createdLobby;
     }
 
+    public ArrayList<Lobby> getAllLobbies() {
+        ArrayList<Lobby> allLobbies = gameManager.getAllLobby();
+        return allLobbies;
+    }
+
 }

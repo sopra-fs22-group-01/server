@@ -32,10 +32,7 @@ public class Lobby {
     public LobbyStatus getLobbyStatus() {
         return lobbyStatus;
     }
-
-    public void setLobbyStatus(LobbyStatus lobbyStatus) {
-        this.lobbyStatus = lobbyStatus;
-    }
+    public void setLobbyStatus(LobbyStatus lobbyStatus) {this.lobbyStatus = lobbyStatus;}
 
     public boolean checkIfAllReady() {
         for (User player : currentPlayers) {
