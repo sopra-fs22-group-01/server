@@ -19,7 +19,7 @@ public class Match {
 
     private ScoreBoard scoreBoard;
     private Timer timer;
-    private Round round;
+    private Round round = new Round(allPlayersHands);
 
     public Match(Long id) {
         this.id = id;
