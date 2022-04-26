@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GameManager {
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private ArrayList<Match> matches = new ArrayList<>();
-    private long newMatchIdNumber = 0;
+    //private long newMatchIdNumber = 0;
     private long newLobbyIdNumber = 0;
 
     private static GameManager gameManager = null;

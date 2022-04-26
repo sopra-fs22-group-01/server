@@ -8,28 +8,16 @@ import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 @Service
@@ -49,7 +37,7 @@ public class GameService {
 
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
-        ArrayList<String> ruleArrayList = new ArrayList<String>();
+        ArrayList<String> ruleArrayList = new ArrayList<>();
 
 
         try{
@@ -76,15 +64,14 @@ public class GameService {
         requestedLobby.addPlayer(user);
     }
 
-    public void removePlayerFromLobby(long lobbyId, User user) throws Exception{
+    public void removePlayerFromLobby(long lobbyId, User user) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.removePlayer(user);
     }
 
     public boolean checkIfMinimumNumberOfPlayers(long lobbyId) throws IncorrectIdException {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        boolean result = requestedLobby.checkIfEnoughPlayers();
-        return result;
+        return requestedLobby.checkIfEnoughPlayers();
     }
 
     public boolean checkIfAllPlayersReady(long lobbyId) throws IncorrectIdException {
@@ -112,7 +99,7 @@ public class GameService {
     public void startMatch(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.setGamePlayers();
-        Match match = gameManager.getMatch(requestedLobby.getId()); //the started match from the lobby has the same id
+        Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
         match.createHands();
     }
 

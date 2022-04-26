@@ -13,19 +13,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class LobbyTest {
     private User testUser;
     private User testUser2;
+    private User testUser3;
+    private User testUser4;
+    private User testUser5;
     private Lobby lobby;
-    private ArrayList<User> players;
     private GameManager gameManager;
 
     @BeforeEach
     void setUp() {
         this.testUser = new User();
-        this.testUser.setIsReady(ReadyStatus.READY);
         this.testUser2 = new User();
-        this.testUser2.setIsReady(ReadyStatus.UNREADY);
-        this.players = new ArrayList<>();
-        this.players.add(testUser);
-        this.players.add(testUser2);
+        this.testUser3 = new User();
+        this.testUser4 = new User();
+        this.testUser5 = new User();
         this.lobby = new Lobby(2L);
         this.gameManager = GameManager.getInstance();
 
@@ -37,22 +37,27 @@ class LobbyTest {
     void tearDown() {
         this.testUser = null;
         this.testUser2 = null;
+        this.testUser3 = null;
+        this.testUser4 = null;
+        this.testUser5 = null;
         this.lobby = null;
-        this.gameManager.resetGameManager();
-        players.clear();
+        GameManager.resetGameManager();
     }
 
     @Test
-    void checkIfAllReadyFalse() {
+    void checkIfAllReadyFalse() throws Exception {
+        lobby.addPlayer(testUser);
+        testUser.setIsReady(ReadyStatus.UNREADY);
         boolean actual = lobby.checkIfAllReady();
-        assertEquals(false, actual);
+        assertFalse(actual);
     }
 
     @Test
-    void checkIfAllReadyTrue() {
-        testUser2.setIsReady(ReadyStatus.READY);
+    void checkIfAllReadyTrue() throws Exception {
+        lobby.addPlayer(testUser);
+        testUser.setIsReady(ReadyStatus.READY);
         boolean actual = lobby.checkIfAllReady();
-        assertEquals(true, actual);
+        assertTrue(actual);
     }
 
     @Test
@@ -65,31 +70,34 @@ class LobbyTest {
 
     @Test
     void checkIfEnoughPlayersNotEnough() {
-        lobby.addPlayers(testUser);
         boolean actual = lobby.checkIfEnoughPlayers();
-        assertEquals(false, actual);
+        assertFalse(actual);
     }
 
     @Test
-    void checkIfEnoughPlayersEnough() {
-        for (int i = 0; i < 5; i++){
-            lobby.addPlayers(testUser);
-        }
+    void checkIfEnoughPlayersEnough() throws Exception {
+        lobby.addPlayer(testUser);
+        lobby.addPlayer(testUser2);
+        lobby.addPlayer(testUser3);
+        lobby.addPlayer(testUser4);
+        lobby.addPlayer(testUser5);
         boolean actual = lobby.checkIfEnoughPlayers();
-        assertEquals(true, actual);
+        assertTrue(actual);
     }
 
-/*
+
     @Test
     void setGamePlayers() throws Exception {
-        ArrayList<User> expected = players;
-        lobby.addPlayers(testUser);
-        lobby.addPlayers(testUser2);
+        ArrayList<User> expected = new ArrayList<>();
+        expected.add(testUser);
+        expected.add(testUser2);
+        lobby.addPlayer(testUser);
+        lobby.addPlayer(testUser2);
         lobby.setGamePlayers();
-        Match match = gameManager.getMatch(0L);
+        Match match = gameManager.getMatch(2L);
         assertEquals(expected, match.getMatchPlayers());
 
     }
 
- */
+
 }
