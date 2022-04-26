@@ -41,6 +41,10 @@ public class WhiteCard implements Card {
         this.text = readJSONFile.getWhiteCardText();
     }
 
+    public void incrementCard(){
+        this.score = score + 1;
+    }
+
     public long getId(){
         return id;
     }
