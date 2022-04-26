@@ -140,12 +140,15 @@ public class GameController {
     }
 
     //Creates a lobby and returns the id of the newly created lobby
+    //HttpStatus should be .Created but ResponseEntity.created doesn't have a body,
+    //therefore it wouldn't be possible to return the id
     @PostMapping("/lobbies")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<Long> createNewLobby(){
-
-        return null;
+        //creates a lobby
+        Long lobbyId = gameService.createNewLobby();
+        return ResponseEntity.ok(lobbyId);
     }
 
     //Retrieves all ids from the existing lobbies

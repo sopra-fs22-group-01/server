@@ -36,13 +36,14 @@ public class GameManager {
         matches.add(generatedMatch);
     }
 
-    public void createLobby(){
+    public Lobby createLobby(){
         //generating a unique ID for the Lobby, solved by always increasing the new id
         Long lobbyId = newLobbyIdNumber;
         newLobbyIdNumber++;
         Lobby generatedLobby = new Lobby(lobbyId);
         //saving the Lobby in lobbies
         lobbies.add(generatedLobby);
+        return generatedLobby;
     }
 
     public ArrayList<Long> getLobbiesId() {

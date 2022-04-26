@@ -131,4 +131,9 @@ public class GameService {
     public ArrayList<Long> getLobbiesId() {
         return gameManager.getLobbiesId();
     }
+
+    public Long createNewLobby() {
+        Lobby createdLobby = gameManager.createLobby();
+        return createdLobby.getId();
+    }
 }
