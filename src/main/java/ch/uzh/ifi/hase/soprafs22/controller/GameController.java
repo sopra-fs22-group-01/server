@@ -173,6 +173,7 @@ public class GameController {
         return ResponseEntity.ok(s);
     }
 
+
     // get hand by user
     @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
