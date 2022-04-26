@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,5 +56,7 @@ class RoundTest {
     @Test
     void testGetRoundWinnerNull() {
         // have not written yet since the class is not ready to be tested
+        User actual = testRound.getRoundWinner();
+        assertNull(actual);
     }
 }
