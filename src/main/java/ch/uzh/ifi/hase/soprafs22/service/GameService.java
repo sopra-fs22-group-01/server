@@ -127,4 +127,8 @@ public class GameService {
         black.createCard();
         return black.getText();
     }
+
+    public ArrayList<Long> getLobbiesId() {
+        return gameManager.getLobbiesId();
+    }
 }

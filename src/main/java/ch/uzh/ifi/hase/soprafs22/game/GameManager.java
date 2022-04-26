@@ -45,6 +45,14 @@ public class GameManager {
         lobbies.add(generatedLobby);
     }
 
+    public ArrayList<Long> getLobbiesId() {
+        ArrayList<Long> lobbiesId = new ArrayList<>();
+        for (Lobby lobby: lobbies){
+            lobbiesId.add(lobby.getId());
+        }
+        return lobbiesId;
+    }
+
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
             if (lobby.getId() == lobbyId){
