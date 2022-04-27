@@ -15,13 +15,11 @@ import java.util.ArrayList;
 public class Round {
 
     private BlackCard blackCard;
-    //private ArrayList<User> roundPlayers = new ArrayList<>();
 
     // cards that are played by the players (cards in the middle)
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     private ArrayList<Hand> hands;
 
-    protected boolean isRoundFinished = false; //Enum? Needed?
 
     public Round(ArrayList<Hand> hands) {
         this.blackCard = new BlackCard();
@@ -40,19 +38,13 @@ public class Round {
         //setting new black card
         this.blackCard.createCard();
         // Updating the hand of each player by handing out one card
-        // updateHand();
+        updateHands();
         //deleting chosenCards: clear Array chosenCards, chosenCards of each Hands setting null
+        chosenCards.clear();
+        for (Hand hand : hands){
+            hand.setChosenCard(null);
+        }
     }
-
-    /*
-    public ArrayList<User> getRoundPlayers(){
-        return roundPlayers;
-    }
-
-    public void setRoundPlayers(ArrayList<User> givenPlayers){
-        this.roundPlayers = givenPlayers;
-    }
-     */
 
     public void setBlackCard(BlackCard blackCard){
         this.blackCard = blackCard;
@@ -63,16 +55,17 @@ public class Round {
 
     // Player wants to play with a card
     public void setChosenCard(WhiteCard whiteCard){
+        //updating the chosenCard of the hand
+        for (Hand hand : hands){
+            if (hand.getOwner().equals(whiteCard.getOwner())){
+                hand.setChosenCard(whiteCard);
+            }
+        }
+        //adding the chosen card to the array of all chosen cards
         chosenCards.add(whiteCard);
     }
 
-    public ArrayList<WhiteCard> getAllChosenCards(){
-        //iterate over each hand and get the chosen cards and append them to the chosenCards list.
-        for(Hand hand: hands){
-            chosenCards.add(hand.getChosenCard());
-        }
-        return chosenCards;
-    }
+    public ArrayList<WhiteCard> getAllChosenCards(){ return chosenCards;}
 
     // return the owner of the white card with the highest score
     public User getRoundWinner(){
@@ -83,7 +76,7 @@ public class Round {
                 winnerCard = chosenCard;
             }
         }
-        isRoundFinished = true;
+        //isRoundFinished = true;
         return winnerCard.getOwner();
     }
 }
