@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -187,15 +188,28 @@ public class GameController {
     }
      */
 
-    // NOT COMPLETE -> doesn't account for matchId
-    // retrieve text for black Card
+    //ARTIFICIALLY CREATE MATCH -> DELETE LATER
+    @PostMapping("matches/{matchId}/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void TEST_createMatch(@PathVariable long matchId) throws Exception{
+        ArrayList<User> testAllUsers = (ArrayList<User>) gameService.test_getUsers();
+        gameManager.createMatch(testAllUsers, matchId);
+        BlackCard black = new BlackCard();
+        black.createCard();
+
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.getRound().setBlackCard(black);
+    }
+
+    // retrieve text for black Card by matchId
     @GetMapping("/matches/{matchId}/blackCard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
-        String s = GameService.getBlackCard(matchId);
+        BlackCard b = gameService.getBlackCard(matchId);
         //.ok sets the HTTP status to OK (200)
-        return ResponseEntity.ok(s);
+        return ResponseEntity.ok(b.getText());
     }
 
     //increments the score of a white card by one

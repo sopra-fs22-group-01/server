@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Timer;
 
 public class Match {
-    private Long id;//TEST
+    private Long id;
     private ArrayList<User> players = new ArrayList<>();
     private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 

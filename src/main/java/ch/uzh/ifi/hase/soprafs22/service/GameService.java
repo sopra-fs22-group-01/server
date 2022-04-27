@@ -43,7 +43,7 @@ public class GameService {
 
     private final UserRepository userRepository;
 
-    private GameManager gameManager = GameManager.getInstance();
+    private static final GameManager gameManager = GameManager.getInstance();
 
     @Autowired //what does @Autowired do exactly?
     public GameService(@Qualifier("userRepository") UserRepository userRepository) {
@@ -140,11 +140,13 @@ public class GameService {
     }
     */
 
-    // NOT COMPLETE -> doesn't account for matchId yet
-    public static String getBlackCard(Long matchId){
-        BlackCard black = new BlackCard();
-        black.createCard();
-        return black.getText();
+    // retrieve blackCard by matchId
+    public BlackCard getBlackCard(Long matchId) throws IncorrectIdException {
+
+        Match currentMatch = gameManager.getMatch(matchId);
+        BlackCard blackCard = currentMatch.getRound().getBlackCard();
+
+        return blackCard;
     }
     public void incrementCardScore (long matchId, long cardId) throws Exception {
         Match match = gameManager.getMatch(matchId);
