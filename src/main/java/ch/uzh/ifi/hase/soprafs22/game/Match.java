@@ -19,7 +19,7 @@ import java.util.Timer;
 public class Match {
     private Long id;
     private ArrayList<User> players = new ArrayList<>();
-    private ArrayList<Hand> allPlayersHands = new ArrayList<>();
+/*    private ArrayList<Hand> allPlayersHands = new ArrayList<>();*/
 
     private ScoreBoard scoreBoard;
     private Timer timer;

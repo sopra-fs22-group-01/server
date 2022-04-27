@@ -33,7 +33,6 @@ public class GameManager {
         generatedMatch.setMatchPlayers(players);
         //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands
         generatedMatch.createRound();
-        //generatedMatch.createHands();
         //saving the Match in matches
         matches.add(generatedMatch);
     }

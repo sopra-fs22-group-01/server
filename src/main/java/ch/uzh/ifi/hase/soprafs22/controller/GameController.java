@@ -129,7 +129,7 @@ public class GameController {
     }
 
     //Creates a new match and puts all players from the lobby into it
-    @PostMapping("/match/{lobbyId}")
+    @PostMapping("/matches/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void startingMatch(@PathVariable long lobbyId){
