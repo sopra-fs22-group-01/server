@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 
+/**
+ * A match contains several rounds
+ * */
+
 public class Match {
     private Long id;
     private ArrayList<User> players = new ArrayList<>();
@@ -49,13 +53,25 @@ public class Match {
         return id;
     }
 
+    // creating a hand with 10 cards
     public void createHands(){
         for (User player: players) {
             Hand hand = new Hand(player);
-            hand.createHand(); //Creating a hand with 10 cards
+            hand.createHand();
             allPlayersHands.add(hand);
         }
     }
+
+    // add a new card to the players' hand
+    public void updateHands(){
+        // for each hand, add a new card after each round since players already played with it
+        for (Hand hand: allPlayersHands){
+            if(round.isRoundFinished){
+                hand.updateHand();
+            }
+        }
+    }
+
     public Hand getHandByUserId(Long userId){
         String errorMsg = "Hand not found";
 

@@ -21,6 +21,8 @@ public class Round {
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     private ArrayList<Hand> hands;
 
+    protected boolean isRoundFinished = false;
+
     public Round(ArrayList<Hand> hands) {
         this.blackCard = new BlackCard();
         this.hands = hands;
@@ -38,7 +40,9 @@ public class Round {
         this.roundPlayers = givenPlayers;
     }
 
-    public void setBlackCard(BlackCard blackCard){this.blackCard = blackCard;}
+    public void setBlackCard(BlackCard blackCard){
+        this.blackCard = blackCard;
+    }
 
     public BlackCard getBlackCard(){return this.blackCard;}
 
@@ -70,6 +74,7 @@ public class Round {
                 winnerCard = chosenCard;
             }
         }
+        isRoundFinished = true;
         return winnerCard.getOwner();
     }
 }

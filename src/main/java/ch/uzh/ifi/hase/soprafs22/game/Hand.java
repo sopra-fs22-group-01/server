@@ -52,4 +52,9 @@ public class Hand {
         }
     }
 
+    public void updateHand(){
+        WhiteCard card = new WhiteCard(owner);
+        userHand.add(card);
+    }
+
 }
