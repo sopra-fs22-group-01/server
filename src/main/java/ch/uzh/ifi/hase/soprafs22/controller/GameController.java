@@ -131,15 +131,14 @@ public class GameController {
         }
     }
 
-    //Puts all players from the lobby to the match (by setting the match player list and creating the players hand)
-    @PutMapping("/match/{lobbyId}")
+    //Creates a new match and puts all players from the lobby into it
+    @PostMapping("/match/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void startingMatch(@PathVariable long lobbyId){
         String baseErrorMessage1 = "Match could not be created";
         try {
-            ArrayList<User> currentPlayers= gameManager.getLobby(lobbyId).getCurrentPlayers();
-            gameService.createNewMatch(currentPlayers,lobbyId);
+            gameService.startMatch(lobbyId);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
@@ -221,7 +220,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
-        BlackCard b = gameService.getBlackCard(matchId);
+        BlackCard b = gameService.getBlackCard(matchId);// !!! we dont get a black card, round in match missing?
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(b.getText());
     }

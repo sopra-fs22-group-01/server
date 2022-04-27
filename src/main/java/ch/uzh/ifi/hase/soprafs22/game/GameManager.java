@@ -27,11 +27,7 @@ public class GameManager {
     }
 
     public void createMatch(ArrayList<User> players, Long matchId){
-        //generating a unique ID for the Match, solved by always increasing the new id
-        /*
-        Long matchId = newMatchIdNumber;
-        newMatchIdNumber ++;
-         */
+        //new match always gets the id from the lobby
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);

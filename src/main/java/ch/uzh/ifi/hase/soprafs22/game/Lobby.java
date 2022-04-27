@@ -74,7 +74,7 @@ public class Lobby {
         return false;
     }
 
-    public void setGamePlayers() {
+    public void createMatchWithPlayers() {
         GameManager gameManager = GameManager.getInstance();
         //the belonging match to the lobby has the same id as the lobby
         gameManager.createMatch(currentPlayers, id);
