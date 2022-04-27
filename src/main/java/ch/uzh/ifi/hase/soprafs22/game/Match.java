@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Timer;
 
 /**
- * A match contains several rounds
+ * 
  * */
 
 public class Match {

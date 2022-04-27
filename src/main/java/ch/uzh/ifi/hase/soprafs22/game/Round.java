@@ -8,7 +8,10 @@ import java.util.ArrayList;
 
 /**
  * This class creates a round for players in the lobby
- * Responsibilities:
+ * Responsibilities: Round Logic
+ * - creates a new black card for new Round
+ * - updates players' hands
+ * - determines the winner
  *
  * */
 
@@ -26,14 +29,6 @@ public class Round {
     public Round(ArrayList<Hand> hands) {
         this.blackCard = new BlackCard();
         this.hands = hands;
-    }
-
-    // add a new card to the players' hand
-    public void updateHands(){
-        // for each hand, add a new card after each round since players already played with it
-        for (Hand hand: hands){
-            hand.updateHand();
-        }
     }
 
     public void startNewRound(){
@@ -72,6 +67,14 @@ public class Round {
             chosenCards.add(hand.getChosenCard());
         }
         return chosenCards;
+    }
+
+    // add a new card to the players' hand
+    public void updateHands(){
+        // for each hand, add a new card after each round since players already played with it
+        for (Hand hand: hands){
+            hand.updateHand();
+        }
     }
 
     // return the owner of the white card with the highest score
