@@ -25,11 +25,12 @@ public class Round {
     //Chosen cards are the cards that are played by the players and that will get displayed to vote
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     //Saves the hand of each player. Each player is the owner of a hand.
-    private ArrayList<Hand> hands;
+    private ArrayList<Hand> hands = new ArrayList<>();
 
 
     public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();
+        this.blackCard.createCard();
         createHands(players);
     }
 

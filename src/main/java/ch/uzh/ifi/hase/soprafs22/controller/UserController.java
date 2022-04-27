@@ -176,7 +176,7 @@ public class UserController {
 
         gameManager.createMatch(allUsers,matchId);
         Match test_match = gameManager.getMatch(matchId);
-        Hand test_hand = test_match.getHandByUserId(userId);
+        Hand test_hand = test_match.getRound().getHandByUserId(userId);
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand);
