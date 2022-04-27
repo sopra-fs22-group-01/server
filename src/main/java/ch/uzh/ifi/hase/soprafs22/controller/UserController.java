@@ -182,6 +182,7 @@ public class UserController {
     }
 
     //Maps data from ready-status changes
+    //used to flip the ready-status
     @PutMapping("/lobbies/{lobbyId}/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody

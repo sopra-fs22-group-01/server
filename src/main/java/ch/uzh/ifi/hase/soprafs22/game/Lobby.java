@@ -93,14 +93,17 @@ public class Lobby {
             }
          */
         for (User player : currentPlayers) {
-            if (player.getIsReady().equals(ReadyStatus.READY)){
-                   player.setIsReady(ReadyStatus.UNREADY);
-                   //return true;
+            if (player.getId().equals(userId)) {
+                if (player.getIsReady().equals(ReadyStatus.READY)) {
+                    player.setIsReady(ReadyStatus.UNREADY);
+                    //return true;
                 }
-            else if (player.getIsReady().equals(ReadyStatus.UNREADY)){
+
+                else if (player.getIsReady().equals(ReadyStatus.UNREADY)) {
                     player.setIsReady(ReadyStatus.READY);
                     //return true;
                 }
+            }
             //throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
