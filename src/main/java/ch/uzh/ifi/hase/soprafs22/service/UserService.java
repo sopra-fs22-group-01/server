@@ -192,5 +192,9 @@ public class UserService {
         return LobbyStatus.All_Ready;
   }
   */
+    //----------------parts which were in gameservice before and got moved--------------------
 
+    public List<User> test_getUsers() {
+        return this.userRepository.findAll();
+    }
 }

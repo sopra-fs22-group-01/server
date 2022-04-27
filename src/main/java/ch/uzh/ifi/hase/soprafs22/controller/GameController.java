@@ -54,7 +54,8 @@ public class GameController {
         return ResponseEntity.ok(rules);
     }
 
-    //Adds a user to the list of all current players in the lobby
+    //NOW IN USER CONTROLER
+/*    //Adds a user to the list of all current players in the lobby
     @PostMapping("/lobbies/{lobbyId}/lists/players/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -74,7 +75,7 @@ public class GameController {
         catch (Exception e2) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage2);
         }
-    }
+    }*/
 //test
     //Removes a user from the list of all current players in the lobby
     @DeleteMapping("/lobbies/{lobbyId}/players")
@@ -123,6 +124,8 @@ public class GameController {
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -193,8 +196,9 @@ public class GameController {
     }
      */
 
+    //NOW IN USERCONTROLLER
     //ARTIFICIALLY CREATE MATCH -> DELETE LATER
-    @PostMapping("matches/{matchId}/create")
+   /* @PostMapping("matches/{matchId}/create")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void TEST_createMatch(@PathVariable long matchId) throws Exception{
@@ -205,7 +209,7 @@ public class GameController {
 
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.getRound().setBlackCard(black);
-    }
+    }*/
 
     // retrieve text for black Card by matchId
     @GetMapping("/matches/{matchId}/blackCard")
@@ -225,8 +229,9 @@ public class GameController {
         gameService.incrementCardScore(matchId,cardId);
     }
 
+    //NOW IN USERCONTROLLER
     // get hand by userid
-    @GetMapping("/matches/{matchId}/hands/{userId}")
+  /*  @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
@@ -238,7 +243,7 @@ public class GameController {
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand);
-    }
+    }*/
 
 }
 

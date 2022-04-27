@@ -80,11 +80,16 @@ public class Lobby {
         gameManager.createMatch(currentPlayers, id);
     }
 
-    public void setReadyStatus(long userId) {
+    public void setReadyStatus(long userId) throws Exception {
 
         for (User player : currentPlayers) {
             if (player.getId().equals(userId)) {
                 player.setIsReady(ReadyStatus.READY);
+            }
+            else{
+                String baseErrorMessage = "Couldn't change the status";
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format(baseErrorMessage, "username ", "is"));
             }
                 /*if (player.getIsReady().equals(ReadyStatus.READY)){
 
