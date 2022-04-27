@@ -165,9 +165,14 @@ public class GameService {
         return gameManager.getLobbiesId();
     }
 
-    public Long createNewLobby() {
+    public Lobby createNewLobby() {
         Lobby createdLobby = gameManager.createLobby();
-        return createdLobby.getId();
+        return createdLobby;
+    }
+
+    public ArrayList<Lobby> getAllLobbies() {
+        ArrayList<Lobby> allLobbies = gameManager.getAllLobby();
+        return allLobbies;
     }
 
 }

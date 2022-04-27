@@ -11,23 +11,28 @@ public class Lobby {
     private Long id;
     private LobbyStatus lobbyStatus;
     private ArrayList<User> currentPlayers = new ArrayList<>();
-    private final int minimumNumberOfPlayers = 5;
+    private int currentPlayerCount=0;
+    private final int maximumPlayerCount = 5;
 
+    //constructor
     public Lobby(Long id) {
         this.id = id;
     }
 
+    //getters and setters
     public Long getId() {
         return id;
     }
+    public void setId(Long id) {this.id = id;}
+
+    public int getCurrentPlayerCount() {return currentPlayerCount;}
+    public void setCurrentPlayerCount(int currentPlayerCount){this.currentPlayerCount=currentPlayerCount;}
+
 
     public LobbyStatus getLobbyStatus() {
         return lobbyStatus;
     }
-
-    public void setLobbyStatus(LobbyStatus lobbyStatus) {
-        this.lobbyStatus = lobbyStatus;
-    }
+    public void setLobbyStatus(LobbyStatus lobbyStatus) {this.lobbyStatus = lobbyStatus;}
 
     public boolean checkIfAllReady() {
         for (User player : currentPlayers) {
@@ -39,8 +44,9 @@ public class Lobby {
     }
 
     public void addPlayer(User user) throws Exception {
-        if (!currentPlayers.contains(user)) {
+        if (!currentPlayers.contains(user) && currentPlayerCount<=maximumPlayerCount) {
             currentPlayers.add(user);
+            currentPlayerCount++;
         }
         else {
             throw new Exception("The user is already in the lobby");
@@ -57,7 +63,7 @@ public class Lobby {
     }
 
     public boolean checkIfEnoughPlayers() {
-        if (currentPlayers.size() >= minimumNumberOfPlayers) {
+        if (currentPlayers.size() >0) {
             return true;
         }
         return false;
