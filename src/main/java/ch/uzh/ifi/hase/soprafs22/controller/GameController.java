@@ -182,6 +182,23 @@ public class GameController {
         }
     }
 
+    //retrieves all users from a specific match and returns array of userGetDTO
+    @GetMapping("/matches/{matchId}/users")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getAllUsersFromSpecificMatch(@PathVariable long matchId) throws IncorrectIdException {
+        // fetch all users in the internal representation
+        Match currentMatch = gameManager.getMatch(matchId);
+        List<User> matchUsers = currentMatch.getMatchPlayers();
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : matchUsers) {
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        }
+        return userGetDTOs; // returns array UserGetDTO with all users init
+    }
+
 
     //NOW IN USERCONTROLLER
     //ARTIFICIALLY CREATE MATCH -> DELETE LATER
@@ -215,6 +232,9 @@ public class GameController {
     public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
         gameService.incrementCardScore(matchId,cardId);
     }
+
+
+
 
     //NOW IN USERCONTROLLER
     // get hand by userid
