@@ -132,13 +132,14 @@ public class GameController {
     }
 
     //Puts all players from the lobby to the match (by setting the match player list and creating the players hand)
-    @PutMapping("/lobbies/{lobbyId}")
+    @PutMapping("/match/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void startingMatch(@PathVariable long lobbyId){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
+        String baseErrorMessage1 = "Match could not be created";
         try {
-            gameService.startMatch(lobbyId);
+            ArrayList<User> currentPlayers= gameManager.getLobby(lobbyId).getCurrentPlayers();
+            gameService.createNewMatch(currentPlayers,lobbyId);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);

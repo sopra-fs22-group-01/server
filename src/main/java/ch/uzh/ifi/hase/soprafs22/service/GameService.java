@@ -129,9 +129,9 @@ public class GameService {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.setGamePlayers();
         //delete of the lobby after entering the corresponding match
-        //gameManager.deleteLobby(lobbyId);
-        //Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
-        //match.createHands();
+        gameManager.deleteLobby(lobbyId);
+        Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
+        match.createHands();
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
@@ -178,6 +178,10 @@ public class GameService {
     public Lobby createNewLobby() {
         Lobby createdLobby = gameManager.createLobby();
         return createdLobby;
+    }
+
+    public void createNewMatch(ArrayList<User> playersLobby,long matchId) {
+       gameManager.createMatch(playersLobby,matchId);
     }
 
     public ArrayList<Lobby> getAllLobbies() {
