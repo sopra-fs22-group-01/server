@@ -15,7 +15,7 @@ public class GameManager {
     private long newLobbyIdNumber = 0;
 
     private static GameManager gameManager = null;
-    public static GameManager getInstance(){
+    public static synchronized GameManager getInstance(){
         if (gameManager == null){
             gameManager = new GameManager();
         }
@@ -62,7 +62,7 @@ public class GameManager {
 
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
-            if (lobby.getId() == lobbyId){
+            if (lobby.getId().equals(lobbyId)){
                 return lobby;
             }
         }
