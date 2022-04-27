@@ -15,23 +15,36 @@ import java.util.ArrayList;
 public class Round {
 
     private BlackCard blackCard;
-    private ArrayList<User> roundPlayers = new ArrayList<>();
+    //private ArrayList<User> roundPlayers = new ArrayList<>();
 
     // cards that are played by the players (cards in the middle)
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     private ArrayList<Hand> hands;
 
-    protected boolean isRoundFinished = false;
+    protected boolean isRoundFinished = false; //Enum? Needed?
 
     public Round(ArrayList<Hand> hands) {
         this.blackCard = new BlackCard();
         this.hands = hands;
     }
 
-    public void startNewRound(){
-        this.blackCard.createCard();
+    // add a new card to the players' hand
+    public void updateHands(){
+        // for each hand, add a new card after each round since players already played with it
+        for (Hand hand: hands){
+            hand.updateHand();
+        }
     }
 
+    public void startNewRound(){
+        //setting new black card
+        this.blackCard.createCard();
+        // Updating the hand of each player by handing out one card
+        // updateHand();
+        //deleting chosenCards: clear Array chosenCards, chosenCards of each Hands setting null
+    }
+
+    /*
     public ArrayList<User> getRoundPlayers(){
         return roundPlayers;
     }
@@ -39,6 +52,7 @@ public class Round {
     public void setRoundPlayers(ArrayList<User> givenPlayers){
         this.roundPlayers = givenPlayers;
     }
+     */
 
     public void setBlackCard(BlackCard blackCard){
         this.blackCard = blackCard;
@@ -46,11 +60,6 @@ public class Round {
 
     public BlackCard getBlackCard(){return this.blackCard;}
 
-    // after each round, add one new card to players' hand
-    // can be responsibility of match as well
-    public void updateHands(){
-        // Hand.addingCard();
-    }
 
     // Player wants to play with a card
     public void setChosenCard(WhiteCard whiteCard){

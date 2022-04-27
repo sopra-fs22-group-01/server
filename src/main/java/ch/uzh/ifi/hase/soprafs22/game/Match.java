@@ -62,16 +62,6 @@ public class Match {
         }
     }
 
-    // add a new card to the players' hand
-    public void updateHands(){
-        // for each hand, add a new card after each round since players already played with it
-        for (Hand hand: allPlayersHands){
-            if(round.isRoundFinished){
-                hand.updateHand();
-            }
-        }
-    }
-
     public Hand getHandByUserId(Long userId){
         String errorMsg = "Hand not found";
 
