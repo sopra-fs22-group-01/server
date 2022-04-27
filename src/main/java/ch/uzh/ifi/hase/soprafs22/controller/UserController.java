@@ -186,8 +186,18 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
-        User user = userService.findUserById(userId); //throws exception if userid doesnt exist
-        userService.updateUserReadyStatus(user);
+        String baseErrorMessage1 = "No lobby with this id could be found.";
+        try {
+            User user = userService.findUserById(userId); //throws exception if userid doesnt exist
+            userService.updateUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in general
+            gameService.updateUserReadyStatus(lobbyId, userId); //updates the user in the array of the lobby, not the perfect solution
+        }
+        catch (IncorrectIdException e1){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
    /* // check if all users are Ready

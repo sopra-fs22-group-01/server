@@ -80,8 +80,8 @@ public class Lobby {
         gameManager.createMatch(currentPlayers, id);
     }
 
-    public void setReadyStatus(long userId) throws Exception {
-
+    public void setReadyStatus(long userId) {
+        /*
         for (User player : currentPlayers) {
             if (player.getId().equals(userId)) {
                 player.setIsReady(ReadyStatus.READY);
@@ -91,22 +91,17 @@ public class Lobby {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format(baseErrorMessage, "username ", "is"));
             }
-                /*if (player.getIsReady().equals(ReadyStatus.READY)){
-
+         */
+        for (User player : currentPlayers) {
+            if (player.getIsReady().equals(ReadyStatus.READY)){
                    player.setIsReady(ReadyStatus.UNREADY);
-                   return true;
+                   //return true;
                 }
-
-                else if (player.getIsReady().equals(ReadyStatus.UNREADY)){
+            else if (player.getIsReady().equals(ReadyStatus.UNREADY)){
                     player.setIsReady(ReadyStatus.READY);
-                    return true;
+                    //return true;
                 }
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-
-            }
-        }
-        return false;*/
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 }
