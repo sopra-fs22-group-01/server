@@ -3,16 +3,13 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
-import ch.uzh.ifi.hase.soprafs22.game.Hand;
-import ch.uzh.ifi.hase.soprafs22.game.Lobby;
-import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
-import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -246,7 +243,9 @@ public class GameController {
 
         gameManager.createMatch(allUsers,matchId);
         Match test_match = gameManager.getMatch(matchId);
-        Hand test_hand = test_match.getHandByUserId(userId);
+        Round test_round = test_match.getRound();
+        Hand test_hand = test_round.getHandByUserId(userId);
+        //Hand test_hand = test_match.getHandByUserId(userId);
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand);

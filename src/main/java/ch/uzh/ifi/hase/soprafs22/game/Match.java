@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 
+/**
+ * 
+ * */
+
 public class Match {
     private Long id;
     private ArrayList<User> players = new ArrayList<>();
@@ -19,10 +23,15 @@ public class Match {
 
     private ScoreBoard scoreBoard;
     private Timer timer;
-    private Round round = new Round(allPlayersHands);
+    private Round round;
 
     public Match(Long id) {
         this.id = id;
+    }
+
+    public void createRound(){
+        //initializes the round with the players of the match, creates automatically the hands
+        round = new Round(players);
     }
 
     public ScoreBoard getScoreBoard() {
@@ -49,13 +58,16 @@ public class Match {
         return id;
     }
 
+    /*
+    // creating a hand with 10 cards
     public void createHands(){
         for (User player: players) {
             Hand hand = new Hand(player);
-            hand.createHand(); //Creating a hand with 10 cards
+            hand.createHand();
             allPlayersHands.add(hand);
         }
     }
+
     public Hand getHandByUserId(Long userId){
         String errorMsg = "Hand not found";
 
@@ -68,5 +80,6 @@ public class Match {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMsg);
 
     }
+    */
 
 }
