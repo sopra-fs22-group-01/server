@@ -2,42 +2,62 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
-import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-//
+
 import java.util.ArrayList;
+
+/**
+ * This class creates a round for players in the lobby
+ * Responsibilities:
+ *
+ * */
 
 public class Round {
 
     private BlackCard blackCard;
-    //private ArrayList<User> players;
+    private ArrayList<User> roundPlayers = new ArrayList<>();
 
     // cards that are played by the players (cards in the middle)
-    private ArrayList<WhiteCard> chosenCards;
+    private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     private ArrayList<Hand> hands;
 
     public Round(ArrayList<Hand> hands) {
+        this.blackCard = new BlackCard();
         this.hands = hands;
     }
 
-    public void startNewRound(){}
+    public void startNewRound(){
+        this.blackCard.createCard();
+    }
 
-    public void setRoundPlayers(){}
+    public ArrayList<User> getRoundPlayers(){
+        return roundPlayers;
+    }
+
+    public void setRoundPlayers(ArrayList<User> givenPlayers){
+        this.roundPlayers = givenPlayers;
+    }
 
     public void setBlackCard(BlackCard blackCard){this.blackCard = blackCard;}
 
     public BlackCard getBlackCard(){return this.blackCard;}
 
-    public void updateHands(){} //Hand.addingCard();
+    // after each round, add one new card to players' hand
+    // can be responsibility of match as well
+    public void updateHands(){
+        // Hand.addingCard();
+    }
 
-    public void setChosenCard(long cardId, User owner){}
+    // Player wants to play with a card
+    public void setChosenCard(WhiteCard whiteCard){
+        chosenCards.add(whiteCard);
+    }
 
     public ArrayList<WhiteCard> getAllChosenCards(){
         //iterate over each hand and get the chosen cards and append them to the chosenCards list.
         for(Hand hand: hands){
             chosenCards.add(hand.getChosenCard());
         }
-        //just example, so something gets returned
         return chosenCards;
     }
 

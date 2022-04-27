@@ -5,10 +5,9 @@ import ch.uzh.ifi.hase.soprafs22.JSON.ReadJSONFile;
 public class BlackCard implements Card {
     private String text = "";
 
-    public BlackCard(){
-    }
+    public BlackCard(){}
 
-    public String getText(){//
+    public String getText(){
         String s = text.replace("_", "____");
         return s;
     }
