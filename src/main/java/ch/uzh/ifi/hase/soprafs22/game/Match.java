@@ -23,10 +23,15 @@ public class Match {
 
     private ScoreBoard scoreBoard;
     private Timer timer;
-    private Round round = new Round(allPlayersHands);
+    private Round round;
 
     public Match(Long id) {
         this.id = id;
+    }
+
+    public void createRound(){
+        //initializes the round with the players of the match, creates automatically the hands
+        round = new Round(players);
     }
 
     public ScoreBoard getScoreBoard() {
@@ -53,6 +58,7 @@ public class Match {
         return id;
     }
 
+    /*
     // creating a hand with 10 cards
     public void createHands(){
         for (User player: players) {
@@ -74,5 +80,6 @@ public class Match {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMsg);
 
     }
+    */
 
 }

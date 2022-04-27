@@ -121,7 +121,9 @@ public class GameService {
         //delete of the lobby after entering the corresponding match
         gameManager.deleteLobby(lobbyId);
         Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
-        match.createHands();
+        //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands
+        match.createRound();
+        //match.createHands();
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
