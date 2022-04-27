@@ -153,6 +153,7 @@ public class UserController {
     }
 
     //ARTIFICIALLY CREATE MATCH -> DELETE LATER
+    // frontEnd calls this endpoint using LOBBYID for MatchId -> matchId has same value as LobbyId
     @PostMapping("matches/{matchId}/create")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

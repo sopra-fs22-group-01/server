@@ -129,9 +129,9 @@ public class GameService {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.setGamePlayers();
         //delete of the lobby after entering the corresponding match
-        gameManager.deleteLobby(lobbyId);
-        Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
-        match.createHands();
+        //gameManager.deleteLobby(lobbyId);
+        //Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
+        //match.createHands();
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{

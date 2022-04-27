@@ -145,10 +145,10 @@ public class GameController {
         }
     }
 
-    //Creates a lobby and returns the id of the newly created lobby
+    //Creates a lobby and returns the id of the newly created lobby //
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
+    @ResponseBody//
     public ResponseEntity<Lobby> createNewLobby(){
         //creates a lobby
         Lobby newLobby = gameService.createNewLobby();
