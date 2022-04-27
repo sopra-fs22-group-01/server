@@ -189,7 +189,7 @@ public class UserController {
         String baseErrorMessage1 = "No lobby with this id could be found.";
         try {
             User user = userService.findUserById(userId); //throws exception if userid doesnt exist
-            userService.updateUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in general
+            userService.updateUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in the database
             gameService.updateUserReadyStatus(lobbyId, userId); //updates the user in the array of the lobby, not the perfect solution
         }
         catch (IncorrectIdException e1){
