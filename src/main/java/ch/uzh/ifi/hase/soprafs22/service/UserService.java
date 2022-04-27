@@ -97,6 +97,7 @@ public class UserService {
       }
   }
 
+
   public void logOutUser(User userToLogOut){
     userToLogOut.setUserStatus(UserStatus.OFFLINE);
     userToLogOut.setIsReady(ReadyStatus.UNREADY);

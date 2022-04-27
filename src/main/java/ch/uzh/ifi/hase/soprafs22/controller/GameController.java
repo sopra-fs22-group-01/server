@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.Hand;
+import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
@@ -161,20 +162,21 @@ public class GameController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Long> createNewLobby(){
+    public ResponseEntity<Lobby> createNewLobby(){
         //creates a lobby
-        Long lobbyId = gameService.createNewLobby();
-        return ResponseEntity.ok(lobbyId);
+        Lobby newLobby = gameService.createNewLobby();
+        return ResponseEntity.ok(newLobby);
     }
 
+    //Temporary endpoint
     //Retrieves all ids from the existing lobbies
     //Returns an Array with these ids
     @GetMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ArrayList<Long>> getAllLobbiesId(){
-        ArrayList<Long> LobbiesId = gameService.getLobbiesId();
-        return ResponseEntity.ok(LobbiesId);
+    public ResponseEntity<ArrayList<Lobby>> getAllLobbiesId(){
+        ArrayList<Lobby> allLobbies=gameManager.getAllLobby();
+        return ResponseEntity.ok(allLobbies);
     }
 
     /*

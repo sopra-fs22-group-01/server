@@ -1,17 +1,24 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoundTest {
-    private
+    private Round testRound;
+    private ArrayList<WhiteCard> testWhiteCards;
 
     @BeforeEach
     void setUp() {
-
+        /*
+        testRound.startNewRound();
+        testWhiteCards = new ArrayList<>();*/
     }
 
     @AfterEach
@@ -19,35 +26,37 @@ class RoundTest {
     }
 
     @Test
-    void startNewRound() {
+    void testStartNewRound() {
     }
 
     @Test
-    void setRoundPlayers() {
+    void testSetRoundPlayers() {
     }
 
     @Test
-    void setBlackCard() {
+    void testSetBlackCard() {
     }
 
     @Test
-    void getBlackCard() {
+    void testGetBlackCard() {
     }
 
     @Test
-    void updateHands() {
+    void testUpdateHands() {
     }
 
     @Test
-    void setChosenCard() {
+    void testSetChosenCard() {
     }
 
     @Test
-    void getAllChosenCards() {
+    void testGetAllChosenCards() {
     }
 
     @Test
-    void getRoundWinner() {
-
+    void testGetRoundWinnerNull() {
+        // have not written yet since the class is not ready to be tested
+        User actual = testRound.getRoundWinner();
+        assertNull(actual);
     }
 }

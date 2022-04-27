@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.exceptions.NoLobbyException;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 
@@ -64,6 +65,10 @@ public class GameManager {
             }
         }
         throw new IncorrectIdException("The lobby was not found");
+    }
+
+    public ArrayList<Lobby> getAllLobby() {
+        return GameManager.gameManager.lobbies;
     }
 
     public Match getMatch(Long matchId) throws IncorrectIdException{

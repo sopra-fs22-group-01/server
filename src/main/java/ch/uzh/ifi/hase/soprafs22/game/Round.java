@@ -52,7 +52,4 @@ public class Round {
         }
         return winnerCard.getOwner();
     }
-
-
-
 }
