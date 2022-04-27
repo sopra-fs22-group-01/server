@@ -70,16 +70,21 @@ public class Round {
         }
     }
 
-    // return the owner of the white card with the highest score
-    public User getRoundWinner(){
-        WhiteCard winnerCard = new WhiteCard();
-        winnerCard.setScore(0);
+    // Determines the winner of the round
+    // Returns an ArrayList with winner cards
+    public ArrayList<WhiteCard> getRoundWinner(){
+        ArrayList<WhiteCard> highestScoreCards = new ArrayList<>();
+        int currentHighScore = 0;
+
         for (WhiteCard chosenCard : chosenCards) {
-            if (chosenCard.getScore() > winnerCard.getScore()) {
-                winnerCard = chosenCard;
+            if (chosenCard.getScore() == currentHighScore) {
+                highestScoreCards.add(chosenCard);
+            } else if (chosenCard.getScore() > currentHighScore){
+                currentHighScore = chosenCard.getScore();
+                highestScoreCards.clear();
+                highestScoreCards.add(chosenCard);
             }
         }
-        //isRoundFinished = true;
-        return winnerCard.getOwner();
+        return highestScoreCards;
     }
 }
