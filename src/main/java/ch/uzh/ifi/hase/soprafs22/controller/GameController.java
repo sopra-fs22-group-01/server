@@ -113,7 +113,7 @@ public class GameController {
     }
 */
 
-    //Updates the ready status of a certain user
+/*    //Updates the ready status of a certain user
     @PutMapping("/lobbies/{lobbyId}/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -127,7 +127,7 @@ public class GameController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     //Retrieves if all current players in the lobby are ready or not and if the minimum number of player was reached
     @GetMapping("/lobbies/{lobbyId}/status")

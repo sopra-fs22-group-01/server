@@ -181,7 +181,6 @@ public class UserController {
         return ResponseEntity.ok(test_hand);
     }
 
-/*
     //Maps data from ready-status changes
     @PutMapping("/lobbies/{lobbyId}/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -191,7 +190,7 @@ public class UserController {
         userService.updateUserReadyStatus(user);
     }
 
-    // check if all users are Ready
+   /* // check if all users are Ready
     @GetMapping("/lobby/status")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -201,8 +200,7 @@ public class UserController {
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(lobbyStatus);
-    }
-*/
+    }*/
 
 }   
 
