@@ -57,4 +57,9 @@ public class Hand {
         userHand.add(card);
     }
 
+    public ArrayList<WhiteCard> getCardsFromHand (){
+        ArrayList<Card> cards;
+        return this.userHand;
+    }
+
 }

@@ -7,6 +7,8 @@ import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.card.Card;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
@@ -171,15 +173,15 @@ public class UserController {
     @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+    public ResponseEntity<ArrayList<WhiteCard>> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
         ArrayList<User> allUsers = (ArrayList<User>) userService.test_getUsers();
 
         gameManager.createMatch(allUsers,matchId);
-        Match test_match = gameManager.getMatch(matchId);
-        Hand test_hand = test_match.getRound().getHandByUserId(userId);
+        Match test_match = gameManager.getMatch(matchId);//!!!!!!!!!!!
+        Hand test_hand = test_match.getRound().getHandByUserId(userId);//!!!!!!
 
         //.ok sets the HTTP status to OK (200)
-        return ResponseEntity.ok(test_hand);
+        return ResponseEntity.ok(test_hand.getCardsFromHand());
     }
 
     //Maps data from ready-status changes
