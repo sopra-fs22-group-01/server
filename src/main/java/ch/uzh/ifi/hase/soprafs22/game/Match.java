@@ -2,6 +2,7 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
@@ -56,6 +57,17 @@ public class Match {
 
     public Long getId() {
         return id;
+    }
+
+    // The method increases the winners' score
+    // It also tackles the edge case where there are multiple winners, their score are increased together
+    public void updateScoreBoard(){
+        ArrayList<WhiteCard> roundWinners = round.getRoundWinner();
+        for(WhiteCard whiteCard: roundWinners){
+            User winner = whiteCard.getOwner();
+            int scoreCard = whiteCard.getScore();
+            scoreBoard.updateScore(winner, scoreCard);
+        }
     }
 
     /*

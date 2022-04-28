@@ -112,7 +112,6 @@ public class Round {
                 highestScoreCards.add(chosenCard);
             }
         }
-        // if array list size > 1, another voting session
         return highestScoreCards;
     }
 }
