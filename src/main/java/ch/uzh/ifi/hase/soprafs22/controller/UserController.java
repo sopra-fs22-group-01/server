@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,14 +176,25 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<ArrayList<WhiteCard>> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
-        ArrayList<User> allUsers = (ArrayList<User>) userService.test_getUsers();
+        Match currentMatch = gameManager.getMatch(matchId);
+        Round currentRound= currentMatch.getRound();
+        Hand playerHand = currentRound.getHandByUserId(userId);
+        ArrayList<WhiteCard> playerHandCards = playerHand.getCardsFromHand();
 
+        return ResponseEntity.ok(playerHandCards);
+
+    /*    //------------------Old Code------------------------------
+        ArrayList<User> allUsers = (ArrayList<User>) userService.test_getUsers();
         gameManager.createMatch(allUsers,matchId);
         Match test_match = gameManager.getMatch(matchId);//!!!!!!!!!!!
         Hand test_hand = test_match.getRound().getHandByUserId(userId);//!!!!!!
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand.getCardsFromHand());
+
+*/
+
+
     }
 
     //Maps data from ready-status changes
