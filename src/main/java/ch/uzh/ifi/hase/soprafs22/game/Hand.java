@@ -61,6 +61,7 @@ public class Hand {
             }
         }
         WhiteCard card = new WhiteCard(owner);
+        card.createCard();
         userHand.add(card);
     }
 

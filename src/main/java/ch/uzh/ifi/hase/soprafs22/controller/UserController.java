@@ -196,6 +196,29 @@ public class UserController {
 
 
     }
+    // get all hands by matchId
+    @GetMapping("/matches/{matchId}/hands")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<ArrayList<Hand>> getAllHands(@PathVariable long matchId) throws Exception {
+        Match currentMatch = gameManager.getMatch(matchId);
+        Round currentRound= currentMatch.getRound();
+        ArrayList<Hand> allHands = currentRound.getHands();
+        return ResponseEntity.ok(allHands);
+
+    /*    //------------------Old Code------------------------------
+        ArrayList<User> allUsers = (ArrayList<User>) userService.test_getUsers();
+        gameManager.createMatch(allUsers,matchId);
+        Match test_match = gameManager.getMatch(matchId);//!!!!!!!!!!!
+        Hand test_hand = test_match.getRound().getHandByUserId(userId);//!!!!!!
+
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(test_hand.getCardsFromHand());
+
+*/
+
+
+    }
 
     //Maps data from ready-status changes
     //used to flip the ready-status

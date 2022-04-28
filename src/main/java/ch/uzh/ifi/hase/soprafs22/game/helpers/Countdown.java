@@ -14,11 +14,11 @@ import java.util.TimerTask;
 public class Countdown extends TimerTask {
 
 
-    private int time = 30;
+    private int time = 10;
     private Timer timer;
 
     public void resetTimer(){
-        this.time = 30;
+        this.time = 10;
     }
 
     // call this method to start the timer

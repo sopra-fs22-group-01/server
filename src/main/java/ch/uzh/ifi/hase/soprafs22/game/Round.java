@@ -83,6 +83,13 @@ public class Round {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMsg);
     }
+    public ArrayList<Hand> getHands(){
+        String errorMsg = "Hands not found";
+
+        return this.hands;
+
+    }
+
 
 
     // Player wants to play with a card
@@ -120,6 +127,7 @@ public class Round {
     public ArrayList<WhiteCard> getRoundWinner(){
         ArrayList<WhiteCard> highestScoreCards = new ArrayList<>();
         int currentHighScore = 0;
+        WhiteCard currentWinner;
 
         for (WhiteCard chosenCard : chosenCards) {
             if (chosenCard.getScore() == currentHighScore) {

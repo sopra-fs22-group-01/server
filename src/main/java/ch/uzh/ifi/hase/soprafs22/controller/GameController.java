@@ -243,7 +243,7 @@ public class GameController {
     }
 
     // put chosen white card into array with matchId
-    @PutMapping("matches/{matchId}/white-card/selection")
+    @PutMapping("/matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public ResponseEntity<ArrayList<WhiteCard>> addChosenCard(@PathVariable long matchId, @RequestBody WhiteCardPutDTO whiteCardPutDTO) throws Exception{
@@ -267,7 +267,7 @@ public class GameController {
 
 
     //retrieves the ranking of the players
-    @GetMapping("matches/{matchId}/scores")
+    @GetMapping("/matches/{matchId}/scores")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<HashMap<String, Integer>> GetRankingOfAllPlayer(@PathVariable long matchId){
@@ -275,6 +275,22 @@ public class GameController {
         try {
             HashMap<String, Integer> ranking = gameService.getRanking(matchId);
             return ResponseEntity.ok(ranking);
+        }
+        catch (IncorrectIdException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+    }
+
+    //retrieves the ranking of the players
+    @GetMapping("/matches/{matchId}/winner")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<ArrayList<WhiteCard>> getWinner(@PathVariable long matchId){
+        String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
+        try {
+
+            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinner();
+            return ResponseEntity.ok(winnerCards);
         }
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
