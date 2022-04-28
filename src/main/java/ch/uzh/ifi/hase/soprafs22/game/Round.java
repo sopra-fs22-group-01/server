@@ -27,7 +27,7 @@ public class Round {
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands;
 
-
+    // Constructor
     public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();
         createHands(players);
@@ -111,6 +111,7 @@ public class Round {
                 highestScoreCards.add(chosenCard);
             }
         }
+        // if array list size > 1, another voting session
         return highestScoreCards;
     }
 }
