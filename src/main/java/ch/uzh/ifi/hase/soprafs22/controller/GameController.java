@@ -216,7 +216,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
-        BlackCard b = gameService.getBlackCard(matchId);// !!! we dont get a black card, round in match missing?
+        BlackCard b = gameService.getBlackCard(matchId);
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(b.getText());
     }
@@ -227,6 +227,17 @@ public class GameController {
     @ResponseBody
     public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
         gameService.incrementCardScore(matchId,cardId);
+    }
+
+    @GetMapping("/matches/{matchId}/countdown")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Integer> getCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        int currentTime = currentRound.getCountdown().getTime(); //gets remaining time from round countdown
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(currentTime);
     }
 
 
