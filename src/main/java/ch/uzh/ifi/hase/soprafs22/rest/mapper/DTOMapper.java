@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
@@ -38,7 +37,9 @@ public interface DTOMapper {//TEST
     @Mapping(source = "userStatus", target = "userStatus")
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "isReady", target = "isReady")
-    UserGetDTO convertEntityToUserGetDTO(User user); // takes User as input and converts it to entity of UserGetDTO
+    UserGetDTO convertEntityToUserGetDTO(User user);
+
+    // takes User as input and converts it to entity of UserGetDTO
     //does this method map all the @mapping stuff from above?
 
 
@@ -57,6 +58,11 @@ public interface DTOMapper {//TEST
     @Mapping(source = "text", target = "text")
     WhiteCardGetDTO convertEntityToWhiteCardGetDTO(WhiteCard whiteCard);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "owner", target = "owner")
+    @Mapping(source = "score", target = "score")
+    @Mapping(source = "text", target = "text")
+    WhiteCard convertWhiteCardPutDTOToEntity(WhiteCardPutDTO whiteCardPutDTO);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "currentPlayerCount", target = "currentPlayerCount")

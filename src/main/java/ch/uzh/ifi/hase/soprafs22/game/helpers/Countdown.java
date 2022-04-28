@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class Countdown extends TimerTask {
 
-    private static int time = 31;
+    private int time = 31;
     private Timer timer;
 
     // call this method to start the timer
@@ -25,9 +25,13 @@ public class Countdown extends TimerTask {
     // Method which will be executed periodically by the timer
     @Override
     public void run() {
-        System.out.println("Time left: " + --time);
+        time--;
         if(time == 0)
             // cancel() returns a boolean value (can be used to stop card voting)
             timer.cancel();
+    }
+
+    public int getTime(){
+        return time;
     }
 }

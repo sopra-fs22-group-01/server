@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,12 +28,24 @@ public class Round {
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
 
+    //contdown of a specific round
+    private Countdown roundCountdown ;
+
+
     // Constructor
     public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();
         this.blackCard.createCard();
         createHands(players);
+        this.roundCountdown = new Countdown();
+        roundCountdown.startTimer();
     }
+
+    public Countdown getCountdown(){
+        //return this.roundCountdown;
+        return this.roundCountdown;
+    }
+
 
     public void startNewRound(){
         // setting the new black card of the round
