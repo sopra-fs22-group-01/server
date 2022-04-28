@@ -1,21 +1,16 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
-import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
-import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
-import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -223,11 +217,11 @@ public class GameController {
     }
 
     //increments the score of a white card by one
-    @PutMapping("matches/{matchId}/white-cards/{cardId}")
+    @PutMapping("matches/{matchId}/white-cards/{cardOwnerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
-        gameService.incrementCardScore(matchId,cardId);
+    public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardOwnerId) throws Exception{
+        gameService.incrementCardScore(matchId, cardOwnerId);
     }
 
     @GetMapping("/matches/{matchId}/countdown")

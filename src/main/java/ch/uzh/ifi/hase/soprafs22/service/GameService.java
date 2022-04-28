@@ -156,14 +156,17 @@ public class GameService {
 
         return blackCard;
     }
-    public void incrementCardScore (long matchId, long cardId) throws Exception {
+    public void incrementCardScore (long matchId, long searchedCardOwnerId) throws Exception { //cardOwnerId
         Match match = gameManager.getMatch(matchId);
         Round currentRound = match.getRound();
         ArrayList<WhiteCard> allChosenCards = currentRound.getAllChosenCards();
 
         //iterates through all chosen cards and increments the wanted card by 1
         for(WhiteCard whiteCard : allChosenCards){
-            if(whiteCard.getId() == cardId){
+            // in chosenCard is max. one card per player as each player can only choose one card
+            // therefore it's possible to identify the card with the owner's ID
+            long cardOwnerId = whiteCard.getOwner().getId();
+            if(cardOwnerId == searchedCardOwnerId){
                 whiteCard.incrementCard(); //increments the card score by 1
             }
         }
