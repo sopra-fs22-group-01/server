@@ -187,7 +187,8 @@ public class GameService {
     public HashMap<String, Integer> getRanking(long matchId) throws IncorrectIdException {
         Match match = gameManager.getMatch(matchId);
         ScoreBoard scoreBoard = match.getScoreBoard();
-        HashMap<String, Integer> ranking = scoreBoard.getRanking(match.getMatchPlayers());
+        ArrayList<User> matchPlayers = match.getMatchPlayers();
+        HashMap<String, Integer> ranking = scoreBoard.getRanking(matchPlayers);
         return ranking;
     }
 
