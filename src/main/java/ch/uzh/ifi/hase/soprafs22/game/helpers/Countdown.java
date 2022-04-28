@@ -25,7 +25,7 @@ public class Countdown extends TimerTask {
     // Method which will be executed periodically by the timer
     @Override
     public void run() {
-        System.out.println("Time left: " + --time);
+        time--;
         if(time == 0)
             // cancel() returns a boolean value (can be used to stop card voting)
             timer.cancel();
