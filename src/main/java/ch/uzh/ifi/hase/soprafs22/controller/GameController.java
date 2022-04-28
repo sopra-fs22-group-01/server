@@ -211,7 +211,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
-        BlackCard b = gameService.getBlackCard(matchId);// !!! we dont get a black card, round in match missing?
+        BlackCard b = gameService.getBlackCard(matchId);
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(b.getText());
     }
@@ -281,25 +281,19 @@ public class GameController {
         }
     }
 
-
-
-    //NOW IN USERCONTROLLER
-    // get hand by userid
-  /*  @GetMapping("/matches/{matchId}/hands/{userId}")
-    @ResponseStatus(HttpStatus.OK)
+    //updates the round such that next round can be played
+    @PutMapping("matches/{matchId}/rounds")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
-        ArrayList<User> allUsers = (ArrayList<User>) gameService.test_getUsers();
+    public void updateRound(@PathVariable long matchId) throws Exception{
+        Match currentMatch = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        currentRound.startNewRound();
 
-        gameManager.createMatch(allUsers,matchId);
-        Match test_match = gameManager.getMatch(matchId);
-        Round test_round = test_match.getRound();
-        Hand test_hand = test_round.getHandByUserId(userId);
-        //Hand test_hand = test_match.getHandByUserId(userId);
 
-        //.ok sets the HTTP status to OK (200)
-        return ResponseEntity.ok(test_hand);
-    }*/
+    }
+
+
 
 }
 
