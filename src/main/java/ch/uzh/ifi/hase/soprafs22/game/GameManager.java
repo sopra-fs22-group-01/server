@@ -15,7 +15,7 @@ public class GameManager {
     private long newLobbyIdNumber = 0;
 
     private static GameManager gameManager = null;
-    public static GameManager getInstance(){
+    public static synchronized GameManager getInstance(){
         if (gameManager == null){
             gameManager = new GameManager();
         }
@@ -27,17 +27,12 @@ public class GameManager {
     }
 
     public void createMatch(ArrayList<User> players, Long matchId){
-        //generating a unique ID for the Match, solved by always increasing the new id
-        /*
-        Long matchId = newMatchIdNumber;
-        newMatchIdNumber ++;
-         */
+        //new match always gets the id from the lobby
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);
         //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands
         generatedMatch.createRound();
-        //generatedMatch.createHands();
         //saving the Match in matches
         matches.add(generatedMatch);
     }
@@ -62,7 +57,7 @@ public class GameManager {
 
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
-            if (lobby.getId() == lobbyId){
+            if (lobby.getId().equals(lobbyId)){
                 return lobby;
             }
         }

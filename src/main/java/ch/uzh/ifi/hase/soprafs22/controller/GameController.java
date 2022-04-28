@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
@@ -34,6 +35,7 @@ public class GameController {
     private final GameService gameService;
     GameManager gameManager = GameManager.getInstance();
 
+
     public GameController(GameService gameService) {
         this.gameService = gameService;
     }
@@ -49,16 +51,20 @@ public class GameController {
         return ResponseEntity.ok(rules);
     }
 
-    //Adds a user to the list of all current players in the lobby
-    @PostMapping("/lobbies/{lobbyId}/players")
+    //NOW IN USER CONTROLER
+/*    //Adds a user to the list of all current players in the lobby
+    @PostMapping("/lobbies/{lobbyId}/lists/players/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void addUserToLobby(@PathVariable long lobbyId, @RequestBody UserPostDTO userPostDTO){
+    public ResponseEntity<ArrayList<User>> addUserToLobby(@PathVariable long lobbyId, @PathVariable long userId){
         String baseErrorMessage1 = "No lobby with this id could be found.";
         String baseErrorMessage2 = "The same user is already existing in the lobby ";
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User user = gameService.findUserById(userId);
+        //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
-            gameService.addPlayerToLobby(lobbyId, userInput);
+            gameService.addPlayerToLobby(lobbyId, user);
+            ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
+            return ResponseEntity.ok(allUsers);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
@@ -66,8 +72,8 @@ public class GameController {
         catch (Exception e2) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage2);
         }
-    }
-
+    }*/
+//test
     //Removes a user from the list of all current players in the lobby
     @DeleteMapping("/lobbies/{lobbyId}/players")
     @ResponseStatus(HttpStatus.OK)
@@ -104,19 +110,6 @@ public class GameController {
     }
 */
 
-    //Updates the ready status of a certain user
-    @PutMapping("/lobbies/{lobbyId}/users/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId, @RequestBody ReadyStatus readyStatus){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
-        try {
-            gameService.updateUserReadyStatus(lobbyId, userId, readyStatus);
-        }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
-    }
 
     //Retrieves if all current players in the lobby are ready or not and if the minimum number of player was reached
     @GetMapping("/lobbies/{lobbyId}/status")
@@ -134,12 +127,12 @@ public class GameController {
         }
     }
 
-    //Puts all players from the lobby to the game (by setting the game player list and creating the players hand)
-    @PutMapping("/lobbies/{lobbyId}")
+    //Creates a new match and puts all players from the lobby into it
+    @PostMapping("/matches/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void startingMatch(@PathVariable long lobbyId){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
+        String baseErrorMessage1 = "Match could not be created";
         try {
             gameService.startMatch(lobbyId);
         }
@@ -148,21 +141,19 @@ public class GameController {
         }
     }
 
-    //Creates a lobby and returns the id of the newly created lobby
-    //HttpStatus should be .Created but ResponseEntity.created doesn't have a body,
-    //therefore it wouldn't be possible to return the id
+    //Creates a lobby and returns the id of the newly created lobby //
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
+    @ResponseBody//
     public ResponseEntity<Lobby> createNewLobby(){
         //creates a lobby
         Lobby newLobby = gameService.createNewLobby();
         return ResponseEntity.ok(newLobby);
     }
 
-    //Temporary endpoint
-    //Retrieves all ids from the existing lobbies
-    //Returns an Array with these ids
+
+    //Retrieves all existing lobbies
+    //Returns an Array with these lobbies
     @GetMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -171,22 +162,43 @@ public class GameController {
         return ResponseEntity.ok(allLobbies);
     }
 
-    /*
-    // check if all users are Ready
-    @GetMapping("/lobby/status")
+    //Retrieves all users from a specific lobby
+    //Returns an Array of users
+    @GetMapping("/lobbies/{lobbyId}/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<LobbyStatus> getLobbyStatus() throws Exception {
-
-        LobbyStatus lobbyStatus = gameService.getLobbyStatus();
-
-        //.ok sets the HTTP status to OK (200)
-        return ResponseEntity.ok(lobbyStatus);
+    public ResponseEntity<ArrayList<User>> getAllUsersByLobbyId(@PathVariable long lobbyId) throws IncorrectIdException {
+        String baseErrorMessage1 = "Couldn't retrieve lobby users";
+        try {
+            ArrayList<User> allLobbyUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
+            return ResponseEntity.ok(allLobbyUsers);
+        }
+        catch (IncorrectIdException e1){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
     }
-     */
 
+    //retrieves all users from a specific match and returns array of userGetDTO
+    @GetMapping("/matches/{matchId}/users")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getAllUsersFromSpecificMatch(@PathVariable long matchId) throws IncorrectIdException {
+        // fetch all users in the internal representation
+        Match currentMatch = gameManager.getMatch(matchId);
+        List<User> matchUsers = currentMatch.getMatchPlayers();
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : matchUsers) {
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        }
+        return userGetDTOs; // returns array UserGetDTO with all users init
+    }
+
+
+    //NOW IN USERCONTROLLER
     //ARTIFICIALLY CREATE MATCH -> DELETE LATER
-    @PostMapping("matches/{matchId}/create")
+   /* @PostMapping("matches/{matchId}/create")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void TEST_createMatch(@PathVariable long matchId) throws Exception{
@@ -197,14 +209,14 @@ public class GameController {
 
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.getRound().setBlackCard(black);
-    }
+    }*/
 
     // retrieve text for black Card by matchId
     @GetMapping("/matches/{matchId}/blackCard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
-        BlackCard b = gameService.getBlackCard(matchId);
+        BlackCard b = gameService.getBlackCard(matchId);// !!! we dont get a black card, round in match missing?
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(b.getText());
     }
@@ -217,8 +229,12 @@ public class GameController {
         gameService.incrementCardScore(matchId,cardId);
     }
 
+
+
+
+    //NOW IN USERCONTROLLER
     // get hand by userid
-    @GetMapping("/matches/{matchId}/hands/{userId}")
+  /*  @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<Hand> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
@@ -232,7 +248,7 @@ public class GameController {
 
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand);
-    }
+    }*/
 
 }
 

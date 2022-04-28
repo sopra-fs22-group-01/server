@@ -41,18 +41,17 @@ public class GameService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private final UserRepository userRepository;
+
+
 
     private static final GameManager gameManager = GameManager.getInstance();
 
-    @Autowired //what does @Autowired do exactly?
+    /*@Autowired //what does @Autowired do exactly?
     public GameService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
+    }*/
 
-    public List<User> test_getUsers() {
-        return this.userRepository.findAll();
-    }
+
 
     //reads Rules textfile from game/helpers/rules
     public ArrayList<String> getRulesFromText() throws Exception{
@@ -77,6 +76,17 @@ public class GameService {
 
 
     }
+
+   ////NOW IN USERSERVICE
+  /*  public User findUserById(long id) {
+        User requestedUser = userRepository.findById(id);
+        if (requestedUser==null){
+            String baseErrorMessage = "User not found!";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format(baseErrorMessage));
+        }
+        return requestedUser;
+    }*/
 
     public void addPlayerToLobby(long lobbyId, User user) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
@@ -110,20 +120,14 @@ public class GameService {
         }
     }
 
-    public void updateUserReadyStatus(long lobbyId, long userId, ReadyStatus readyStatus) throws IncorrectIdException {
+    public void updateUserReadyStatus(long lobbyId, long userId) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        requestedLobby.setReadyStatus(userId, readyStatus);
+        requestedLobby.setReadyStatus(userId);
     }
 
     public void startMatch(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        requestedLobby.setGamePlayers();
-        //delete of the lobby after entering the corresponding match
-        gameManager.deleteLobby(lobbyId);
-        Match match = gameManager.getMatch(lobbyId); //the started match from the lobby has the same id
-        //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands
-        match.createRound();
-        //match.createHands();
+        requestedLobby.createMatchWithPlayers();
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
@@ -171,6 +175,7 @@ public class GameService {
         Lobby createdLobby = gameManager.createLobby();
         return createdLobby;
     }
+
 
     public ArrayList<Lobby> getAllLobbies() {
         ArrayList<Lobby> allLobbies = gameManager.getAllLobby();
