@@ -230,6 +230,7 @@ public class GameController {
         }
     }
 
+    //gets current state of countdown. Is used in frontend to know when to get redirected
     @GetMapping("/matches/{matchId}/countdown")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class Countdown extends TimerTask {
 
-    private int time = 31;
+    private int time = 30;
     private Timer timer;
 
     // call this method to start the timer
