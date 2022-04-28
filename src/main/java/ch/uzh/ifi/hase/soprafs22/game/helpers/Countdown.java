@@ -13,8 +13,13 @@ import java.util.TimerTask;
 
 public class Countdown extends TimerTask {
 
+
     private int time = 30;
     private Timer timer;
+
+    public void resetTimer(){
+        this.time = 30;
+    }
 
     // call this method to start the timer
     public void startTimer(){
@@ -34,4 +39,6 @@ public class Countdown extends TimerTask {
     public int getTime(){
         return time;
     }
+
+
 }
