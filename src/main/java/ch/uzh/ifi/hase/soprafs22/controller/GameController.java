@@ -234,11 +234,9 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<HashMap<String, Integer>> GetRankingOfAllPlayer(@PathVariable long matchId){
-        String baseErrorMessage1 = "Couldn't retrieve lobby users";
+        String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the match";
         try {
-            Match match =gameManager.getMatch(matchId);
-            ScoreBoard scoreBoard = match.getScoreBoard();
-            HashMap<String, Integer> ranking = scoreBoard.getRanking(match.getMatchPlayers());
+            HashMap<String, Integer> ranking = gameService.getRanking(matchId);
             return ResponseEntity.ok(ranking);
         }
         catch (IncorrectIdException e) {
