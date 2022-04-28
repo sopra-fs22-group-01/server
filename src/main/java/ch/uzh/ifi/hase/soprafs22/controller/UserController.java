@@ -55,7 +55,7 @@ public class UserController {
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
-        return userGetDTOs; // returns array UserGetDTO with all users init
+        return userGetDTOs;
     }
 
 

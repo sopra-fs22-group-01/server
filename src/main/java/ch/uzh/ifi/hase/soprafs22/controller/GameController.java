@@ -5,14 +5,13 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -228,6 +227,30 @@ public class GameController {
     public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardId) throws Exception{
         gameService.incrementCardScore(matchId,cardId);
     }
+
+    // put chosen white card into array with matchId
+    @PutMapping("matches/{matchId}/white-card/selection")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public ResponseEntity<ArrayList<WhiteCard>> addChosenCard(@PathVariable long matchId, @RequestBody WhiteCardPutDTO whiteCardPutDTO) throws Exception{
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.getRound().setChosenCard(DTOMapper.INSTANCE.convertWhiteCardPutDTOToEntity(whiteCardPutDTO));
+
+        // return array for debugging reasons -> delete later
+        return ResponseEntity.ok(currentMatch.getRound().getAllChosenCards());
+    }
+
+    // get all chosen card from matchId
+    @GetMapping("/matches/{matchId}/election/white-cards")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<ArrayList<WhiteCard>> getChosenCards(@PathVariable long matchId) throws Exception{
+        Match currentMatch = gameManager.getMatch(matchId);
+        // return array for debugging reasons -> delete later
+        return ResponseEntity.ok(currentMatch.getRound().getAllChosenCards());
+    }
+
+
 
 
 
