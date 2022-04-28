@@ -7,19 +7,17 @@ import java.util.ArrayList;
 
 public class WhiteCardGetDTO {
 
-    //private Long id;
+    private Long id;
     private User owner;
     private int score;
     private String text = "";
 
-    /*
     public void setId(Long id) {
         this.id = id;
     }
     public Long getId() {//TEST
         return this.id;
     }
-     */
 
     public void setOwner(User owner) {
         this.owner = owner;
