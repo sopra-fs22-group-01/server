@@ -13,6 +13,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
@@ -32,6 +33,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -180,6 +182,14 @@ public class GameService {
     public ArrayList<Lobby> getAllLobbies() {
         ArrayList<Lobby> allLobbies = gameManager.getAllLobby();
         return allLobbies;
+    }
+
+    public HashMap<String, Integer> getRanking(long matchId) throws IncorrectIdException {
+        Match match = gameManager.getMatch(matchId);
+        ScoreBoard scoreBoard = match.getScoreBoard();
+        ArrayList<User> matchPlayers = match.getMatchPlayers();
+        HashMap<String, Integer> ranking = scoreBoard.getRanking(matchPlayers);
+        return ranking;
     }
 
 }

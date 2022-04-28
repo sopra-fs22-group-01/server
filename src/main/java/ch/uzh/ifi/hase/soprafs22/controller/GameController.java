@@ -12,6 +12,8 @@ import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -228,6 +230,17 @@ public class GameController {
         gameService.incrementCardScore(matchId,cardId);
     }
 
+    @GetMapping("/matches/{matchId}/countdown")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Integer> getCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        int currentTime = currentRound.getCountdown().getTime(); //gets remaining time from round countdown
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(currentTime);
+    }
+
     // put chosen white card into array with matchId
     @PutMapping("matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -252,6 +265,20 @@ public class GameController {
 
 
 
+    //retrieves the ranking of the players
+    @GetMapping("matches/{matchId}/scores")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<HashMap<String, Integer>> GetRankingOfAllPlayer(@PathVariable long matchId){
+        String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the match";
+        try {
+            HashMap<String, Integer> ranking = gameService.getRanking(matchId);
+            return ResponseEntity.ok(ranking);
+        }
+        catch (IncorrectIdException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+    }
 
 
 
