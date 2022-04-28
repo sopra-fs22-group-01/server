@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,6 +30,7 @@ public final class ReadJSONFile {
 
     private ReadJSONFile(){
         readJSON();
+        eliminateDoubleBlank();
     }
 
     public static ReadJSONFile getInstance(){
@@ -79,6 +81,23 @@ public final class ReadJSONFile {
         catch (ParseException | IOException e){
             e.printStackTrace();
         }
+    }
+
+    // Eliminate black cards with double blanks
+    private void eliminateDoubleBlank(){
+        blackCardTexts.removeIf(blackCardText -> findOccurrences(blackCardText, '_', 0) > 1);
+    }
+
+    // find occurrence of a character in a string recursively
+    private int findOccurrences(String str, char search, int index){
+        if(index >= str.length()){
+            return 0;
+        }
+        int count = 0;
+        if(str.charAt(index) == search)
+            count++;
+
+        return count + findOccurrences(str, search, index+1);
     }
 
     // Public methods to provide with a String text for cards
