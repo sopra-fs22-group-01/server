@@ -52,9 +52,21 @@ public class Hand {
         }
     }
 
+    //adds new card to hand and removes last played card
     public void updateHand(){
+        //removes chosenCard (card which got played in last round) form hand
+        for(WhiteCard whiteCard : this.userHand){
+            if(whiteCard.equals(chosenCard)){
+                userHand.remove(whiteCard);
+            }
+        }
         WhiteCard card = new WhiteCard(owner);
         userHand.add(card);
+    }
+
+    //sets chosenCard to null
+    public void resetChosenCard(){
+        this.chosenCard = null;
     }
 
     public ArrayList<WhiteCard> getCardsFromHand (){

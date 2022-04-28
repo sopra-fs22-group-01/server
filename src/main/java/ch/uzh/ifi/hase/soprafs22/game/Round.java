@@ -47,6 +47,7 @@ public class Round {
     }
 
 
+
     public void startNewRound(){
         // setting the new black card of the round
         this.blackCard.createCard();
@@ -56,8 +57,9 @@ public class Round {
 
         // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
         chosenCards.clear();
+        //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
         for (Hand hand : hands){
-            hand.setChosenCard(null);
+            hand.resetChosenCard();
         }
     }
 
