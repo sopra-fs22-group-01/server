@@ -162,7 +162,7 @@ public class GameController {
     @GetMapping("/lobbies/{lobbyId}/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ArrayList<User>> getAllUsersByLobbyId(@PathVariable long lobbyId) throws IncorrectIdException {
+    public ResponseEntity<ArrayList<User>> getAllUsersByLobbyId(@PathVariable long lobbyId) {
         String baseErrorMessage1 = "Couldn't retrieve lobby users";
         try {
             ArrayList<User> allLobbyUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
@@ -220,8 +220,14 @@ public class GameController {
     @PutMapping("matches/{matchId}/white-cards/{cardOwnerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardOwnerId) throws Exception{
-        gameService.incrementCardScore(matchId, cardOwnerId);
+    public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardOwnerId){
+        String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the match";
+        try {
+            gameService.incrementCardScore(matchId, cardOwnerId);
+        }
+        catch (IncorrectIdException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
     }
 
     @GetMapping("/matches/{matchId}/countdown")

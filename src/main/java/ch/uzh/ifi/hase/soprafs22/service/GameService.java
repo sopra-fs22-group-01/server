@@ -156,7 +156,8 @@ public class GameService {
 
         return blackCard;
     }
-    public void incrementCardScore (long matchId, long searchedCardOwnerId) throws Exception { //cardOwnerId
+
+    public void incrementCardScore (long matchId, long searchedCardOwnerId) throws IncorrectIdException {
         Match match = gameManager.getMatch(matchId);
         Round currentRound = match.getRound();
         ArrayList<WhiteCard> allChosenCards = currentRound.getAllChosenCards();
