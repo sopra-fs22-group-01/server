@@ -32,6 +32,7 @@ public class Round {
     private Countdown roundCountdown ;
 
 
+    // Constructor
     public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();
         this.blackCard.createCard();
@@ -124,6 +125,7 @@ public class Round {
                 highestScoreCards.add(chosenCard);
             }
         }
+        // if array list size > 1, another voting session
         return highestScoreCards;
     }
 }
