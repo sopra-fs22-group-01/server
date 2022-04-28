@@ -229,6 +229,22 @@ public class GameController {
         gameService.incrementCardScore(matchId,cardId);
     }
 
+    //retrieves the ranking of the players
+    @GetMapping("matches/{matchId}/scores")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<HashMap<String, Integer>> GetRankingOfAllPlayer(@PathVariable long matchId){
+        String baseErrorMessage1 = "Couldn't retrieve lobby users";
+        try {
+            Match match =gameManager.getMatch(matchId);
+            ScoreBoard scoreBoard = match.getScoreBoard();
+            HashMap<String, Integer> ranking = scoreBoard.getRanking(match.getMatchPlayers());
+            return ResponseEntity.ok(ranking);
+        }
+        catch (IncorrectIdException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+    }
 
 
 
