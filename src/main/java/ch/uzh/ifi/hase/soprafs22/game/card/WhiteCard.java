@@ -5,13 +5,15 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 
 public class WhiteCard implements Card { //TEST
     // maybe id should be static, which is a class variable to keep track of the cards?
-    private Long id;
+    //private Long id;
     private User owner;
     private int score;
     private String text = "";
 
+    /*
     public Long getId(){return this.id;}
     public void setId(Long id){this.id = id;}
+    */
 
     public User getOwner(){return this.owner;}
     public void setOwner(User owner){this.owner = owner;}

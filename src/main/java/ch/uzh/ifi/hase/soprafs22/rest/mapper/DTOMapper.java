@@ -52,13 +52,13 @@ public interface DTOMapper {//TEST
     UserPutDTO convertEntityToUserPutDTO(User user);
 
 
-    @Mapping(source = "id", target = "id")
+    //@Mapping(source = "id", target = "id")
     @Mapping(source = "owner", target = "owner")
     @Mapping(source = "score", target = "score")
     @Mapping(source = "text", target = "text")
     WhiteCardGetDTO convertEntityToWhiteCardGetDTO(WhiteCard whiteCard);
 
-    @Mapping(source = "id", target = "id")
+    //@Mapping(source = "id", target = "id")
     @Mapping(source = "owner", target = "owner")
     @Mapping(source = "score", target = "score")
     @Mapping(source = "text", target = "text")
