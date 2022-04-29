@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
@@ -270,10 +271,10 @@ public class GameController {
     @GetMapping("/matches/{matchId}/scores")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<HashMap<String, Integer>> GetRankingOfAllPlayer(@PathVariable long matchId){
+    public ResponseEntity<ArrayList<Ranking>> GetRankingOfAllPlayer(@PathVariable long matchId){
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the match";
         try {
-            HashMap<String, Integer> ranking = gameService.getRanking(matchId);
+            ArrayList<Ranking> ranking = gameService.getRanking(matchId);
             return ResponseEntity.ok(ranking);
         }
         catch (IncorrectIdException e) {

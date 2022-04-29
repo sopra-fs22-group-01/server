@@ -3,9 +3,14 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Timer;
 
 /**
@@ -63,6 +68,10 @@ public class Match {
             int scoreCard = whiteCard.getScore();
             scoreBoard.updateScore(winner, scoreCard);
         }
+    }
+
+    public void createScoreBoard(){
+        this.scoreBoard = new ScoreBoard();
     }
 
     // gets winnerCards from last rounds to update all scores of players, but not in Database
