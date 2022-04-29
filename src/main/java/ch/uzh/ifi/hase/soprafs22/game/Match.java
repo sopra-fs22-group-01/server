@@ -70,6 +70,10 @@ public class Match {
         }
     }
 
+    public void createScoreBoard() {
+        this.scoreBoard = new ScoreBoard();
+    }
+
     /*
     // creating a hand with 10 cards
     public void createHands(){

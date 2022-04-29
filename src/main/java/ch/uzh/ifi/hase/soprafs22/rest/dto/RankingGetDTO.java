@@ -1,14 +1,9 @@
-package ch.uzh.ifi.hase.soprafs22.game.helpers;
+package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
-public class Ranking {
+public class RankingGetDTO {
 
     private int rank;
     private String username;
-
-    public Ranking(int rank, String username) {
-        this.rank = rank;
-        this.username = username;
-    }
 
     public int getRank() {
         return rank;
@@ -17,7 +12,6 @@ public class Ranking {
     public String getUsername() {
         return username;
     }
-
 
     public void setRank(int rank) {
         this.rank = rank;
