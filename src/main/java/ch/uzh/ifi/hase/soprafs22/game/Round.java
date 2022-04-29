@@ -52,9 +52,6 @@ public class Round {
         // setting the new black card of the round
         this.blackCard.createCard();
 
-        //sets the countdown to its initial time
-        roundCountdown.resetTimer();
-
         // Updating the hand of each player by handing out one card
         updateHands();
 
@@ -64,6 +61,8 @@ public class Round {
         for (Hand hand : hands){
             hand.resetChosenCard();
         }
+        //sets the countdown to its initial time
+        roundCountdown.startTimer();
     }
 
     //can get deleted when everything implemented?
