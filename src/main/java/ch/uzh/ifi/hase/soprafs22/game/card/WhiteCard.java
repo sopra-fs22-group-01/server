@@ -10,6 +10,10 @@ public class WhiteCard implements Card { //TEST
     private int score;
     private String text = "";
 
+    //constructor
+    public WhiteCard(User owner){
+        this.owner = owner;
+    }
 
     public Long getId(){return this.id;}
     public void setId(Long id){this.id = id;}
@@ -25,12 +29,7 @@ public class WhiteCard implements Card { //TEST
     public void setText(String text){this.text = text;}
 
 
-
     public WhiteCard(){}
-
-    public WhiteCard(User owner){
-        this.owner = owner;
-    }
 
     public void createCard(){
         // setting score to 0
