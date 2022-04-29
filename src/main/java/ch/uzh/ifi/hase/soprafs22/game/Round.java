@@ -27,6 +27,7 @@ public class Round {
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
+    private int roundNumber = 1;
 
     //contdown of a specific round
     private Countdown roundCountdown ;
