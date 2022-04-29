@@ -106,6 +106,7 @@ public class UserService {
     //userToLogIn.setToken(UUID.randomUUID().toString());
     userToLogIn.setUserStatus(UserStatus.ONLINE);
     userToLogIn.setIsReady(ReadyStatus.UNREADY);
+    userToLogIn.setScore(0);
     userRepository.flush();
     log.debug("Logged in user %s", userToLogIn.getUsername());
   }
@@ -196,7 +197,7 @@ public class UserService {
     }
 
 
-
+    //updates scores of all currentRound winners in database
     public void updateScores(ArrayList<WhiteCard> highestScoreCards){
 
         for (WhiteCard winnerCard: highestScoreCards){

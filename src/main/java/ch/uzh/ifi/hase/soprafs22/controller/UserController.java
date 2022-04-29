@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
 import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
-import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
@@ -9,10 +8,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
-import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -24,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -259,12 +254,15 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<MatchStatus> updateRound(@PathVariable long matchId) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
+        // update player scores in curentMatch, not userService so we don't receive a COPY of a playersArray
+        currentMatch.updatePlayerScores();
+
         Round currentRound = currentMatch.getRound();
-        boolean keepPlaying = currentRound.startNewRound(); // return true is new round, false if match is over
 
         // gets winnerCards from last rounds to update all scores in database
-        userService.updateScores(currentRound.getRoundWinner());
+        userService.updateScores(currentRound.getRoundWinnerCards());
 
+        boolean keepPlaying = currentRound.startNewRound(); // return true if new round, false if match is over
         if (!keepPlaying){
             return ResponseEntity.ok(MatchStatus.GameOver);
         }

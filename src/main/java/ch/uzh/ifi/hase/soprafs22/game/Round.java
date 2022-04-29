@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
-import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -50,17 +49,8 @@ public class Round {
         return this.roundCountdown;
     }
 
-
-
     public boolean startNewRound(){
         if (this.roundNumber < max_Rounds){
-            // gets winnerCards from last rounds to update all scores of players, but not in Database
-            ArrayList<WhiteCard> highestScoreCards = getRoundWinner();
-            for (WhiteCard winnerCard: highestScoreCards){
-                User user = winnerCard.getOwner();
-                int oldScore = user.getScore();;
-                user.setScore(oldScore+1);
-            }
 
             // returns true if keep playing
             this.roundNumber++;
@@ -110,8 +100,6 @@ public class Round {
 
     }
 
-
-
     // Player wants to play with a card
     public void setChosenCard(WhiteCard whiteCard){
         // setting the chosenCard of the hand
@@ -144,12 +132,12 @@ public class Round {
 
     // Determines the winner of the round
     // Returns an ArrayList with winner cards
-    public ArrayList<WhiteCard> getRoundWinner(){
+    public ArrayList<WhiteCard> getRoundWinnerCards(){
         ArrayList<WhiteCard> highestScoreCards = new ArrayList<>();
         int currentHighScore = 0;
         WhiteCard currentWinner;
 
-        for (WhiteCard chosenCard : chosenCards) {
+        for (WhiteCard chosenCard : this.chosenCards) {
             if (chosenCard.getScore() == currentHighScore) {
                 highestScoreCards.add(chosenCard);
             } else if (chosenCard.getScore() > currentHighScore){
@@ -160,5 +148,17 @@ public class Round {
         }
 
         return highestScoreCards;
+    }
+
+    public void incrementCardScores(long searchedCardOwnerId){
+        //iterates through all chosen cards and increments the wanted card by 1
+        for(WhiteCard whiteCard : this.chosenCards){
+            // in chosenCard is max. one card per player as each player can only choose one card
+            // therefore it's possible to identify the card with the owner's ID
+            long cardOwnerId = whiteCard.getOwner().getId();
+            if(cardOwnerId == searchedCardOwnerId){
+                whiteCard.incrementCard(); //increments the card score by 1
+            }
+        }
     }
 }

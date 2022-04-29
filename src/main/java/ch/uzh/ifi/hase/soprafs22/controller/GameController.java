@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
@@ -291,7 +290,7 @@ public class GameController {
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
         try {
 
-            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinner();
+            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinnerCards();
 
             return ResponseEntity.ok(winnerCards);
         }
