@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
+import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,7 +28,8 @@ public class Round {
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
-    private int roundNumber = 1;
+    private int roundNumber = 0;
+    private int max_Rounds = 5;
 
     //contdown of a specific round
     private Countdown roundCountdown ;
@@ -38,6 +40,7 @@ public class Round {
         this.blackCard = new BlackCard();
         this.blackCard.createCard();
         createHands(players);
+        this.roundNumber++;
         this.roundCountdown = new Countdown();
         roundCountdown.startTimer();
     }
@@ -49,21 +52,38 @@ public class Round {
 
 
 
-    public void startNewRound(){
-        // setting the new black card of the round
-        this.blackCard.createCard();
+    public boolean startNewRound(){
+        if (this.roundNumber < max_Rounds){
+            // gets winnerCards from last rounds to update all scores of players, but not in Database
+            ArrayList<WhiteCard> highestScoreCards = getRoundWinner();
+            for (WhiteCard winnerCard: highestScoreCards){
+                User user = winnerCard.getOwner();
+                int oldScore = user.getScore();;
+                user.setScore(oldScore+1);
+            }
 
-        // Updating the hand of each player by handing out one card
-        updateHands();
+            // returns true if keep playing
+            this.roundNumber++;
 
-        // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
-        chosenCards.clear();
-        //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
-        for (Hand hand : hands){
-            hand.resetChosenCard();
+            // setting the new black card of the round
+            this.blackCard.createCard();
+
+            // Updating the hand of each player by handing out one card
+            updateHands();
+
+            // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
+            chosenCards.clear();
+            //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
+            for (Hand hand : hands){
+                hand.resetChosenCard();
+            }
+            //sets the countdown to its initial time
+            roundCountdown.startTimer();
+
+            return true;
         }
-        //sets the countdown to its initial time
-        roundCountdown.startTimer();
+        // return false if match is over
+        return false;
     }
 
     //can get deleted when everything implemented?
@@ -138,6 +158,7 @@ public class Round {
                 highestScoreCards.add(chosenCard);
             }
         }
+
         return highestScoreCards;
     }
 }

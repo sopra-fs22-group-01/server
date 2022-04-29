@@ -3,8 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.service;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
@@ -16,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User Service
@@ -197,4 +194,19 @@ public class UserService {
     public List<User> test_getUsers() {
         return this.userRepository.findAll();
     }
+
+
+
+    public void updateScores(ArrayList<WhiteCard> highestScoreCards){
+
+        for (WhiteCard winnerCard: highestScoreCards){
+            long id = winnerCard.getOwner().getId();
+            User userToBeUpdated = findUserById(id);
+            int oldScore = userToBeUpdated.getScore();
+            userToBeUpdated.setScore(oldScore+1);
+        }
+
+    }
+
+
 }
