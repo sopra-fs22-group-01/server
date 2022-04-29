@@ -248,7 +248,7 @@ public class UserController {
         return ResponseEntity.ok(lobbyStatus);
     }*/
 
-    //updates the round such that next round can be played
+    //updates the round such that next round can be played, OR end match if it's last round
     @PutMapping("/matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -262,7 +262,8 @@ public class UserController {
         // gets winnerCards from last rounds to update all scores in database
         userService.updateScores(currentRound.getRoundWinnerCards());
 
-        boolean keepPlaying = currentRound.startNewRound(); // return true if new round, false if match is over
+        // return true if new round, false if match is over
+        boolean keepPlaying = currentRound.startNewRound();
         if (!keepPlaying){
             return ResponseEntity.ok(MatchStatus.GameOver);
         }

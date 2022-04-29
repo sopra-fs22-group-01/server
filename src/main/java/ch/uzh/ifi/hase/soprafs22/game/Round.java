@@ -27,7 +27,7 @@ public class Round {
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
-    private int roundNumber = 0;
+    private int roundNumber;
     private int max_Rounds = 5;
 
     //contdown of a specific round
@@ -39,7 +39,7 @@ public class Round {
         this.blackCard = new BlackCard();
         this.blackCard.createCard();
         createHands(players);
-        this.roundNumber++;
+        this.roundNumber = 1;
         this.roundCountdown = new Countdown();
         roundCountdown.startTimer();
     }
