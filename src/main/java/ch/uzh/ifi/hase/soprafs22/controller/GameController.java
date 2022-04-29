@@ -305,8 +305,18 @@ public class GameController {
         Match currentMatch = gameManager.getMatch(matchId);
         Round currentRound = currentMatch.getRound();
         currentRound.startNewRound();
+    }
 
+    //gets countdown of specific round and resets it.
+    @PutMapping("/matches/{matchId}/countdown")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void resetCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
 
+        //restarts countdown of round.VERY bad design, but enough for M3
+        currentMatch.getRound().getCountdown().startTimer();
     }
 
 
