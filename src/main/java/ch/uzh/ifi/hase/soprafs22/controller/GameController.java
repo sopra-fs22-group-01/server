@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
@@ -325,6 +326,19 @@ public class GameController {
         currentMatch.getRound().getCountdown().startTimer();
     }
 
+    //gets countdown of specific round and resets it.
+    @DeleteMapping("/matches/{matchId}/countdown")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        Countdown roundCountdown = currentRound.getCountdown();
+
+        roundCountdown.killTimer();
+        //restarts countdown of round.VERY bad design, but enough for M3
+
+    }
 
 }
 

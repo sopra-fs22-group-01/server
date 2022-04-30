@@ -56,11 +56,10 @@ public class Hand {
 
     //adds new card to hand and removes last played card
     public void updateHand(){
-        System.out.println("Chosen card: " + chosenCard.getText());
         //removes chosenCard (card which got played in last round) form hand
 
         for(WhiteCard whiteCard : this.userHand){
-            if(whiteCard.getText().equals(this.chosenCard.getText())){
+            if(this.chosenCard != null && whiteCard.getText().equals(this.chosenCard.getText())){
                 this.userHand.remove(whiteCard);
                 System.out.println("card got removed from user hand");
                 break;

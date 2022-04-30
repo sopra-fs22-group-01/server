@@ -40,7 +40,7 @@ public class Round {
         this.blackCard.createCard();
         createHands(players);
         this.roundNumber = 1;
-        this.roundCountdown = new Countdown();
+        this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
         roundCountdown.startTimer();
     }
 
@@ -68,12 +68,18 @@ public class Round {
                 hand.resetChosenCard();
             }
             //sets the countdown to its initial time
-            roundCountdown.startTimer();
+            //roundCountdown.startTimer();
 
             return true;
         }
-        // return false if match is over
-        return false;
+        else{
+            // return false if match is over
+            roundCountdown.killTimer();
+
+            return false;
+        }
+
+
     }
 
     //can get deleted when everything implemented?
