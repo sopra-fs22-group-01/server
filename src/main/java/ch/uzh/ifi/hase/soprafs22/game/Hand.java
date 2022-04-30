@@ -22,7 +22,9 @@ public class Hand {
     }
 
     public WhiteCard getChosenCard(){return this.chosenCard;}
-    public void setChosenCard(WhiteCard card){this.chosenCard = card;}
+    public void setChosenCard(WhiteCard card){
+        System.out.println("This is the text of the chosen card: " + card.getText());
+        this.chosenCard = card;}
 
     public User getOwner(){return this.owner;}
     public void setOwner(User user){this.owner = user;} // test}
@@ -58,7 +60,7 @@ public class Hand {
         //removes chosenCard (card which got played in last round) form hand
 
         for(WhiteCard whiteCard : this.userHand){
-            if(whiteCard/*.getText()*/.equals(this.chosenCard/*.getText()*/)){
+            if(whiteCard.getText().equals(this.chosenCard.getText())){
                 this.userHand.remove(whiteCard);
                 System.out.println("card got removed from user hand");
                 break;
