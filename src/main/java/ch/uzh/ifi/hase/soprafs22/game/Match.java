@@ -1,6 +1,7 @@
 
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
@@ -25,15 +26,20 @@ public class Match {
     private ScoreBoard scoreBoard;
     private Timer timer;
     private Round round;
+    private MatchStatus matchStatus;
 
-    public Match(Long id) {
+    public Match(Long id, MatchStatus matchStatus) {
         this.id = id;
+        this.matchStatus = matchStatus;
     }
 
     public void createRound(){
         //initializes the round with the players of the match, creates automatically the hands
         round = new Round(players);
     }
+
+    public void setMatchStatus(MatchStatus matchStatus){this.matchStatus = matchStatus;}
+    public MatchStatus getMatchStatus(){return this.matchStatus;}
 
     public ScoreBoard getScoreBoard() {
         return scoreBoard;
@@ -43,9 +49,7 @@ public class Match {
         return timer;
     }
 
-    public Round getRound(){
-        return round;
-    }
+    public Round getRound(){return round;}
 
     public ArrayList<User> getMatchPlayers(){
         return players;

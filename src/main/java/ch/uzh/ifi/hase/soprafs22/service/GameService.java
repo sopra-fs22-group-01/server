@@ -128,13 +128,15 @@ public class GameService {
         requestedLobby.setReadyStatus(userId);
     }
 
-    public void startMatch(long lobbyId) throws IncorrectIdException{
+    public Match startMatch(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        requestedLobby.createMatchWithPlayers();
+        return gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
+        //requestedLobby.createMatchWithPlayers();
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
+
         return requestedLobby.getLobbyStatus();
     }
     /*
