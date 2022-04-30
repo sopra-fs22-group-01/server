@@ -57,7 +57,7 @@ public class Hand {
         //removes chosenCard (card which got played in last round) form hand
 
         for(WhiteCard whiteCard : this.userHand){
-            if(whiteCard.getText().equals(this.chosenCard.getText())){
+            if(whiteCard/*.getText()*/.equals(this.chosenCard/*.getText()*/)){
                 this.userHand.remove(whiteCard);
                 break;
             }
