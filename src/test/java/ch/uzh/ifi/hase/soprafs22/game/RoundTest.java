@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoundTest {
     private Round testRound;
-    private ArrayList<WhiteCard> testWhiteCards;
+    private WhiteCard testWhiteCard;
+    private ArrayList<WhiteCard> testChosenCards;
 
     @BeforeEach
     void setUp() {
@@ -21,23 +23,27 @@ class RoundTest {
         User user = new User();
         users.add(user);
         testRound = new Round(users);
-        testWhiteCards = new ArrayList<>();
+        testWhiteCard = new WhiteCard();
+        testWhiteCard.createCard();
+        testChosenCards = new ArrayList<>();
     }
 
     @AfterEach
     void tearDown() {
         testRound = null;
-        testWhiteCards = null;
+        testChosenCards = null;
+    }
+
+    @Test
+    void testGetCountdown(){
+        Countdown actual = testRound.getCountdown();
+        assertNotNull(actual);
     }
 
     @Test
     void testStartNewRound() {
         boolean actual = testRound.startNewRound();
         assertTrue(actual);
-    }
-
-    @Test
-    void testSetRoundPlayers() {
     }
 
     @Test
@@ -50,24 +56,31 @@ class RoundTest {
     }
 
     @Test
-    void testUpdateHands() {
+    void testSetChosenCard() {
+        testRound.startNewRound();
+        testRound.setChosenCard(testWhiteCard);
+        ArrayList<WhiteCard> testChosenCards = testRound.getAllChosenCards();
+        assertEquals(1, testChosenCards.size());
     }
 
     @Test
-    void testSetChosenCard() {
+    void testGetHands(){
+        testRound.startNewRound();
+        ArrayList<Hand> actual = testRound.getHands();
+        assertEquals(1, actual.size());
     }
 
     @Test
     void testGetAllChosenCardsSizeNull() {
         testRound.startNewRound();
-        ArrayList<WhiteCard> chosenCards = testRound.getAllChosenCards();
-        assertEquals(0,chosenCards.size());
+        testChosenCards = testRound.getAllChosenCards();
+        assertEquals(0,testChosenCards.size());
     }
 
     @Test
     void testGetRoundWinnerCardsNull() {
-        ArrayList<WhiteCard> actual = testRound.getRoundWinnerCards();
-        assertEquals(0, actual.size());
+        testChosenCards = testRound.getRoundWinnerCards();
+        assertEquals(0, testChosenCards.size());
     }
 }
 
