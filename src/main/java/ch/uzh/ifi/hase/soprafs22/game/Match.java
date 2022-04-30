@@ -59,6 +59,7 @@ public class Match {
         return id;
     }
 
+    /*
     // The method increases the winners' score
     // It also tackles the edge case where there are multiple winners, their score are increased together
     public void updateScoreBoard(){
@@ -69,6 +70,7 @@ public class Match {
             scoreBoard.updateScore(winner, scoreCard);
         }
     }
+     */
 
 
     public void createScoreBoard() {

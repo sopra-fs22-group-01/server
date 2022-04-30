@@ -8,12 +8,14 @@ import java.util.HashMap;
 public class ScoreBoard {
     private User winner;
 
+    /*
     public void updateScore(User player, int obtainedPoints){
         //adding the achieved points to the user's score
         int oldScore = player.getScore();
         int newScore = oldScore + obtainedPoints;
         player.setScore(newScore);
     }
+     */
 
 
     public ArrayList<User> getPlayersOfHighestRank(ArrayList<User> players) {
@@ -64,6 +66,7 @@ public class ScoreBoard {
         return rankings;
     }
 
+    /*
     //returns arraylist of users with their current score (key= users, val = score)
     public HashMap getCurrentScores(ArrayList<User> players){
         HashMap<String, Integer> playerScores = new HashMap();
@@ -74,5 +77,6 @@ public class ScoreBoard {
         }
         return playerScores;
     }
+    */
 
 }
