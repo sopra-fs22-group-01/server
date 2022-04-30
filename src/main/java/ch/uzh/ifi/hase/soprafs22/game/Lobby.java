@@ -29,7 +29,7 @@ public class Lobby {
     public void setId(Long id) {this.id = id;}
 
     public int getCurrentPlayerCount() {return currentPlayerCount;}
-    public void setCurrentPlayerCount(int currentPlayerCount){this.currentPlayerCount=currentPlayerCount;}
+    //public void setCurrentPlayerCount(int currentPlayerCount){this.currentPlayerCount=currentPlayerCount;}
 
 
     public LobbyStatus getLobbyStatus() {
@@ -81,30 +81,16 @@ public class Lobby {
     }
 
     public void setReadyStatus(long userId) {
-        /*
-        for (User player : currentPlayers) {
-            if (player.getId().equals(userId)) {
-                player.setIsReady(ReadyStatus.READY);
-            }
-            else{
-                String baseErrorMessage = "Couldn't change the status";
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        String.format(baseErrorMessage, "username ", "is"));
-            }
-         */
         for (User player : currentPlayers) {
             if (player.getId().equals(userId)) {
                 if (player.getIsReady().equals(ReadyStatus.READY)) {
                     player.setIsReady(ReadyStatus.UNREADY);
-                    //return true;
                 }
 
                 else if (player.getIsReady().equals(ReadyStatus.UNREADY)) {
                     player.setIsReady(ReadyStatus.READY);
-                    //return true;
                 }
             }
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 }
