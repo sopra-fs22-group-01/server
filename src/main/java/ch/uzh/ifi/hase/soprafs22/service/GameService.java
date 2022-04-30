@@ -174,7 +174,6 @@ public class GameService {
                 whiteCard.incrementCard(); //increments the card score by 1
             }
         }
-
          */
 
 

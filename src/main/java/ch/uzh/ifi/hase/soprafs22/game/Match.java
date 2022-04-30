@@ -70,9 +70,11 @@ public class Match {
         }
     }
 
-    public void createScoreBoard(){
+
+    public void createScoreBoard() {
         this.scoreBoard = new ScoreBoard();
     }
+
 
     // gets winnerCards from last rounds to update all scores of players, but not in Database
     public void updatePlayerScores(){
@@ -82,7 +84,7 @@ public class Match {
                if (whiteCard.getOwner().getId() == user.getId()){
                    int oldScore = user.getScore();
                    user.setScore(oldScore+1);
-               }
+               }//
            }
         }
     }

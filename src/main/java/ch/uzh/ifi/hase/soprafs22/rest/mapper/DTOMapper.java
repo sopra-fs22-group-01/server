@@ -71,5 +71,6 @@ public interface DTOMapper {//TEST
 
     @Mapping(source = "rank", target = "rank")
     @Mapping(source = "username", target = "username")
+    @Mapping(source = "score", target = "score")
     RankingGetDTO convertEntityToRankingGetDTO(Ranking ranking);
 }

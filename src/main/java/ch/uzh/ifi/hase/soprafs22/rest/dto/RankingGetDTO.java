@@ -4,6 +4,7 @@ public class RankingGetDTO {
 
     private int rank;
     private String username;
+    private int score;
 
     public int getRank() {
         return rank;
@@ -17,7 +18,10 @@ public class RankingGetDTO {
         this.rank = rank;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String username) {this.username = username;}
+
+    public void setScore(int score) {
+        this.score = score;
     }
+    public int getScore() {return this.score;}
 }

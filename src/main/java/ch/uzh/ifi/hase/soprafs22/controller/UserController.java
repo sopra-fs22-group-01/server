@@ -8,7 +8,10 @@ import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -20,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -248,7 +252,7 @@ public class UserController {
         return ResponseEntity.ok(lobbyStatus);
     }*/
 
-    //updates the round such that next round can be played, OR end match if it's last round
+    //updates the round such that next round can be played
     @PutMapping("/matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -260,10 +264,9 @@ public class UserController {
         Round currentRound = currentMatch.getRound();
 
         // gets winnerCards from last rounds to update all scores in database
-        userService.updateScores(currentRound.getRoundWinnerCards());
+        userService.updateScores(currentRound.getRoundWinnerCards()); //
 
-        // return true if new round, false if match is over
-        boolean keepPlaying = currentRound.startNewRound();
+        boolean keepPlaying = currentRound.startNewRound(); // return true if new round, false if match is over
         if (!keepPlaying){
             return ResponseEntity.ok(MatchStatus.GameOver);
         }
@@ -271,5 +274,4 @@ public class UserController {
             return ResponseEntity.ok(MatchStatus.MatchOngoing);
         }
     }
-}   
-
+}
