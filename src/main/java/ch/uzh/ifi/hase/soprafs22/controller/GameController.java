@@ -282,6 +282,7 @@ public class GameController {
         }
     }
 
+    // retrieve currentRound winnerCards
     //retrieves the ranking of the players
     @GetMapping("/matches/{matchId}/winner")
     @ResponseStatus(HttpStatus.OK)
@@ -290,7 +291,8 @@ public class GameController {
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
         try {
 
-            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinner();
+            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinnerCards();
+
             return ResponseEntity.ok(winnerCards);
         }
         catch (IncorrectIdException e) {
@@ -298,18 +300,25 @@ public class GameController {
         }
     }
 
+/*
+    // MOVED THIS TO USERCONTROLLER
     //updates the round such that next round can be played
-    @PutMapping("matches/{matchId}/rounds")
+    @PutMapping("/matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateRound(@PathVariable long matchId) throws Exception{
+    public ResponseEntity<MatchStatus> updateRound(@PathVariable long matchId) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
         Round currentRound = currentMatch.getRound();
-        currentRound.startNewRound();
-
-
+        boolean keepPlaying = currentRound.startNewRound(); // return true is new round, false if match is over
+        if (!keepPlaying){
+            return ResponseEntity.ok(MatchStatus.GameOver);
+        }
+        else{
+            return ResponseEntity.ok(MatchStatus.MatchOngoing);
+        }
     }
 
+ */
 
 
 }

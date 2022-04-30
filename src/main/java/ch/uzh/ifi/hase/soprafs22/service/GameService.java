@@ -161,8 +161,10 @@ public class GameService {
     public void incrementCardScore (long matchId, long searchedCardOwnerId) throws IncorrectIdException {
         Match match = gameManager.getMatch(matchId);
         Round currentRound = match.getRound();
+        currentRound.incrementCardScores(searchedCardOwnerId);
+       /*
         ArrayList<WhiteCard> allChosenCards = currentRound.getAllChosenCards();
-
+        // moved this to Round.incrementCardScores()
         //iterates through all chosen cards and increments the wanted card by 1
         for(WhiteCard whiteCard : allChosenCards){
             // in chosenCard is max. one card per player as each player can only choose one card
@@ -172,6 +174,10 @@ public class GameService {
                 whiteCard.incrementCard(); //increments the card score by 1
             }
         }
+
+         */
+
+
     }
 
     public ArrayList<Long> getLobbiesId() {
