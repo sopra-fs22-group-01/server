@@ -32,7 +32,7 @@ public class Match {
 
     public void createRound(){
         //initializes the round with the players of the match, creates automatically the hands
-        round = new Round(players);
+        round = new Round(players, this.id);
     }
 
     public ScoreBoard getScoreBoard() {
@@ -62,7 +62,7 @@ public class Match {
     // The method increases the winners' score
     // It also tackles the edge case where there are multiple winners, their score are increased together
     public void updateScoreBoard(){
-        ArrayList<WhiteCard> roundWinners = round.getRoundWinner();
+        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
         for(WhiteCard whiteCard: roundWinners){
             User winner = whiteCard.getOwner();
             int scoreCard = whiteCard.getScore();

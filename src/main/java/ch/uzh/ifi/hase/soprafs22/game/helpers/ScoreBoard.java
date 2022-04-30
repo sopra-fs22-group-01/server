@@ -51,11 +51,11 @@ public class ScoreBoard {
         */
         ArrayList<Ranking> rankings = new ArrayList<>();
         //first all players with first rank gets saved, then all second rank players and so forth
-        Integer rank = 1;
+        int rank = 1;
         while (!players.isEmpty()){
             ArrayList<User> users = getPlayersOfHighestRank(players);
             for(User user: users){
-                Ranking ranking = new Ranking(rank, user.getUsername());
+                Ranking ranking = new Ranking(rank, user.getUsername(), user.getScore());
                 rankings.add(ranking);
                 players.remove(user); //removing all user of the same rank from player
             }

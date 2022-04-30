@@ -21,22 +21,28 @@ import java.util.Objects;
  * */
 
 public class Round {
+    GameManager gameManager = GameManager.getInstance();
     //Round always displays a unique blackCard at the beginning of the round
     private BlackCard blackCard;
     //Chosen cards are the cards that are played by the players and that will get displayed to vote
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
+    private int roundNumber;
+    private int max_Rounds = 3;
+    private long matchId;
 
     //contdown of a specific round
     private Countdown roundCountdown ;
 
 
     // Constructor
-    public Round(ArrayList<User> players) {
+    public Round(ArrayList<User> players, long matchId) {
         this.blackCard = new BlackCard();
         this.blackCard.createCard();
         createHands(players);
+        this.roundNumber = 1;
+        this.matchId = matchId;
         this.roundCountdown = new Countdown();
         roundCountdown.startTimer();
     }
@@ -46,23 +52,35 @@ public class Round {
         return this.roundCountdown;
     }
 
+    public boolean startNewRound(){
+        if (this.roundNumber < max_Rounds){
 
+            // returns true if keep playing
+            this.roundNumber++;
 
-    public void startNewRound(){
-        // setting the new black card of the round
-        this.blackCard.createCard();
+            // setting the new black card of the round
+            this.blackCard.createCard();
 
-        // Updating the hand of each player by handing out one card
-        updateHands();
+            // Updating the hand of each player by handing out one card
+            updateHands();
 
-        // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
-        chosenCards.clear();
-        //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
-        for (Hand hand : hands){
-            hand.resetChosenCard();
+            // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
+            chosenCards.clear();
+            //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
+            for (Hand hand : hands){
+                hand.resetChosenCard();
+            }
+            //sets the countdown to its initial time
+            roundCountdown.startTimer();
+
+            return true;
         }
-        //sets the countdown to its initial time
-        roundCountdown.startTimer();
+        else{
+            // delete this match from gameManager when match is over
+            // return false if match is over
+            return false;
+        }
+
     }
 
     //can get deleted when everything implemented?
@@ -89,8 +107,6 @@ public class Round {
 
     }
 
-
-
     // Player wants to play with a card
     public void setChosenCard(WhiteCard whiteCard){
         // setting the chosenCard of the hand
@@ -102,6 +118,22 @@ public class Round {
         //adding the chosen card to the array of all chosen cards
         chosenCards.add(whiteCard);
     }
+
+    /*
+    public void removePlayedCard(WhiteCard playedCard){
+        User owner = playedCard.getOwner();
+        for (Hand hand: hands){
+            if(hand.getOwner().getId()==owner.getId()){
+                for (WhiteCard whiteCard: hand.getUserHand()){
+                    if (whiteCard.getText()==playedCard.getText()){
+                        hand.
+                    }
+                }
+            }
+        }
+    }
+
+     */
 
     public ArrayList<WhiteCard> getAllChosenCards(){ return chosenCards;}
 
@@ -123,12 +155,12 @@ public class Round {
 
     // Determines the winner of the round
     // Returns an ArrayList with winner cards
-    public ArrayList<WhiteCard> getRoundWinner(){
+    public ArrayList<WhiteCard> getRoundWinnerCards(){
         ArrayList<WhiteCard> highestScoreCards = new ArrayList<>();
         int currentHighScore = 0;
         WhiteCard currentWinner;
 
-        for (WhiteCard chosenCard : chosenCards) {
+        for (WhiteCard chosenCard : this.chosenCards) {
             if (chosenCard.getScore() == currentHighScore) {
                 highestScoreCards.add(chosenCard);
             } else if (chosenCard.getScore() > currentHighScore){
@@ -138,5 +170,17 @@ public class Round {
             }
         }
         return highestScoreCards;
+    }
+
+    public void incrementCardScores(long searchedCardOwnerId){
+        //iterates through all chosen cards and increments the wanted card by 1
+        for(WhiteCard whiteCard : this.chosenCards){
+            // in chosenCard is max. one card per player as each player can only choose one card
+            // therefore it's possible to identify the card with the owner's ID
+            long cardOwnerId = whiteCard.getOwner().getId();
+            if(cardOwnerId == searchedCardOwnerId){
+                whiteCard.incrementCard(); //increments the card score by 1
+            }
+        }
     }
 }

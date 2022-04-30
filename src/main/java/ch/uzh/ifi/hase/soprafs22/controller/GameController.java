@@ -243,7 +243,7 @@ public class GameController {
         return ResponseEntity.ok(currentTime);
     }
 
-    // put chosen white card into array with matchId
+    // put selected white card from hand into array of allChosenCards with matchId
     @PutMapping("/matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -290,7 +290,7 @@ public class GameController {
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
         try {
 
-            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinner();
+            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinnerCards();
             return ResponseEntity.ok(winnerCards);
         }
         catch (IncorrectIdException e) {

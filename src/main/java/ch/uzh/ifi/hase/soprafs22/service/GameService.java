@@ -131,6 +131,7 @@ public class GameService {
     public void startMatch(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.createMatchWithPlayers();
+
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
