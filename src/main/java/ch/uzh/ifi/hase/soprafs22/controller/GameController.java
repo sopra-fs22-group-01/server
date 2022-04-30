@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
@@ -242,7 +243,7 @@ public class GameController {
         return ResponseEntity.ok(currentTime);
     }
 
-    // put chosen white card into array with matchId
+    // put selected white card from hand into array of allChosenCards with matchId
     @PutMapping("/matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -270,17 +271,18 @@ public class GameController {
     @GetMapping("/matches/{matchId}/scores")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<HashMap<String, Integer>> GetRankingOfAllPlayer(@PathVariable long matchId){
+    public ResponseEntity<ArrayList<Ranking>> GetRankingOfAllPlayer(@PathVariable long matchId){
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the match";
         try {
-            HashMap<String, Integer> ranking = gameService.getRanking(matchId);
+            ArrayList<Ranking> ranking = gameService.getRanking(matchId);
             return ResponseEntity.ok(ranking);
         }
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
-    }
+    }//
 
+    // retrieve currentRound winnerCards
     //retrieves the ranking of the players
     @GetMapping("/matches/{matchId}/winner")
     @ResponseStatus(HttpStatus.OK)
@@ -289,14 +291,14 @@ public class GameController {
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
         try {
 
-            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinner();
+            ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinnerCards();
             return ResponseEntity.ok(winnerCards);
         }
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
-
+/* 7464
     //updates the round such that next round can be played
     @PutMapping("matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -307,6 +309,10 @@ public class GameController {
         currentRound.startNewRound();
     }
 
+
+    }
+
+ */
     //gets countdown of specific round and resets it.
     @PutMapping("/matches/{matchId}/countdown")
     @ResponseStatus(HttpStatus.OK)
@@ -318,7 +324,6 @@ public class GameController {
         //restarts countdown of round.VERY bad design, but enough for M3
         currentMatch.getRound().getCountdown().startTimer();
     }
-
 
 
 }

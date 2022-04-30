@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
@@ -252,5 +252,40 @@ public class UserController {
         return ResponseEntity.ok(lobbyStatus);
     }*/
 
-}   
+    //updates the round such that next round can be played
+    @PutMapping("/matches/{matchId}/rounds")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public ResponseEntity<MatchStatus> updateRound(@PathVariable long matchId) throws Exception{
+        Match currentMatch = gameManager.getMatch(matchId);
+        // update player scores in curentMatch, not userService so we don't receive a COPY of a playersArray
+        currentMatch.updatePlayerScores();
 
+        Round currentRound = currentMatch.getRound();
+
+        // gets winnerCards from last rounds to update all scores in database
+        userService.updateScores(currentRound.getRoundWinnerCards()); //
+
+        boolean keepPlaying = currentRound.startNewRound(); // return true if new round, false if match is over
+        if (!keepPlaying){
+            return ResponseEntity.ok(MatchStatus.GameOver);
+        }
+        else{
+            return ResponseEntity.ok(MatchStatus.MatchOngoing);
+        }
+    }
+
+    //testendpoint to get chosencard to see if chosen card is even saved in hand
+    @GetMapping("/matches/{matchId}/chosencard/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<WhiteCard> getChosenCard(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+        Match currentMatch = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        Hand playerHand = currentRound.getHandByUserId(userId);
+        WhiteCard chosenCard = playerHand.getChosenCard();
+
+        return ResponseEntity.ok(chosenCard);
+    }
+
+}

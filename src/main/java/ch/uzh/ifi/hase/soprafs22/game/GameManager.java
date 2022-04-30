@@ -34,6 +34,7 @@ public class GameManager {
         //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands
         generatedMatch.createRound();
         //saving the Match in matches
+        generatedMatch.createScoreBoard();
         matches.add(generatedMatch);
     }
 
@@ -81,6 +82,14 @@ public class GameManager {
         for (Lobby lobby: lobbies){
             if (lobby.getId() == lobbyId){
                 lobbies.remove(lobby);
+            }
+        }
+    }
+
+    public void deleteMatch(long matchId) {
+        for (Match match: matches){
+            if (match.getId() == matchId){
+                matches.remove(match);
             }
         }
     }

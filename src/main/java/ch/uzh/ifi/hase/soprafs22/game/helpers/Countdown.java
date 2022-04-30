@@ -27,7 +27,7 @@ public class Countdown {
             @Override
             public void run() {
                 System.out.println(time--);
-                if(time == 0){
+                if(time <= 0){
                     timer.cancel();
                 }
             }

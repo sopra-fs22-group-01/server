@@ -13,6 +13,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
@@ -160,8 +161,10 @@ public class GameService {
     public void incrementCardScore (long matchId, long searchedCardOwnerId) throws IncorrectIdException {
         Match match = gameManager.getMatch(matchId);
         Round currentRound = match.getRound();
+        currentRound.incrementCardScores(searchedCardOwnerId);
+       /*
         ArrayList<WhiteCard> allChosenCards = currentRound.getAllChosenCards();
-
+        // moved this to Round.incrementCardScores()
         //iterates through all chosen cards and increments the wanted card by 1
         for(WhiteCard whiteCard : allChosenCards){
             // in chosenCard is max. one card per player as each player can only choose one card
@@ -171,6 +174,9 @@ public class GameService {
                 whiteCard.incrementCard(); //increments the card score by 1
             }
         }
+         */
+
+
     }
 
     public ArrayList<Long> getLobbiesId() {
@@ -188,11 +194,11 @@ public class GameService {
         return allLobbies;
     }
 
-    public HashMap<String, Integer> getRanking(long matchId) throws IncorrectIdException {
+    public ArrayList<Ranking> getRanking(long matchId) throws IncorrectIdException {
         Match match = gameManager.getMatch(matchId);
         ScoreBoard scoreBoard = match.getScoreBoard();
         ArrayList<User> matchPlayers = match.getMatchPlayers();
-        HashMap<String, Integer> ranking = scoreBoard.getRanking(matchPlayers);
+        ArrayList<Ranking> ranking = scoreBoard.getRanking(matchPlayers);
         return ranking;
     }
 
