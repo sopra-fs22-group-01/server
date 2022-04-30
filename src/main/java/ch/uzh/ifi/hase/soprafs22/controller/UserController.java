@@ -274,4 +274,18 @@ public class UserController {
             return ResponseEntity.ok(MatchStatus.MatchOngoing);
         }
     }
+
+    //testendpoint to get chosencard to see if chosen card is even saved in hand
+    @GetMapping("/matches/{matchId}/chosencard/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<WhiteCard> getChosenCard(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+        Match currentMatch = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        Hand playerHand = currentRound.getHandByUserId(userId);
+        WhiteCard chosenCard = playerHand.getChosenCard();
+
+        return ResponseEntity.ok(chosenCard);
+    }
+
 }

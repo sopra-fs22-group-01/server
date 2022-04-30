@@ -102,12 +102,17 @@ public class Round {
 
     // Player wants to play with a card
     public void setChosenCard(WhiteCard whiteCard){
+        System.out.println("Card in Round to be set as chosenCard contains the text " + whiteCard.getText());
         // setting the chosenCard of the hand
         for (Hand hand : hands){
-            if (hand.getOwner().equals(whiteCard.getOwner())){
+            if (hand.getOwner().getId().equals(whiteCard.getOwner().getId())){ //checks if owner of whiteCard equals owner of hand
+                System.out.println("Owner of the chosen card = " + whiteCard.getOwner() + " and text is " + whiteCard.getText());
                 hand.setChosenCard(whiteCard);
             }
         }
+
+
+
         //adding the chosen card to the array of all chosen cards
         chosenCards.add(whiteCard);
     }
