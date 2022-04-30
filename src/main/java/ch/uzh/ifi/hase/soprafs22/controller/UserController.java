@@ -8,7 +8,10 @@ import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -20,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,8 +188,10 @@ public class UserController {
         gameManager.createMatch(allUsers,matchId);
         Match test_match = gameManager.getMatch(matchId);//!!!!!!!!!!!
         Hand test_hand = test_match.getRound().getHandByUserId(userId);//!!!!!!
+
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand.getCardsFromHand());
+
 */
 
 
@@ -205,8 +211,10 @@ public class UserController {
         gameManager.createMatch(allUsers,matchId);
         Match test_match = gameManager.getMatch(matchId);//!!!!!!!!!!!
         Hand test_hand = test_match.getRound().getHandByUserId(userId);//!!!!!!
+
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(test_hand.getCardsFromHand());
+
 */
 
 
@@ -237,7 +245,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<LobbyStatus> getLobbyStatus() throws Exception {
+
         LobbyStatus lobbyStatus = userService.getLobbyStatus();
+
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(lobbyStatus);
     }*/

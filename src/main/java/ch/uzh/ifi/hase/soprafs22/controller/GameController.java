@@ -282,6 +282,7 @@ public class GameController {
         }
     }
 
+    // retrieve currentRound winnerCards
     //retrieves the ranking of the players
     @GetMapping("/matches/{matchId}/winner")
     @ResponseStatus(HttpStatus.OK)

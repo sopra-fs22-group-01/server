@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * User Service
@@ -28,79 +30,79 @@ import java.util.*;
 @Transactional
 public class UserService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+  private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private final UserRepository userRepository;
-    public UserRepository getUserRepository(){return this.userRepository;}
+  private final UserRepository userRepository;
+  public UserRepository getUserRepository(){return this.userRepository;}
 
-    @Autowired //what does @Autowired do exactly?
-    public UserService(@Qualifier("userRepository") UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  @Autowired //what does @Autowired do exactly?
+  public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    public List<User> getUsers() {
-        return this.userRepository.findAll();
-    }
+  public List<User> getUsers() {
+    return this.userRepository.findAll();
+  }
 
-    public User createUser(User newUser) {
-        newUser.setToken(UUID.randomUUID().toString());
+  public User createUser(User newUser) {
+    newUser.setToken(UUID.randomUUID().toString());
 
-        //sets date and time to the moment it gets created
-        Date date = new Date();
-        newUser.setCreation_date(date);
+    //sets date and time to the moment it gets created
+    Date date = new Date();
+    newUser.setCreation_date(date);
 
-        checkIfUserExists(newUser);
+    checkIfUserExists(newUser);
 
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
-        newUser = userRepository.save(newUser);
-        userRepository.flush();
-
-
-
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
-    }
-
-    /**
-     * This is a helper method that will check the uniqueness criteria of the
-     * username and the name
-     * defined in the User entity. The method will do nothing if the input is unique
-     * and throw an error otherwise.
-     *
-     * @param userToBeCreated
-     * @throws org.springframework.web.server.ResponseStatusException
-     * @see User
-     */
-    private void checkIfUserExists(User userToBeCreated) {
-        User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
-        //User userByName = userRepository.findByName(userToBeCreated.getName());
-
-        String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
-        if (userByUsername != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format(baseErrorMessage, "username ", "is"));
-        }
-    }
-
-    private void checkIfUsernameUnique(String username){
-        List<User> allUsers=getUsers();
-        for(User user:allUsers){
-            if(user.getUsername().equals(username)){
-                String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        String.format(baseErrorMessage, "username ", "is"));
-            }
-        }
-    }
+    // saves the given entity but data is only persisted in the database once
+    // flush() is called
+    newUser = userRepository.save(newUser);
+    userRepository.flush();
 
 
-    public void logOutUser(User userToLogOut){
-        userToLogOut.setUserStatus(UserStatus.OFFLINE);
-        userToLogOut.setIsReady(ReadyStatus.UNREADY);
-        userRepository.flush();
-        log.debug("Logged out user %s", userToLogOut.getUsername());
-    }
+
+    log.debug("Created Information for User: {}", newUser);
+    return newUser;
+  }
+
+  /**
+   * This is a helper method that will check the uniqueness criteria of the
+   * username and the name
+   * defined in the User entity. The method will do nothing if the input is unique
+   * and throw an error otherwise.
+   *
+   * @param userToBeCreated
+   * @throws org.springframework.web.server.ResponseStatusException
+   * @see User
+   */
+  private void checkIfUserExists(User userToBeCreated) {
+      User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
+      //User userByName = userRepository.findByName(userToBeCreated.getName());
+
+      String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+      if (userByUsername != null) {
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                  String.format(baseErrorMessage, "username ", "is"));
+      }
+  }
+
+  private void checkIfUsernameUnique(String username){
+      List<User> allUsers=getUsers();
+      for(User user:allUsers){
+          if(user.getUsername().equals(username)){
+              String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                      String.format(baseErrorMessage, "username ", "is"));
+          }
+      }
+  }
+
+
+  public void logOutUser(User userToLogOut){
+    userToLogOut.setUserStatus(UserStatus.OFFLINE);
+    userToLogOut.setIsReady(ReadyStatus.UNREADY);
+    userRepository.flush();
+    log.debug("Logged out user %s", userToLogOut.getUsername());
+  }
 
     public void logInUser(User userToLogIn){
         //userToLogIn.setToken(UUID.randomUUID().toString());
@@ -111,52 +113,52 @@ public class UserService {
         log.debug("Logged in user %s", userToLogIn.getUsername());
     }
 
-    //searches for the requested user in the database
-    public User findUserData(long id) {
-        User requestedUser = userRepository.findById(id);
-        if(requestedUser != null){
-            return requestedUser;
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    public User findUserByToken(String token){
-        User requestedUser = userRepository.findByToken(token);
+  //searches for the requested user in the database
+  public User findUserData(long id) {
+    User requestedUser = userRepository.findById(id);
+    if(requestedUser != null){
         return requestedUser;
     }
-
-    public User findUserById(long id) {
-        User requestedUser = userRepository.findById(id);
-        if (requestedUser==null){
-            String baseErrorMessage = "User not found!";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format(baseErrorMessage));
-        }
-        return requestedUser;
+    else{
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+  }
 
-    public User findUserByUsername(String username){
-        User requestedUser = userRepository.findByUsername(username);
-        return requestedUser;
+  public User findUserByToken(String token){
+    User requestedUser = userRepository.findByToken(token);
+    return requestedUser;
+  }
+
+  public User findUserById(long id) {
+    User requestedUser = userRepository.findById(id);
+    if (requestedUser==null){
+        String baseErrorMessage = "User not found!";
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                String.format(baseErrorMessage));
     }
+    return requestedUser;
+  }
 
-    public void updateUserUsername(UserPutDTO userPutDTO){
-        User databaseUser=findUserById(userPutDTO.getId());
-        if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) { //if a username gets entered in the frontend and it is not an empty space
-            if (databaseUser != null) { //if it finds the user corresponding to the userid
-                checkIfUsernameUnique(userPutDTO.getUsername()); //if username is unique
-                databaseUser.setUsername(userPutDTO.getUsername()); //change username
-            }
-        }
-    }
+  public User findUserByUsername(String username){
+      User requestedUser = userRepository.findByUsername(username);
+      return requestedUser;
+  }
 
-    public void updateUserPassword(UserPutDTO userPutDTO){
-        User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
-        if(userPutDTO.getPassword()!=null){
-            databaseUser.setPassword(userPutDTO.getPassword());
-        }
+  public void updateUserUsername(UserPutDTO userPutDTO){
+      User databaseUser=findUserById(userPutDTO.getId());
+      if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) { //if a username gets entered in the frontend and it is not an empty space
+          if (databaseUser != null) { //if it finds the user corresponding to the userid
+              checkIfUsernameUnique(userPutDTO.getUsername()); //if username is unique
+              databaseUser.setUsername(userPutDTO.getUsername()); //change username
+          }
+      }
+  }
+
+  public void updateUserPassword(UserPutDTO userPutDTO){
+      User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
+      if(userPutDTO.getPassword()!=null){
+          databaseUser.setPassword(userPutDTO.getPassword());
+      }
     }
 
     public void updateUserReadyStatus(User user){
@@ -172,12 +174,12 @@ public class UserService {
     }
 
 
-    public String updateUser(UserPutDTO userPutDTO) {
-        updateUserUsername(userPutDTO);
-        updateUserPassword(userPutDTO);
-        //updateUserReadyStatus(userPutDTO);
-        return "User successfully updated";
-    }
+  public String updateUser(UserPutDTO userPutDTO) {
+      updateUserUsername(userPutDTO);
+      updateUserPassword(userPutDTO);
+      //updateUserReadyStatus(userPutDTO);
+      return "User successfully updated";
+  }
 
   /*
     public LobbyStatus getLobbyStatus() {

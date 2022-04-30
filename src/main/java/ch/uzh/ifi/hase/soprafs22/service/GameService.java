@@ -75,12 +75,12 @@ public class GameService {
             System.out.println("file not found");
         }
 
-        return ruleArrayList;
+    return ruleArrayList;
 
 
     }
 
-    ////NOW IN USERSERVICE
+   ////NOW IN USERSERVICE
   /*  public User findUserById(long id) {
         User requestedUser = userRepository.findById(id);
         if (requestedUser==null){
