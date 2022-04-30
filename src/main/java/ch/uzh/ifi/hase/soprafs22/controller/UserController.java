@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
@@ -237,6 +238,20 @@ public class UserController {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    @PutMapping("/matches/{matchId}/rounds")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public ResponseEntity<MatchStatus> updateRound(@PathVariable long matchId) throws Exception{
+        Match currentMatch = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        boolean keepPlaying = currentRound.startNewRound(); // return true is new round, false if match is over
+        if (!keepPlaying){
+            return ResponseEntity.ok(MatchStatus.GameOver);
+        }
+        else{
+            return ResponseEntity.ok(MatchStatus.MatchOngoing);
         }
     }
 
