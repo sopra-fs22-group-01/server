@@ -48,14 +48,6 @@ public class GameManager {
         return generatedLobby;
     }
 
-    public ArrayList<Long> getLobbiesId() {
-        ArrayList<Long> lobbiesId = new ArrayList<>();
-        for (Lobby lobby: lobbies){
-            lobbiesId.add(lobby.getId());
-        }
-        return lobbiesId;
-    }
-
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
         for (Lobby lobby: lobbies){
             if (lobby.getId().equals(lobbyId)){
@@ -78,6 +70,7 @@ public class GameManager {
         throw new IncorrectIdException("The match was not found");
     }
 
+    /*
     public void deleteLobby(long lobbyId) {
         for (Lobby lobby: lobbies){
             if (lobby.getId() == lobbyId){
@@ -93,4 +86,13 @@ public class GameManager {
             }
         }
     }
+
+    public ArrayList<Long> getLobbiesId() {
+        ArrayList<Long> lobbiesId = new ArrayList<>();
+        for (Lobby lobby: lobbies){
+            lobbiesId.add(lobby.getId());
+        }
+        return lobbiesId;
+    }
+    */
 }
