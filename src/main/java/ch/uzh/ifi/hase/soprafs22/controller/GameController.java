@@ -280,7 +280,7 @@ public class GameController {
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
-    }
+    }//
 
     // retrieve currentRound winnerCards
     //retrieves the ranking of the players

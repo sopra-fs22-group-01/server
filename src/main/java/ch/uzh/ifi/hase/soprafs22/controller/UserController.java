@@ -264,7 +264,7 @@ public class UserController {
         Round currentRound = currentMatch.getRound();
 
         // gets winnerCards from last rounds to update all scores in database
-        userService.updateScores(currentRound.getRoundWinnerCards());
+        userService.updateScores(currentRound.getRoundWinnerCards()); //
 
         boolean keepPlaying = currentRound.startNewRound(); // return true if new round, false if match is over
         if (!keepPlaying){

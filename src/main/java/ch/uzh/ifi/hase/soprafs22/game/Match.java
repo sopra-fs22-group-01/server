@@ -62,7 +62,7 @@ public class Match {
     // The method increases the winners' score
     // It also tackles the edge case where there are multiple winners, their score are increased together
     public void updateScoreBoard(){
-        ArrayList<WhiteCard> roundWinners = round.getRoundWinner();
+        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
         for(WhiteCard whiteCard: roundWinners){
             User winner = whiteCard.getOwner();
             int scoreCard = whiteCard.getScore();
@@ -70,22 +70,11 @@ public class Match {
         }
     }
 
-    // gets winnerCards from last rounds to update all scores of players, but not in Database
-    public void updatePlayerScores(){
-        ArrayList<WhiteCard> winnerCards = this.round.getRoundWinnerCards();
-        for(WhiteCard whiteCard : winnerCards){
-            for(User user : this.players){
-                if (whiteCard.getOwner().getId() == user.getId()){
-                    int oldScore = user.getScore();
-                    user.setScore(oldScore+1);
-                }
-            }
-        }
-    }
 
     public void createScoreBoard() {
         this.scoreBoard = new ScoreBoard();
     }
+
 
     // gets winnerCards from last rounds to update all scores of players, but not in Database
     public void updatePlayerScores(){
@@ -95,7 +84,7 @@ public class Match {
                if (whiteCard.getOwner().getId() == user.getId()){
                    int oldScore = user.getScore();
                    user.setScore(oldScore+1);
-               }
+               }//
            }
         }
     }

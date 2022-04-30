@@ -42,7 +42,7 @@ public class ScoreBoard {
         }
         return winners;
     }
-
+//
     public ArrayList<Ranking> getRanking(ArrayList<User> players){
         /*
          not using users as keys as the user can change during the game (e.g. score of user),
