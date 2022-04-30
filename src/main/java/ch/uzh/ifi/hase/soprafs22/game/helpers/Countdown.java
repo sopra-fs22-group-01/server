@@ -17,23 +17,30 @@ public class Countdown {
     private int time = 10;
     private Timer timer;
 
-    public void resetTimer(){
+    private void resetTimer() {
         this.time = 10;
     }
 
     // call this method to start the timer
-    public void startTimer(){
+    public void startTimer() {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 System.out.println(time--);
                 if(time <= 0){
                     timer.cancel();
+                    try {
+                        Thread.sleep(5000);
+                        resetTimer();
+                        startTimer();
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
         timer = new Timer();
-        resetTimer();
         timer.scheduleAtFixedRate(timerTask, 1500, 1000);
         /*
         this.timer = new Timer();
