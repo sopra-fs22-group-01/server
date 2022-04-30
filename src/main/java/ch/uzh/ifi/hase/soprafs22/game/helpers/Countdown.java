@@ -37,7 +37,7 @@ public class Countdown {
                     if(time <= 0){
                         timer.cancel();
                         try {
-                            Thread.sleep(1);
+                            Thread.sleep(500); //was 500 before, worth a try for heroku
                             resetTimer();
                             startTimer();
                         }
