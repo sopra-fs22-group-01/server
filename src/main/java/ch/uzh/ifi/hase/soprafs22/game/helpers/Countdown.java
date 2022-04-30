@@ -37,7 +37,7 @@ public class Countdown {
                     if(time <= 0){
                         timer.cancel();
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(1);
                             resetTimer();
                             startTimer();
                         }
