@@ -268,11 +268,27 @@ public class UserController {
 
         boolean keepPlaying = currentRound.startNewRound(); // return true if new round, false if match is over
         if (!keepPlaying){
+            currentMatch.setMatchStatus(MatchStatus.GameOver);
             return ResponseEntity.ok(MatchStatus.GameOver);
         }
         else{
             return ResponseEntity.ok(MatchStatus.MatchOngoing);
         }
+    }
+
+    //get matchStatus
+    @GetMapping("/matches/{matchId}/status")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<MatchStatus> getMatchStatus(@PathVariable long matchId) {
+        try{
+            Match currentMatch = gameManager.getMatch(matchId);
+            return ResponseEntity.ok(currentMatch.getMatchStatus());
+        }catch (IncorrectIdException e) {
+            return ResponseEntity.ok(MatchStatus.NotYetCreated);
+        }
+
+
     }
 
     //testendpoint to get chosencard to see if chosen card is even saved in hand

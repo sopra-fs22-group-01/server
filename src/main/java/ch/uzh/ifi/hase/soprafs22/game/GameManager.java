@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.NoLobbyException;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
@@ -26,7 +27,7 @@ public class GameManager {
         gameManager = null;
     }
 
-    public void createMatch(ArrayList<User> players, Long matchId){
+    public Match createMatch(ArrayList<User> players, Long matchId){
         //new match always gets the id from the lobby
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
@@ -36,6 +37,7 @@ public class GameManager {
         //saving the Match in matches
         generatedMatch.createScoreBoard();
         matches.add(generatedMatch);
+        return generatedMatch;
     }
 
     public Lobby createLobby(){
@@ -46,14 +48,6 @@ public class GameManager {
         //saving the Lobby in lobbies
         lobbies.add(generatedLobby);
         return generatedLobby;
-    }
-
-    public ArrayList<Long> getLobbiesId() {
-        ArrayList<Long> lobbiesId = new ArrayList<>();
-        for (Lobby lobby: lobbies){
-            lobbiesId.add(lobby.getId());
-        }
-        return lobbiesId;
     }
 
     public Lobby getLobby(Long lobbyId) throws IncorrectIdException {
@@ -78,6 +72,7 @@ public class GameManager {
         throw new IncorrectIdException("The match was not found");
     }
 
+    /*
     public void deleteLobby(long lobbyId) {
         for (Lobby lobby: lobbies){
             if (lobby.getId() == lobbyId){
@@ -93,4 +88,13 @@ public class GameManager {
             }
         }
     }
+
+    public ArrayList<Long> getLobbiesId() {
+        ArrayList<Long> lobbiesId = new ArrayList<>();
+        for (Lobby lobby: lobbies){
+            lobbiesId.add(lobby.getId());
+        }
+        return lobbiesId;
+    }
+    */
 }

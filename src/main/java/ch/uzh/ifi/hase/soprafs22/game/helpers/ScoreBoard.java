@@ -6,15 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ScoreBoard {
-    private User winner;
-
-    public void updateScore(User player, int obtainedPoints){
-        //adding the achieved points to the user's score
-        int oldScore = player.getScore();
-        int newScore = oldScore + obtainedPoints;
-        player.setScore(newScore);
-    }
-
+    //private User winner;
 
     public ArrayList<User> getPlayersOfHighestRank(ArrayList<User> players) {
         //finds the players with the highest score
@@ -64,6 +56,7 @@ public class ScoreBoard {
         return rankings;
     }
 
+    /*
     //returns arraylist of users with their current score (key= users, val = score)
     public HashMap getCurrentScores(ArrayList<User> players){
         HashMap<String, Integer> playerScores = new HashMap();
@@ -74,5 +67,15 @@ public class ScoreBoard {
         }
         return playerScores;
     }
+    */
+
+    /*
+    public void updateScore(User player, int obtainedPoints){
+        //adding the achieved points to the user's score
+        int oldScore = player.getScore();
+        int newScore = oldScore + obtainedPoints;
+        player.setScore(newScore);
+    }
+    */
 
 }

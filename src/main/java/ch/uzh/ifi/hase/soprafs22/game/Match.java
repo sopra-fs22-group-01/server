@@ -1,6 +1,7 @@
 
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
@@ -20,14 +21,16 @@ import java.util.Timer;
 public class Match {
     private Long id;
     private ArrayList<User> players = new ArrayList<>();
-/*    private ArrayList<Hand> allPlayersHands = new ArrayList<>();*/
+    //private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 
     private ScoreBoard scoreBoard;
     private Timer timer;
     private Round round;
+    private MatchStatus matchStatus;
 
     public Match(Long id) {
         this.id = id;
+        this.matchStatus = MatchStatus.MatchOngoing;
     }
 
     public void createRound(){
@@ -35,17 +38,19 @@ public class Match {
         round = new Round(players);
     }
 
+    public void setMatchStatus(MatchStatus matchStatus){this.matchStatus = matchStatus;}
+    public MatchStatus getMatchStatus(){return this.matchStatus;}
+
     public ScoreBoard getScoreBoard() {
         return scoreBoard;
     }
+
 
     public Timer getTimer() {
         return timer;
     }
 
-    public Round getRound(){
-        return round;
-    }
+    public Round getRound(){return round;}
 
     public ArrayList<User> getMatchPlayers(){
         return players;
@@ -57,17 +62,6 @@ public class Match {
 
     public Long getId() {
         return id;
-    }
-
-    // The method increases the winners' score
-    // It also tackles the edge case where there are multiple winners, their score are increased together
-    public void updateScoreBoard(){
-        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
-        for(WhiteCard whiteCard: roundWinners){
-            User winner = whiteCard.getOwner();
-            int scoreCard = whiteCard.getScore();
-            scoreBoard.updateScore(winner, scoreCard);
-        }
     }
 
 
@@ -112,5 +106,18 @@ public class Match {
 
     }
     */
+
+    /*
+    // The method increases the winners' score
+    // It also tackles the edge case where there are multiple winners, their score are increased together
+    public void updateScoreBoard(){
+        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
+        for(WhiteCard whiteCard: roundWinners){
+            User winner = whiteCard.getOwner();
+            int scoreCard = whiteCard.getScore();
+            scoreBoard.updateScore(winner, scoreCard);
+        }
+    }
+     */
 
 }
