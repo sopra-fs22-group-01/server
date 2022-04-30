@@ -21,7 +21,7 @@ import java.util.Timer;
 public class Match {
     private Long id;
     private ArrayList<User> players = new ArrayList<>();
-/*    private ArrayList<Hand> allPlayersHands = new ArrayList<>();*/
+    //private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 
     private ScoreBoard scoreBoard;
     private Timer timer;
@@ -45,6 +45,7 @@ public class Match {
         return scoreBoard;
     }
 
+
     public Timer getTimer() {
         return timer;
     }
@@ -62,19 +63,6 @@ public class Match {
     public Long getId() {
         return id;
     }
-
-    /*
-    // The method increases the winners' score
-    // It also tackles the edge case where there are multiple winners, their score are increased together
-    public void updateScoreBoard(){
-        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
-        for(WhiteCard whiteCard: roundWinners){
-            User winner = whiteCard.getOwner();
-            int scoreCard = whiteCard.getScore();
-            scoreBoard.updateScore(winner, scoreCard);
-        }
-    }
-     */
 
 
     public void createScoreBoard() {
@@ -118,5 +106,18 @@ public class Match {
 
     }
     */
+
+    /*
+    // The method increases the winners' score
+    // It also tackles the edge case where there are multiple winners, their score are increased together
+    public void updateScoreBoard(){
+        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
+        for(WhiteCard whiteCard: roundWinners){
+            User winner = whiteCard.getOwner();
+            int scoreCard = whiteCard.getScore();
+            scoreBoard.updateScore(winner, scoreCard);
+        }
+    }
+     */
 
 }
