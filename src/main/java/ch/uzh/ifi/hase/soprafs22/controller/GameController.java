@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
@@ -123,20 +124,6 @@ public class GameController {
         }
     }
 
-    //Creates a new match and puts all players from the lobby into it
-    @PostMapping("/matches/{lobbyId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void startingMatch(@PathVariable long lobbyId){
-        String baseErrorMessage1 = "Match could not be created";
-        try {
-            gameService.startMatch(lobbyId);
-        }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
-    }
-
     //Creates a lobby and returns the id of the newly created lobby //
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
@@ -153,7 +140,7 @@ public class GameController {
     @GetMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ArrayList<Lobby>> getAllLobbiesId(){
+    public ResponseEntity<ArrayList<Lobby>> getAllLobbies(){
         ArrayList<Lobby> allLobbies=gameManager.getAllLobby();
         return ResponseEntity.ok(allLobbies);
     }
@@ -174,6 +161,23 @@ public class GameController {
         }
     }
 
+
+    //Creates a new match and puts all players from the lobby into it
+    @PostMapping("/matches/{lobbyId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Long> startingMatch(@PathVariable long lobbyId){
+        String baseErrorMessage1 = "Match could not be created";
+        try {
+            Match newMatch = gameService.startMatch(lobbyId);
+            newMatch.setMatchStatus(MatchStatus.MatchOngoing);
+            return ResponseEntity.ok(newMatch.getId());
+        }
+        catch (IncorrectIdException e1){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+    }
+
     //retrieves all users from a specific match and returns array of userGetDTO
     @GetMapping("/matches/{matchId}/users")
     @ResponseStatus(HttpStatus.OK)
@@ -182,6 +186,7 @@ public class GameController {
         // fetch all users in the internal representation
         Match currentMatch = gameManager.getMatch(matchId);
         List<User> matchUsers = currentMatch.getMatchPlayers();
+
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
         // convert each user to the API representation
@@ -212,9 +217,9 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> getBlackCard(@PathVariable long matchId) throws Exception {
-        BlackCard b = gameService.getBlackCard(matchId);
+        BlackCard blackCard = gameService.getBlackCard(matchId);
         //.ok sets the HTTP status to OK (200)
-        return ResponseEntity.ok(b.getText());
+        return ResponseEntity.ok(blackCard.getText());
     }
 
     //increments the score of a white card by one
