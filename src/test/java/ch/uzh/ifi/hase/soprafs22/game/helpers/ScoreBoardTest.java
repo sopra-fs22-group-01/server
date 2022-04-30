@@ -46,17 +46,6 @@ class ScoreBoardTest {
         players.clear();
     }
 
-    /*
-    @Test
-    void testUpdateScore() {
-        //tests if the user's score gets correct updated when they achieved a new point
-        int expected = 1;
-        scoreBoard.updateScore(testUser, 1);
-        int actual = testUser.getScore();
-        assertEquals(expected, actual);
-    }
-     */
-
     @Test
     void testGetPlayersOfHighestRank() {
         //tests if the players of the highest rank are returned
@@ -84,4 +73,15 @@ class ScoreBoardTest {
 
     }
     */
+
+    /*
+    @Test
+    void testUpdateScore() {
+        //tests if the user's score gets correct updated when they achieved a new point
+        int expected = 1;
+        scoreBoard.updateScore(testUser, 1);
+        int actual = testUser.getScore();
+        assertEquals(expected, actual);
+    }
+     */
 }
