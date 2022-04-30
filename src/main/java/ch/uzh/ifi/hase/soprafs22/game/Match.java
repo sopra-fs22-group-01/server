@@ -28,9 +28,9 @@ public class Match {
     private Round round;
     private MatchStatus matchStatus;
 
-    public Match(Long id, MatchStatus matchStatus) {
+    public Match(Long id) {
         this.id = id;
-        this.matchStatus = matchStatus;
+        this.matchStatus = MatchStatus.MatchOngoing;
     }
 
     public void createRound(){

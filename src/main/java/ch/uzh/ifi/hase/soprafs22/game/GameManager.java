@@ -29,7 +29,7 @@ public class GameManager {
 
     public Match createMatch(ArrayList<User> players, Long matchId){
         //new match always gets the id from the lobby
-        Match generatedMatch = new Match(matchId, MatchStatus.MatchOngoing);
+        Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);
         //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands

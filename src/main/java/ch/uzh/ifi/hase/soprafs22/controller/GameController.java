@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
@@ -123,8 +124,6 @@ public class GameController {
         }
     }
 
-
-
     //Creates a lobby and returns the id of the newly created lobby //
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
@@ -171,6 +170,7 @@ public class GameController {
         String baseErrorMessage1 = "Match could not be created";
         try {
             Match newMatch = gameService.startMatch(lobbyId);
+            newMatch.setMatchStatus(MatchStatus.MatchOngoing);
             return ResponseEntity.ok(newMatch.getId());
         }
         catch (IncorrectIdException e1){
@@ -186,9 +186,6 @@ public class GameController {
         // fetch all users in the internal representation
         Match currentMatch = gameManager.getMatch(matchId);
         List<User> matchUsers = currentMatch.getMatchPlayers();
-
-        // match started, safely delete lobby
-        //gameManager.deleteLobby(matchId);
 
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
