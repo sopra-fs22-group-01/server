@@ -4,6 +4,7 @@ public class Ranking {
 
     private int rank;
     private String username;
+    private int score;
 
     public Ranking(int rank, String username) {
         this.rank = rank;
@@ -11,11 +12,11 @@ public class Ranking {
     }
 
     public int getRank() {
-        return rank;
+        return this.rank;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
 
@@ -25,5 +26,12 @@ public class Ranking {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+    public int getScore() {
+        return this.score;
     }
 }
