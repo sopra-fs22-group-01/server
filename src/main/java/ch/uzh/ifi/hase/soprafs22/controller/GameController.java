@@ -297,7 +297,7 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
-/*
+/* 7464
     //updates the round such that next round can be played
     @PutMapping("matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)

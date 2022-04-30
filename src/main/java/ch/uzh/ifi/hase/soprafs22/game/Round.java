@@ -21,28 +21,25 @@ import java.util.Objects;
  * */
 
 public class Round {
-    GameManager gameManager = GameManager.getInstance();
     //Round always displays a unique blackCard at the beginning of the round
     private BlackCard blackCard;
     //Chosen cards are the cards that are played by the players and that will get displayed to vote
     private ArrayList<WhiteCard> chosenCards = new ArrayList<>();
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
-    private int roundNumber;
-    private int max_Rounds = 3;
-    private long matchId;
+    private int roundNumber = 0;
+    private int max_Rounds = 5;
 
     //contdown of a specific round
     private Countdown roundCountdown ;
 
 
     // Constructor
-    public Round(ArrayList<User> players, long matchId) {
+    public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();
         this.blackCard.createCard();
         createHands(players);
-        this.roundNumber = 1;
-        this.matchId = matchId;
+        this.roundNumber++;
         this.roundCountdown = new Countdown();
         roundCountdown.startTimer();
     }
@@ -75,12 +72,8 @@ public class Round {
 
             return true;
         }
-        else{
-            // delete this match from gameManager when match is over
-            // return false if match is over
-            return false;
-        }
-
+        // return false if match is over
+        return false;
     }
 
     //can get deleted when everything implemented?
@@ -119,22 +112,6 @@ public class Round {
         chosenCards.add(whiteCard);
     }
 
-    /*
-    public void removePlayedCard(WhiteCard playedCard){
-        User owner = playedCard.getOwner();
-        for (Hand hand: hands){
-            if(hand.getOwner().getId()==owner.getId()){
-                for (WhiteCard whiteCard: hand.getUserHand()){
-                    if (whiteCard.getText()==playedCard.getText()){
-                        hand.
-                    }
-                }
-            }
-        }
-    }
-
-     */
-
     public ArrayList<WhiteCard> getAllChosenCards(){ return chosenCards;}
 
     private void createHands(ArrayList<User> players){
@@ -169,6 +146,7 @@ public class Round {
                 highestScoreCards.add(chosenCard);
             }
         }
+
         return highestScoreCards;
     }
 
