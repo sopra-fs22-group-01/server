@@ -3,8 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.service;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -105,13 +105,14 @@ public class UserService {
     log.debug("Logged out user %s", userToLogOut.getUsername());
   }
 
-  public void logInUser(User userToLogIn){
-    //userToLogIn.setToken(UUID.randomUUID().toString());
-    userToLogIn.setUserStatus(UserStatus.ONLINE);
-    userToLogIn.setIsReady(ReadyStatus.UNREADY);
-    userRepository.flush();
-    log.debug("Logged in user %s", userToLogIn.getUsername());
-  }
+    public void logInUser(User userToLogIn){
+        //userToLogIn.setToken(UUID.randomUUID().toString());
+        userToLogIn.setUserStatus(UserStatus.ONLINE);
+        userToLogIn.setIsReady(ReadyStatus.UNREADY);
+        userToLogIn.setScore(0);
+        userRepository.flush();
+        log.debug("Logged in user %s", userToLogIn.getUsername());
+    }
 
   //searches for the requested user in the database
   public User findUserData(long id) {
@@ -197,4 +198,19 @@ public class UserService {
     public List<User> test_getUsers() {
         return this.userRepository.findAll();
     }
+
+
+    //updates scores of all currentRound winners in database
+    public void updateScores(ArrayList<WhiteCard> highestScoreCards){
+
+        for (WhiteCard winnerCard: highestScoreCards){
+            long id = winnerCard.getOwner().getId();
+            User userToBeUpdated = findUserById(id);
+            int oldScore = userToBeUpdated.getScore();
+            userToBeUpdated.setScore(oldScore+1);
+        }
+
+    }
+
+
 }

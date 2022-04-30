@@ -56,16 +56,18 @@ public class Hand {
     public void updateHand(){
         System.out.println("Chosen card: " + chosenCard.getText());
         //removes chosenCard (card which got played in last round) form hand
+
         for(WhiteCard whiteCard : this.userHand){
-            if(whiteCard.getText().equals(chosenCard.getText())){ //.equals before
-                userHand.remove(whiteCard);
+            if(whiteCard/*.getText()*/.equals(this.chosenCard/*.getText()*/)){
+                this.userHand.remove(whiteCard);
                 System.out.println("card got removed from user hand");
+                break;
             }
         }
         System.out.println("after removal should have happened-----------------");
         WhiteCard card = new WhiteCard(owner);
         card.createCard();
-        userHand.add(card);
+        this.userHand.add(card);
     }
 
     //sets chosenCard to null

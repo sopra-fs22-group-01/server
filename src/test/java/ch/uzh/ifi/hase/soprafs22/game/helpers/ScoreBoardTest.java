@@ -72,6 +72,7 @@ class ScoreBoardTest {
 
     }
 
+    /*
     @Test
     void testGetRanking() {
         HashMap ranking = scoreBoard.getRanking(players);
@@ -80,4 +81,5 @@ class ScoreBoardTest {
         assertEquals(1, ranking.get(testUser3.getUsername()));
 
     }
+    */
 }
