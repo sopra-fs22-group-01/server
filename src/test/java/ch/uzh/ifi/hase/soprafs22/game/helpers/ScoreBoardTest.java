@@ -55,24 +55,30 @@ class ScoreBoardTest {
 
     @Test
     void testGetPlayersOfHighestRankOneWinner() {
-        //tests if the players of the highest rank are returned
+        //tests if one winner is returned when only one player has the highest score
         int expected = 1;
         ArrayList<User> winners = scoreBoard.getPlayersOfHighestRank(players);
         int actual = winners.size();
         assertEquals(expected, actual);
-
     }
 
-    /*
+
     @Test
     void testGetRanking() {
-        HashMap ranking = scoreBoard.getRanking(players);
-        assertEquals(2, ranking.get(testUser.getUsername()));
-        assertEquals(2, ranking.get(testUser2.getUsername()));
-        assertEquals(1, ranking.get(testUser3.getUsername()));
-
+        ArrayList<Ranking> ranking = scoreBoard.getRanking(players);
+        for (Ranking rank : ranking){
+            if (rank.getUsername().equals(testUser.getUsername())){
+                assertEquals(2, rank.getRank());
+            }
+            if (rank.getUsername().equals(testUser2.getUsername())){
+                assertEquals(2, rank.getRank());
+            }
+            if (rank.getUsername().equals(testUser3.getUsername())){
+                assertEquals(1, rank.getRank());
+            }
+        }
     }
-    */
+
 
     /*
     @Test
