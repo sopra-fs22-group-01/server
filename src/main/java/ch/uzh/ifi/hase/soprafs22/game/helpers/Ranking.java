@@ -6,9 +6,10 @@ public class Ranking {
     private String username;
     private int score;
 
-    public Ranking(int rank, String username) {
+    public Ranking(int rank, String username, int score) {
         this.rank = rank;
         this.username = username;
+        this.score = score;
     }
 
     public int getRank() {

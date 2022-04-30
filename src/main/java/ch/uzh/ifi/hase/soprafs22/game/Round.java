@@ -150,7 +150,7 @@ public class Round {
         return highestScoreCards;
     }
 
-    public void incrementCardScores(long searchedCardOwnerId){
+    public void incrementCardScores(long searchedCardOwnerId){ //
         //iterates through all chosen cards and increments the wanted card by 1
         for(WhiteCard whiteCard : this.chosenCards){
             // in chosenCard is max. one card per player as each player can only choose one card

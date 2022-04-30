@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * User Service
@@ -102,14 +105,14 @@ public class UserService {
     log.debug("Logged out user %s", userToLogOut.getUsername());
   }
 
-  public void logInUser(User userToLogIn){
-    //userToLogIn.setToken(UUID.randomUUID().toString());
-    userToLogIn.setUserStatus(UserStatus.ONLINE);
-    userToLogIn.setIsReady(ReadyStatus.UNREADY);
-    userToLogIn.setScore(0);
-    userRepository.flush();
-    log.debug("Logged in user %s", userToLogIn.getUsername());
-  }
+    public void logInUser(User userToLogIn){
+        //userToLogIn.setToken(UUID.randomUUID().toString());
+        userToLogIn.setUserStatus(UserStatus.ONLINE);
+        userToLogIn.setIsReady(ReadyStatus.UNREADY);
+        userToLogIn.setScore(0);
+        userRepository.flush();
+        log.debug("Logged in user %s", userToLogIn.getUsername());
+    }
 
   //searches for the requested user in the database
   public User findUserData(long id) {

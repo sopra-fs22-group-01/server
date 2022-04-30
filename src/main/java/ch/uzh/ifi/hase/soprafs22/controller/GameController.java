@@ -243,7 +243,7 @@ public class GameController {
         return ResponseEntity.ok(currentTime);
     }
 
-    // put chosen white card into array with matchId
+    // put selected white card from hand into array of allChosenCards with matchId
     @PutMapping("/matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -280,7 +280,7 @@ public class GameController {
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
-    }
+    }//
 
     // retrieve currentRound winnerCards
     //retrieves the ranking of the players
@@ -292,33 +292,26 @@ public class GameController {
         try {
 
             ArrayList<WhiteCard> winnerCards = gameManager.getMatch(matchId).getRound().getRoundWinnerCards();
-
             return ResponseEntity.ok(winnerCards);
         }
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
-
-/*
-    // MOVED THIS TO USERCONTROLLER
+/* 7464
     //updates the round such that next round can be played
-    @PutMapping("/matches/{matchId}/rounds")
+    @PutMapping("matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public ResponseEntity<MatchStatus> updateRound(@PathVariable long matchId) throws Exception{
+    public void updateRound(@PathVariable long matchId) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
         Round currentRound = currentMatch.getRound();
-        boolean keepPlaying = currentRound.startNewRound(); // return true is new round, false if match is over
-        if (!keepPlaying){
-            return ResponseEntity.ok(MatchStatus.GameOver);
-        }
-        else{
-            return ResponseEntity.ok(MatchStatus.MatchOngoing);
-        }
+        currentRound.startNewRound();
+
     }
 
  */
+
 
 
 }
