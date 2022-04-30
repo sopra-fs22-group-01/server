@@ -19,12 +19,14 @@ class RoundTest {
 
     @BeforeEach
     void setUp() {
-        ArrayList<User> users = new ArrayList<>();
-        User user = new User();
-        users.add(user);
-        testRound = new Round(users);
+        ArrayList<User> testUsers = new ArrayList<>();
+        User testUser = new User();
+        testUser.setId(0L);
+        testUsers.add(testUser);
+        testRound = new Round(testUsers);
         testWhiteCard = new WhiteCard();
         testWhiteCard.createCard();
+        testWhiteCard.setOwner(testUser);
         testChosenCards = new ArrayList<>();
     }
 
@@ -47,12 +49,20 @@ class RoundTest {
     }
 
     @Test
-    void testSetBlackCard() {
+    void testSetAndGetBlackCard() {
         BlackCard blackCard = new BlackCard();
         blackCard.createCard();
         testRound.setBlackCard(blackCard);
         BlackCard actual = testRound.getBlackCard();
         assertEquals(blackCard, actual);
+    }
+
+    @Test
+    void testGetHandByUserId(){
+        testRound.startNewRound();
+        testRound.setChosenCard(testWhiteCard);
+        Hand actual = testRound.getHandByUserId(testWhiteCard.getOwner().getId());
+        assertNotNull(actual);
     }
 
     @Test
@@ -81,6 +91,23 @@ class RoundTest {
     void testGetRoundWinnerCardsNull() {
         testChosenCards = testRound.getRoundWinnerCards();
         assertEquals(0, testChosenCards.size());
+    }
+
+    @Test
+    void testGetRoundWinnerCardsNotNull(){
+        testRound.startNewRound();
+        testRound.setChosenCard(testWhiteCard);
+        testChosenCards = testRound.getRoundWinnerCards();
+        assertEquals(1, testChosenCards.size());
+    }
+
+    @Test
+    void testIncrementCardScores(){
+        testRound.startNewRound();
+        testRound.setChosenCard(testWhiteCard);
+        testRound.incrementCardScores(0L);
+        int actual = testWhiteCard.getScore();
+        assertEquals(1, actual);
     }
 }
 
