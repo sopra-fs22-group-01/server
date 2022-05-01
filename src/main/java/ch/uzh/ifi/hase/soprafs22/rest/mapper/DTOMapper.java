@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
@@ -73,4 +74,9 @@ public interface DTOMapper {//TEST
     @Mapping(source = "username", target = "username")
     @Mapping(source = "score", target = "score")
     RankingGetDTO convertEntityToRankingGetDTO(Ranking ranking);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "matchStatus", target = "matchStatus")
+    @Mapping(source = "matchPlayers", target = "matchPlayers")
+    MatchGetDTO convertEntityToMatchGetDTO(Match match);
 }

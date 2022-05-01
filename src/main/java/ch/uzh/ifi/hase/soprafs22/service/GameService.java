@@ -63,21 +63,31 @@ public class GameService {
         return  requestedLobby.checkIfAllReady();
     }
 
-    public void checkIfLobbyStatusChanged(long lobbyId) throws IncorrectIdException {
+    public LobbyStatus checkIfLobbyStatusChanged(long lobbyId) throws IncorrectIdException {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         boolean outcomeMinimumPlayers = checkIfMinimumNumberOfPlayers(lobbyId);
         boolean outcomeReadyPlayers = checkIfAllPlayersReady(lobbyId);
         if (outcomeMinimumPlayers && outcomeReadyPlayers){
             requestedLobby.setLobbyStatus(LobbyStatus.All_Ready);
+
+
         }
         else {
             requestedLobby.setLobbyStatus(LobbyStatus.Waiting);
         }
+        return requestedLobby.getLobbyStatus();
     }
 
-    public void updateUserReadyStatus(long lobbyId, long userId) throws Exception {
-        Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        requestedLobby.setReadyStatus(userId);
+    public String updateUserReadyStatus(long lobbyId, long userId) throws Exception {
+        try {
+            Lobby requestedLobby = gameManager.getLobby(lobbyId);
+            requestedLobby.setReadyStatus(userId);
+            return "Successfully updated readyStatus in Lobby through gameManager";
+        } catch (Exception e){
+            return "Couldn't update readyStatus in Lobby through gameManager";
+        }
+
+
     }
 
     public Match startMatch(long lobbyId) throws IncorrectIdException{

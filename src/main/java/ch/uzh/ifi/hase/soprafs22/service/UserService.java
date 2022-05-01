@@ -162,16 +162,19 @@ public class UserService {
       }
     }
 
-    public void updateUserReadyStatus(User user){
+    public ReadyStatus updateUserReadyStatus(User user){
         User databaseUser=findUserById(user.getId()); //user in database for id
         if(user.getIsReady()!=null){
             if(user.getIsReady().equals(ReadyStatus.READY)){
                 databaseUser.setIsReady(ReadyStatus.UNREADY);
+
             }
             else{
                 databaseUser.setIsReady(ReadyStatus.READY);
             }
+            return user.getIsReady();
         }
+        return user.getIsReady();
     }
 
 

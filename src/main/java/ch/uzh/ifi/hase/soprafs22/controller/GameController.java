@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -49,29 +47,6 @@ public class GameController {
         return ResponseEntity.ok(rules);
     }
 
-    //NOW IN USER CONTROLER
-/*    //Adds a user to the list of all current players in the lobby
-    @PostMapping("/lobbies/{lobbyId}/lists/players/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<ArrayList<User>> addUserToLobby(@PathVariable long lobbyId, @PathVariable long userId){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
-        String baseErrorMessage2 = "The same user is already existing in the lobby ";
-        User user = gameService.findUserById(userId);
-        //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-        try {
-            gameService.addPlayerToLobby(lobbyId, user);
-            ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
-            return ResponseEntity.ok(allUsers);
-        }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
-        catch (Exception e2) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage2);
-        }
-    }*/
-//test
     //Removes a user from the list of all current players in the lobby
     @DeleteMapping("/lobbies/{lobbyId}/players")
     @ResponseStatus(HttpStatus.OK)
@@ -91,24 +66,6 @@ public class GameController {
         }
     }
 
-/*
-    //Retrieves if the smallest number of players is reached or not
-    @GetMapping("/lobbies/{lobbyId}/players/minimum")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<Boolean> reachedMinimumNumberOfPlayers(@PathVariable long lobbyId){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
-        try {
-            boolean outcome = gameService.checkIfMinimumNumberOfPlayers(lobbyId);
-            return ResponseEntity.ok(outcome);
-        }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
-    }
-*/
-
-
     //Retrieves if all current players in the lobby are ready or not and if the minimum number of player was reached
     @GetMapping("/lobbies/{lobbyId}/status")
     @ResponseStatus(HttpStatus.OK)
@@ -125,7 +82,7 @@ public class GameController {
         }
     }
 
-    //Creates a lobby and returns the id of the newly created lobby //
+    //Creates a lobby and returns newly created lobby //
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody//
@@ -167,12 +124,11 @@ public class GameController {
     @PostMapping("/matches/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Long> startingMatch(@PathVariable long lobbyId){
+    public MatchGetDTO startingMatch(@PathVariable long lobbyId){
         String baseErrorMessage1 = "Match could not be created";
         try {
             Match newMatch = gameService.startMatch(lobbyId);
-            newMatch.setMatchStatus(MatchStatus.MatchOngoing);
-            return ResponseEntity.ok(newMatch.getId());
+            return DTOMapper.INSTANCE.convertEntityToMatchGetDTO(newMatch);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
@@ -196,22 +152,6 @@ public class GameController {
         }
         return userGetDTOs; // returns array UserGetDTO with all users init
     }
-
-
-    //NOW IN USERCONTROLLER
-    //ARTIFICIALLY CREATE MATCH -> DELETE LATER
-   /* @PostMapping("matches/{matchId}/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public void TEST_createMatch(@PathVariable long matchId) throws Exception{
-        ArrayList<User> testAllUsers = (ArrayList<User>) gameService.test_getUsers();
-        gameManager.createMatch(testAllUsers, matchId);
-        BlackCard black = new BlackCard();
-        black.createCard();
-
-        Match currentMatch = gameManager.getMatch(matchId);
-        currentMatch.getRound().setBlackCard(black);
-    }*/
 
     // retrieve text for black Card by matchId
     @GetMapping("/matches/{matchId}/blackCard")
@@ -304,21 +244,8 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
-/* 7464
-    //updates the round such that next round can be played
-    @PutMapping("matches/{matchId}/rounds")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
-    public void updateRound(@PathVariable long matchId) throws Exception{
-        Match currentMatch = gameManager.getMatch(matchId);
-        Round currentRound = currentMatch.getRound();
-        currentRound.startNewRound();
-    }
 
 
-    }
-
- */
     //gets countdown of specific round and resets it.
     @PutMapping("/matches/{matchId}/countdown")
     @ResponseStatus(HttpStatus.OK)
