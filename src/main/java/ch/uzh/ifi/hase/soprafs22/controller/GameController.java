@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -126,11 +124,11 @@ public class GameController {
     @PostMapping("/matches/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Match> startingMatch(@PathVariable long lobbyId){
+    public MatchGetDTO startingMatch(@PathVariable long lobbyId){
         String baseErrorMessage1 = "Match could not be created";
         try {
             Match newMatch = gameService.startMatch(lobbyId);
-            return ResponseEntity.ok(newMatch);
+            return DTOMapper.INSTANCE.convertEntityToMatchGetDTO(newMatch);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);

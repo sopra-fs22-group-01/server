@@ -81,19 +81,16 @@ public class GameControllerTest {
         given(gameService.createNewLobby()).willReturn(lobby);
 
         long lobbyId = lobby.getId();
-
+/*
     // put user in lobby
         given(userService.findUserById(Mockito.anyLong())).willReturn(user);
+
         gameManager.createLobby();
         given(gameManager.getLobby(Mockito.anyLong())).willReturn(lobby); // !!!!!!!!!!
 
         lobby.addPlayer(user);
         ///given(lobby.addPlayer(Mockito.any(Object<User>))).willReturn(1);
 
-    // mock: get all lobbies (DELETE LATER)
-        ArrayList<Lobby> lobbylist = new ArrayList<>();
-        lobbylist.add(lobby);
-        //given(gameManager.getAllLobby()).willReturn(lobbylist);
 
     // check if all users are ready -> has to wait (user hasnt changed ready status)
         given(gameService.checkIfLobbyStatusChanged(Mockito.anyLong())).willReturn(LobbyStatus.Waiting);
@@ -109,9 +106,14 @@ public class GameControllerTest {
     // check if all users are ready -> turn lobby into match
         given(gameService.checkIfLobbyStatusChanged(Mockito.anyLong())).willReturn(LobbyStatus.All_Ready);
         given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(LobbyStatus.All_Ready);
+*/
+    // create new match and add users to it
+        ArrayList<User> userList = new ArrayList<>();
+        userList.add(user);
 
-    // starting match should return this
         Match match = new Match(lobbyId);
+        match.setMatchPlayers(userList);
+    // starting match should return match with: players, id, matchStatus, round
         given(gameService.startMatch(Mockito.anyLong())).willReturn(match);
 
 
@@ -119,8 +121,10 @@ public class GameControllerTest {
         MockHttpServletRequestBuilder postRequest = post("/matches/"+lobbyId);
 
         // then perform request
-        mockMvc.perform(postRequest).andExpect(status().isOk());
-                //.andExpect(ResultMatcher.matchAll(lobbyId));
+        mockMvc.perform(postRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.matchStatus", is(match.getMatchStatus().toString())))
+                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
+                .andExpect(jsonPath("$.id", is(match.getId().intValue())));
 
     }
 

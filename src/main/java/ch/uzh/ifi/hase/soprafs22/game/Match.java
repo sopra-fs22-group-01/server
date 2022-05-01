@@ -20,7 +20,7 @@ import java.util.Timer;
 
 public class Match {
     private Long id;
-    private ArrayList<User> players = new ArrayList<>();
+    private ArrayList<User> matchPlayers = new ArrayList<>();
     //private ArrayList<Hand> allPlayersHands = new ArrayList<>();
 
     private ScoreBoard scoreBoard;
@@ -35,7 +35,7 @@ public class Match {
 
     public void createRound(){
         //initializes the round with the players of the match, creates automatically the hands
-        round = new Round(players);
+        round = new Round(matchPlayers);
     }
 
     public void setMatchStatus(MatchStatus matchStatus){this.matchStatus = matchStatus;}
@@ -46,23 +46,21 @@ public class Match {
     }
 
 
-    public Timer getTimer() {
-        return timer;
-    }
+    public Timer getTimer() {return timer;}
 
     public Round getRound(){return round;}
 
     public ArrayList<User> getMatchPlayers(){
-        return players;
+        return matchPlayers;
     }
-
     public void setMatchPlayers(ArrayList<User> users){
-        this.players = users;
+        this.matchPlayers = users;
     }
 
     public Long getId() {
         return id;
     }
+    public void setId(Long id){this.id = id;}
 
 
     public void createScoreBoard() {
@@ -74,7 +72,7 @@ public class Match {
     public void updatePlayerScores(){
         ArrayList<WhiteCard> winnerCards = this.round.getRoundWinnerCards();
         for(WhiteCard whiteCard : winnerCards){
-           for(User user : this.players){
+           for(User user : this.matchPlayers){
                if (whiteCard.getOwner().getId() == user.getId()){
                    int oldScore = user.getScore();
                    user.setScore(oldScore+1);
