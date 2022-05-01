@@ -93,7 +93,7 @@ public class UserServiceIntegrationTest {
     GameService testGameService = new GameService();
     Lobby testLobby = testGameService.createNewLobby();
 
-    //create first user
+    //create  first user
     User testUser1 = new User();
     testUser1.setUsername("testUsername1");
     testUser1.setPassword("testPassword");

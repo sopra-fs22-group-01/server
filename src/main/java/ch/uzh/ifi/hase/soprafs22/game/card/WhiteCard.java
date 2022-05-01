@@ -35,7 +35,7 @@ public class WhiteCard implements Card { //TEST
         // setting score to 0
         score = 0;
 
-        // setting text by getting the text from the ReadJSONFile
+        // setting text by getting the  text from the ReadJSONFile
         ReadJSONFile readJSONFile = ReadJSONFile.getInstance();
         this.text = readJSONFile.getWhiteCardText();
     }
