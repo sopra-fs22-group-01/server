@@ -60,12 +60,15 @@ public class Lobby {
     }
 
     public void removePlayer(User user) throws Exception {
+
         if (currentPlayers.contains(user)) {
             currentPlayers.remove(user);
         }
-        else {
+        else{
             throw new Exception("The user doesn't exist in the lobby");
         }
+
+
     }
 
     public boolean checkIfEnoughPlayers() {
