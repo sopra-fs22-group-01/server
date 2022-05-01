@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
@@ -9,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,8 +43,9 @@ public class GameControllerTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private GameManager gameManager = GameManager.getInstance();
+    //@MockBean -> uncommenting this causes tests to fail
+    //private GameManager gameManager = GameManager.getInstance();
+    public GameManager gameManager = GameManager.getInstance();
 
 
     @Test
@@ -63,7 +68,7 @@ public class GameControllerTest {
     public void givenLobbyId_createNewMatch_successful() throws Exception {
         // simulate all steps before creating match
 
-        // create user
+    // create user
         User user = new User();
         user.setId(1L);
         user.setUsername("testUsername");
@@ -72,35 +77,45 @@ public class GameControllerTest {
         given(userService.createUser(Mockito.any())).willReturn(user);
 
     // create lobby
-        Lobby lobby = new Lobby(2L);
+        Lobby lobby = new Lobby(0L);
         given(gameService.createNewLobby()).willReturn(lobby);
 
         long lobbyId = lobby.getId();
 
-        // put user in lobby
-        given(userService.findUserById(Mockito.any())).willReturn(user);
-        given(gameManager.getLobby(Mockito.any())).willReturn(lobby);
+    // put user in lobby
+        given(userService.findUserById(Mockito.anyLong())).willReturn(user);
+        gameManager.createLobby();
+        given(gameManager.getLobby(Mockito.anyLong())).willReturn(lobby); // !!!!!!!!!!
+
         lobby.addPlayer(user);
+        ///given(lobby.addPlayer(Mockito.any(Object<User>))).willReturn(1);
 
-        // check if all users are ready -> has to wait (user hasnt changed ready status)
-        gameService.checkIfLobbyStatusChanged(lobbyId);
-        given(gameService.getLobbyStatus(Mockito.any())).willReturn(LobbyStatus.Waiting);
+    // mock: get all lobbies (DELETE LATER)
+        ArrayList<Lobby> lobbylist = new ArrayList<>();
+        lobbylist.add(lobby);
+        //given(gameManager.getAllLobby()).willReturn(lobbylist);
 
-        // make readyStatus of user -> READY
-        userService.updateUserReadyStatus(user);
+    // check if all users are ready -> has to wait (user hasnt changed ready status)
+        given(gameService.checkIfLobbyStatusChanged(Mockito.anyLong())).willReturn(LobbyStatus.Waiting);
+        given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(LobbyStatus.Waiting);
 
-        given(gameManager.getLobby(Mockito.any())).willReturn(lobby);
-        gameService.updateUserReadyStatus(lobbyId, user.getId());
+    // make readyStatus of user -> READY
+        // update in database
+        given(userService.updateUserReadyStatus(Mockito.any())).willReturn(ReadyStatus.READY);
 
-        // check if all users are ready -> turn lobby into match
-        gameService.checkIfLobbyStatusChanged(lobbyId);
-        given(gameService.getLobbyStatus(Mockito.any())).willReturn(LobbyStatus.All_Ready);
+    // update user ready status in lobby players array
+        given(gameService.updateUserReadyStatus(Mockito.anyLong(), Mockito.anyLong())).willReturn("Successfully updated readyStatus in Lobby through gameManager");
 
-        // starting match should return this
+    // check if all users are ready -> turn lobby into match
+        given(gameService.checkIfLobbyStatusChanged(Mockito.anyLong())).willReturn(LobbyStatus.All_Ready);
+        given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(LobbyStatus.All_Ready);
+
+    // starting match should return this
         Match match = new Match(lobbyId);
-        given(gameService.startMatch(Mockito.any())).willReturn(match);
+        given(gameService.startMatch(Mockito.anyLong())).willReturn(match);
 
-        // build request
+
+    // build request
         MockHttpServletRequestBuilder postRequest = post("/matches/"+lobbyId);
 
         // then perform request
@@ -108,7 +123,5 @@ public class GameControllerTest {
                 //.andExpect(ResultMatcher.matchAll(lobbyId));
 
     }
-    //create match unsuccessful
-
 
 }

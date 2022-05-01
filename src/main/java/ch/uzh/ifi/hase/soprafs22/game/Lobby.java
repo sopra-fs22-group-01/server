@@ -48,10 +48,11 @@ public class Lobby {
         return true;
     }
 
-    public void addPlayer(User user) throws Exception {
+    public int addPlayer(User user) throws Exception {
         if (!currentPlayers.contains(user) && currentPlayerCount<=maximumPlayerCount) {
             currentPlayers.add(user);
             currentPlayerCount++;
+            return currentPlayerCount;
         }
         else {
             throw new Exception("The user is already in the lobby");

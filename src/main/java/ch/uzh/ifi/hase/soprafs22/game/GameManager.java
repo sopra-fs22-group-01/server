@@ -65,7 +65,7 @@ public class GameManager {
 
     public Match getMatch(Long matchId) throws IncorrectIdException{
         for (Match match: matches){
-            if (match.getId() == matchId){
+            if (match.getId().equals(matchId)){
                 return match;
             }
         }
