@@ -71,4 +71,12 @@ public class UserServiceIntegrationTest {
     // check that an error is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
   }
+
+
+  @Test
+  public void multipleUsers_login_joinLobby_success(){
+
+
+
+  }
 }
