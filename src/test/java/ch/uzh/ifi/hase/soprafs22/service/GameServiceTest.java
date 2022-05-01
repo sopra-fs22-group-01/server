@@ -147,7 +147,6 @@ public class GameServiceTest {
         boolean actual = gameService.checkIfAllPlayersReady(otherTestLobby.getId());
 
         assertTrue(actual);
-
     }
 
 }
