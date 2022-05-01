@@ -59,7 +59,7 @@ public class GameControllerTest {
 
 
     //create match successful --> check same Id, same players as lobby, matchStatus
-    @Test
+    @Test // endpoint location: GameController line 129
     public void givenLobbyId_createNewMatch_successful() throws Exception {
         // simulate all steps before creating match
 
@@ -105,6 +105,7 @@ public class GameControllerTest {
 
         // then perform request
         mockMvc.perform(postRequest).andExpect(status().isOk());
+                //.andExpect(ResultMatcher.matchAll(lobbyId));
 
     }
     //create match unsuccessful
