@@ -21,6 +21,7 @@ public class Countdown {
         this.time = 90;
     }
 
+
     public void killTimer(){
         this.exit = true;
         this.timer.cancel();
