@@ -18,7 +18,7 @@ public class Countdown {
     private Timer timer;
 
     private void resetTimer() {
-        this.time = 15;
+        this.time = 90;
     }
 
     public void killTimer(){
