@@ -4,14 +4,9 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Timer;
 
 /**
@@ -27,6 +22,7 @@ public class Match {
     private Timer timer;
     private Round round;
     private MatchStatus matchStatus;
+    private int numSuperVotes = 1;
 
     public Match(Long id) {
         this.id = id;
@@ -55,6 +51,11 @@ public class Match {
     }
     public void setMatchPlayers(ArrayList<User> users){
         this.matchPlayers = users;
+
+        // set number of supervotes for each player
+        for(User user: this.matchPlayers){
+            user.setSupervotes(this.numSuperVotes);
+        }
     }
 
     public Long getId() {

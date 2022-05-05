@@ -215,5 +215,9 @@ public class UserService {
 
     }
 
+    public void setNumberSuperVote(long id, int superVote){
+        User user = findUserById(id);
+        user.setSupervotes(superVote);
+    }
 
 }

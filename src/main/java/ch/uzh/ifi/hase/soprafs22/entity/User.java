@@ -55,7 +55,8 @@ public class User implements Serializable {
   @Column
   private int score;
 
-
+  @Column
+  private int supervotes;
 
   /*
   doesn't work as Hand isn't a basic type
@@ -126,4 +127,11 @@ public class User implements Serializable {
     this.userStatus = status;
   }
 
+  public int getSupervotes(){
+      return supervotes;
+  }
+
+  public void setSupervotes(int supervotes) {
+      this.supervotes = supervotes;
+  }
 }
