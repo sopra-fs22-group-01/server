@@ -59,16 +59,14 @@ public class Lobby {
         }
     }
 
-    public void removePlayer(User user) throws Exception {
-
-        if (currentPlayers.contains(user)) {
-            currentPlayers.remove(user);
+    public void removePlayer(long userId) throws Exception {
+        for (User player: currentPlayers){
+            if(player.getId().equals(userId)){
+                currentPlayers.remove(player);
+                return;
+            }
         }
-        else{
-            throw new Exception("The user doesn't exist in the lobby");
-        }
-
-
+        throw new Exception("The user doesn't exist in the lobby");
     }
 
     public boolean checkIfEnoughPlayers() {

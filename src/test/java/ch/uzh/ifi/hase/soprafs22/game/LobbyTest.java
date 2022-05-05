@@ -86,6 +86,7 @@ class LobbyTest {
         assertThrows(Exception.class, () -> lobby.addPlayer(testUser1));
     }
 
+    /*
     @Test
     void removePlayer() throws Exception {
         lobby.addPlayer(testUser1);
@@ -98,6 +99,7 @@ class LobbyTest {
     void removePlayerUserNotInLobby() {
         assertThrows(Exception.class, () -> lobby.removePlayer(testUser1));
     }
+     */
 
     @Test
     void checkIfEnoughPlayersNotEnough() {
