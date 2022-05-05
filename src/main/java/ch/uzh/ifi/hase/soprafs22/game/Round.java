@@ -43,35 +43,35 @@ public class Round {
         this.roundNumber = 1;
         //this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
 
-        selectionCountdown = new Countdown(25);
-        votingCountdown = new Countdown(20);
+        selectionCountdown = new Countdown(20);
+        votingCountdown = new Countdown(15);
         rankingCountdown = new Countdown(15);
 
         //starts first selection countdown
-        selectionCountdown.startCountdown(); //remove after and start it with endpoint
+        //remove after and start it with endpoint
     }
 
     public int getSelectionTime(){
         //return this.roundCountdown;
-        return this.selectionCountdown.getTime();
+        return this.selectionCountdown.getCurrentTime();
     }
     public int getRankingTime(){
         //return this.roundCountdown;
-        return this.rankingCountdown.getTime();
+        return this.rankingCountdown.getCurrentTime();
     }
     public int getVotingTime(){
         //return this.roundCountdown;
-        return this.votingCountdown.getTime();
+        return this.votingCountdown.getCurrentTime();
     }
 
     public void startSelectionCountdown(){
         this.selectionCountdown.startCountdown();
     }
     public void startRankingCountdown(){
-        this.selectionCountdown.startCountdown();
+        this.rankingCountdown.startCountdown();
     }
     public void startVotingCountdown(){
-        this.selectionCountdown.startCountdown();
+        this.votingCountdown.startCountdown();
     }
 
 

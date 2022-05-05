@@ -243,7 +243,7 @@ public class GameController {
     public void startRoundWinnersCountdown(@PathVariable long matchId) throws Exception {
         Match currentMatch  = gameManager.getMatch(matchId);
         Round currentRound = currentMatch.getRound();
-        currentRound.startSelectionCountdown(); //starts ranking countdown
+        currentRound.startRankingCountdown(); //starts ranking countdown
     }
 
 

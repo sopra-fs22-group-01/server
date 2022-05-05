@@ -13,26 +13,14 @@ import java.util.TimerTask;
 
 public class Countdown {
 
-    private boolean exit = false;
-    private int time = 15;
+
     private int startTime;
-    private Timer timer;
     private boolean timerRunning = false;
     private int currentTime;
 
 
     public Countdown(int startTime) {
         this.startTime = startTime;
-    }
-
-    private void resetTimer() {
-        this.time = 30;
-    }
-
-
-    public void killTimer(){
-        this.exit = true;
-        this.timer.cancel();
     }
 
     // call this method to start the timer
@@ -65,12 +53,9 @@ public class Countdown {
 
         timer.schedule(task, 1000, 1000);
     }
-    public boolean isTimerRunning(){
-        return this.timerRunning;
+
+    public int getCurrentTime(){
+        return this.currentTime;
     }
 
-
-    public int getTime(){
-        return time;
-    }
 }
