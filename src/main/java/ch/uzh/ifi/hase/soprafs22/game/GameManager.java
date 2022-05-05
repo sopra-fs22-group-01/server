@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.NoLobbyException;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 
@@ -82,6 +83,33 @@ public class GameManager {
         }
     }
 
+    //checks if leader of match reached max points
+    public boolean isGameOver(Match currentMatch){
+        ArrayList<User> players = currentMatch.getMatchPlayers();
+        for(User player: players){
+            if(player.getScore() == currentMatch.getRound().getMaxScore()){ //someone reached max score
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //checks if new round should be started or nor
+    public boolean evaluateNewRoundStart(long matchId) throws IncorrectIdException {
+        Match currentMatch = getMatch(matchId);
+        ScoreBoard currentScoreBoard = currentMatch.getScoreBoard();
+        ArrayList<User> playersOfHighestRank = currentScoreBoard.getPlayersOfHighestRank(currentMatch.getMatchPlayers());
+        System.out.println("before array gets accessed");
+
+        //if game is over,returns false
+        if(isGameOver(currentMatch)){
+            return false;
+        }
+        //if game is not over yet, return true (and start new round)
+        currentMatch.getRound().startNewRound();
+        return true;
+
+    }
 
     /*
     public void deleteMatch(long matchId) {

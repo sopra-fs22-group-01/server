@@ -37,11 +37,11 @@ class RoundTest {
     }
 
 
-    @Test
+  /*  @Test
     void testStartNewRound() {
-        boolean actual = testRound.startNewRound();
+        actual = testRound.startNewRound();
         assertTrue(actual);
-    }
+    }*/
 
     @Test
     void testSetAndGetBlackCard() {

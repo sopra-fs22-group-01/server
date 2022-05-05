@@ -30,6 +30,9 @@ public class Round {
     private int roundNumber;
     private int max_Rounds = 3;
 
+
+    private int maxScore = 2;
+
     //contdown of a specific round
     private Countdown selectionCountdown ;
     private Countdown votingCountdown;
@@ -49,6 +52,11 @@ public class Round {
 
         //starts first selection countdown
         //remove after and start it with endpoint
+    }
+
+
+    public int getMaxScore() {
+        return maxScore;
     }
 
     public int getSelectionTime(){
@@ -74,11 +82,15 @@ public class Round {
         this.votingCountdown.startCountdown();
     }
 
+    public boolean isGameOver(){
 
 
-    public boolean startNewRound(){
-        if (this.roundNumber < max_Rounds){
+        return false;
+    }
 
+
+    //startNewRound gets called from gameManager after it checked if the game is over or not yet
+    public void startNewRound(){
             // returns true if keep playing
             this.roundNumber++;
 
@@ -96,15 +108,6 @@ public class Round {
             }
             //sets the countdown to its initial time
             //roundCountdown.startTimer();
-
-            return true;
-        }
-        else{
-            // return false if match is over
-
-            return false;
-        }
-
 
     }
 

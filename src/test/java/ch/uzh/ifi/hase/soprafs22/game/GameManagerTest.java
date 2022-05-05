@@ -68,4 +68,55 @@ class GameManagerTest {
         assertEquals(emptyList, gameManager.getAllLobby());
     }
 
+    @Test
+    void isGameOver_true() {
+        Match testMatch = gameManager.createMatch(players,0L);
+        Round currentRound = testMatch.getRound();
+        for(User player:players){
+            player.setScore(currentRound.getMaxScore());
+        }
+        currentRound.startNewRound();
+
+        assertTrue(gameManager.isGameOver(testMatch));
+
+    }
+
+    @Test
+    void isGameOver_false() {
+        Match testMatch = gameManager.createMatch(players,0L);
+        Round currentRound = testMatch.getRound();
+        for(User player:players){
+            player.setScore(1);
+        }
+        currentRound.startNewRound();
+
+        assertFalse(gameManager.isGameOver(testMatch));
+
+    }
+
+
+
+    @Test
+    void evaluateNewRoundStart_true() throws IncorrectIdException {
+        Match testMatch = gameManager.createMatch(players,0L);
+        Round currentRound = testMatch.getRound();
+        for(User player:players){
+            player.setScore(1);
+        }
+        currentRound.startNewRound();
+
+        assertTrue(gameManager.evaluateNewRoundStart(0L));
+    }
+
+    @Test
+    void evaluateNewRoundStart_false() throws IncorrectIdException {
+        Match testMatch = gameManager.createMatch(players,0L);
+        Round currentRound = testMatch.getRound();
+        for(User player:players){
+            player.setScore(2);
+        }
+        currentRound.startNewRound();
+
+        assertFalse(gameManager.evaluateNewRoundStart(0L));
+    }
 }
