@@ -121,6 +121,7 @@ public class GameController {
 
 
     //Creates a new match and puts all players from the lobby into it
+    //Should delete the lobby
     @PostMapping("/matches/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
