@@ -17,7 +17,7 @@ import java.util.Objects;
  * - updates players' hands
  * - determines the winner
  * To Do:
- *      creating the hands of the round
+ *      creating the hands of the  round
  * */
 
 public class Round {

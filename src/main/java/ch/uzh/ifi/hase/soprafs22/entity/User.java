@@ -55,6 +55,8 @@ public class User implements Serializable {
   @Column
   private int score;
 
+
+
   /*
   doesn't work as Hand isn't a basic type
   @Column
