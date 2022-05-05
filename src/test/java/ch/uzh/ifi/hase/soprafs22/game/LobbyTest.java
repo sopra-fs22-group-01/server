@@ -86,20 +86,20 @@ class LobbyTest {
         assertThrows(Exception.class, () -> lobby.addPlayer(testUser1));
     }
 
-    /*
+
     @Test
     void removePlayer() throws Exception {
         lobby.addPlayer(testUser1);
-        lobby.removePlayer(testUser1);
+        lobby.removePlayer(testUser1.getId());
         ArrayList<User> allCurrentPlayers = lobby.getCurrentPlayers();
         assertEquals(0, allCurrentPlayers.size());
     }
 
     @Test
     void removePlayerUserNotInLobby() {
-        assertThrows(Exception.class, () -> lobby.removePlayer(testUser1));
+        assertThrows(Exception.class, () -> lobby.removePlayer(testUser1.getId()));
     }
-     */
+
 
     @Test
     void checkIfEnoughPlayersNotEnough() {
