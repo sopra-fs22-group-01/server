@@ -93,7 +93,7 @@ public class GameService {
     public Match startMatch(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         Match createdMatch = gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
-        //gameManager.deleteLobby(lobbyId);
+        gameManager.deleteLobby(lobbyId);
         return createdMatch;
         //requestedLobby.createMatchWithPlayers();
     }
