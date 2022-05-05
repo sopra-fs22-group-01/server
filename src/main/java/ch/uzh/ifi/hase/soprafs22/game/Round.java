@@ -31,8 +31,9 @@ public class Round {
     private int max_Rounds = 3;
 
     //contdown of a specific round
-    private Countdown roundCountdown ;
-
+    private Countdown selectionCountdown ;
+    private Countdown votingCountdown;
+    private Countdown rankingCountdown;
 
     // Constructor
     public Round(ArrayList<User> players) {
@@ -40,14 +41,40 @@ public class Round {
         this.blackCard.createCard();
         createHands(players);
         this.roundNumber = 1;
-        this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
-        roundCountdown.startTimer();
+        //this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
+
+        selectionCountdown = new Countdown(25);
+        votingCountdown = new Countdown(20);
+        rankingCountdown = new Countdown(15);
+
+        //starts first selection countdown
+        selectionCountdown.startCountdown(); //remove after and start it with endpoint
     }
 
-    public Countdown getCountdown(){
+    public int getSelectionTime(){
         //return this.roundCountdown;
-        return this.roundCountdown;
+        return this.selectionCountdown.getTime();
     }
+    public int getRankingTime(){
+        //return this.roundCountdown;
+        return this.rankingCountdown.getTime();
+    }
+    public int getVotingTime(){
+        //return this.roundCountdown;
+        return this.votingCountdown.getTime();
+    }
+
+    public void startSelectionCountdown(){
+        this.selectionCountdown.startCountdown();
+    }
+    public void startRankingCountdown(){
+        this.selectionCountdown.startCountdown();
+    }
+    public void startVotingCountdown(){
+        this.selectionCountdown.startCountdown();
+    }
+
+
 
     public boolean startNewRound(){
         if (this.roundNumber < max_Rounds){
@@ -74,7 +101,6 @@ public class Round {
         }
         else{
             // return false if match is over
-            roundCountdown.killTimer();
 
             return false;
         }

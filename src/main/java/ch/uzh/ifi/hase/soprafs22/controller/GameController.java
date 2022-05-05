@@ -177,17 +177,75 @@ public class GameController {
         }
     }
 
+
+
     //gets current state of countdown. Is used in frontend to know when to get redirected
-    @GetMapping("/matches/{matchId}/countdown")
+    @GetMapping("/matches/{matchId}/countdown/selection")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Integer> getCountdown(@PathVariable long matchId) throws Exception {
+    public ResponseEntity<Integer> getSelectionCountdown(@PathVariable long matchId) throws Exception {
         Match currentMatch  = gameManager.getMatch(matchId);
         Round currentRound = currentMatch.getRound();
-        int currentTime = currentRound.getCountdown().getTime(); //gets remaining time from round countdown
+        int currentTime = currentRound.getSelectionTime(); //gets remaining time from round countdown
         //.ok sets the HTTP status to OK (200)
         return ResponseEntity.ok(currentTime);
     }
+
+
+    //gets current state of countdown. Is used in frontend to know when to get redirected
+    @GetMapping("/matches/{matchId}/countdown/voting")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Integer> getVotingCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        int currentTime = currentRound.getVotingTime(); //gets remaining time from round countdown
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(currentTime);
+    }
+
+    //gets current state of countdown. Is used in frontend to know when to get redirected
+    @GetMapping("/matches/{matchId}/countdown/roundwinners")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Integer> getRoundWinnersCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        int currentTime = currentRound.getRankingTime(); //gets remaining time from round countdown
+        //.ok sets the HTTP status to OK (200)
+        return ResponseEntity.ok(currentTime);
+    }
+
+    //starts selectionCountdown in round (will only be started once until timer is 0 again)
+    @PutMapping("/matches/{matchId}/countdown/selection")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void startSelectionCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        currentRound.startSelectionCountdown(); //starts selection countdown
+    }
+
+    //starts voting Countdown in round (will only be started once until timer is 0 again)
+    @PutMapping("/matches/{matchId}/countdown/voting")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void startVotingCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        currentRound.startVotingCountdown(); //starts voting countdown
+    }
+
+    //starts ranking Countdown in round (will only be started once until timer is 0 again)
+    @PutMapping("/matches/{matchId}/countdown/roundwinners")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void startRoundWinnersCountdown(@PathVariable long matchId) throws Exception {
+        Match currentMatch  = gameManager.getMatch(matchId);
+        Round currentRound = currentMatch.getRound();
+        currentRound.startSelectionCountdown(); //starts ranking countdown
+    }
+
 
     // put selected white card from hand into array of allChosenCards with matchId
     @PutMapping("/matches/{matchId}/white-card/selection")
@@ -244,34 +302,6 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
-
-
-    //gets countdown of specific round and resets it.
-    @PutMapping("/matches/{matchId}/countdown")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void resetCountdown(@PathVariable long matchId) throws Exception {
-        Match currentMatch  = gameManager.getMatch(matchId);
-        Round currentRound = currentMatch.getRound();
-
-        //restarts countdown of round.VERY bad design, but enough for M3
-        currentMatch.getRound().getCountdown().startTimer();
-    }
-
-    //gets countdown of specific round and resets it.
-    @DeleteMapping("/matches/{matchId}/countdown")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void deleteCountdown(@PathVariable long matchId) throws Exception {
-        Match currentMatch  = gameManager.getMatch(matchId);
-        Round currentRound = currentMatch.getRound();
-        Countdown roundCountdown = currentRound.getCountdown();
-
-        roundCountdown.killTimer();
-        //restarts countdown of round.VERY bad design, but enough for M3
-
-    }
-
 }
 
 

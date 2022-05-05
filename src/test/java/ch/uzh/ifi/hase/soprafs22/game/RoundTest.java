@@ -36,11 +36,6 @@ class RoundTest {
         testChosenCards = null;
     }
 
-    @Test
-    void testGetCountdown(){
-        Countdown actual = testRound.getCountdown();
-        assertNotNull(actual);
-    }
 
     @Test
     void testStartNewRound() {

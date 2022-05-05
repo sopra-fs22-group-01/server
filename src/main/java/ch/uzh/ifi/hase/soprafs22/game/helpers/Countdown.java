@@ -15,7 +15,15 @@ public class Countdown {
 
     private boolean exit = false;
     private int time = 15;
+    private int startTime;
     private Timer timer;
+    private boolean timerRunning = false;
+    private int currentTime;
+
+
+    public Countdown(int startTime) {
+        this.startTime = startTime;
+    }
 
     private void resetTimer() {
         this.time = 30;
@@ -28,51 +36,39 @@ public class Countdown {
     }
 
     // call this method to start the timer
-    public void startTimer() {
+    public void startCountdown(){
+        //sets the time which keeps track of the countdown to the current time.
+        if(timerRunning == true){
+            return;
+        }
+        timerRunning = true;
+        currentTime = startTime;
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
 
-            TimerTask timerTask = new TimerTask() {
-            @Override
+            // run() method to carry out the action of the task
             public void run() {
-                if(!exit){
-                    System.out.println(time--);
-                    if(time <= 0){
-                        timer.cancel();
-                        try {
-                            Thread.sleep(500); //was 500 before, worth a try for heroku
-                            resetTimer();
-                            startTimer();
-                        }
-                        catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                else{
+                System.out.println("Keep on calling " + currentTime);
+                currentTime--;
+                if(currentTime <=0) {
+                    System.out.println("Stop calling");
+                    timerRunning = false;
+                    // cancel method to cancel the execution
                     timer.cancel();
                 }
-
-            }
+            };
         };
-            timer = new Timer();
-            timer.scheduleAtFixedRate(timerTask, 1500, 1000);
-
 
         /*
-        this.timer = new Timer();
-        timer.scheduleAtFixedRate(this, 1500, 1000);*/
+         *  schedule() method to schedule the execution with start time
+         */
+
+        timer.schedule(task, 1000, 1000);
+    }
+    public boolean isTimerRunning(){
+        return this.timerRunning;
     }
 
-    /*
-    // Method which will be executed periodically by the timer
-    @Override
-    public void run() {
-        System.out.println(time--);
-        if(time == 0) {
-            // cancel() returns a boolean value (can be used to stop card voting)
-            resetTimer();
-            timer.cancel();
-        }
-    }*/
 
     public int getTime(){
         return time;
