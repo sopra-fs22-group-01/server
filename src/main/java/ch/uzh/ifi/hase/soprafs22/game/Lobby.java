@@ -63,6 +63,7 @@ public class Lobby {
         for (User player: currentPlayers){
             if(player.getId().equals(userId)){
                 currentPlayers.remove(player);
+                currentPlayerCount--;
                 return;
             }
         }
