@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,6 +23,8 @@ public final class ReadJSONFile {
     private static ArrayList<String> blackCardTexts = new ArrayList<String>();
     private static int iteratorWhite = 0;
     private static int iteratorBlack = 0;
+    private static ArrayList<Integer> whiteCardIndexes = new ArrayList<>();
+    private static ArrayList<Integer> blackCardIndexes = new ArrayList<>();
 
     // create an object of ReadJSONFile
     private volatile static ReadJSONFile uniqueInstance = new ReadJSONFile();
@@ -101,13 +102,51 @@ public final class ReadJSONFile {
     }
 
     // Public methods to provide with a String text for cards
+
+    public boolean checkOccurenceWhite(int i){
+        for (int idx : whiteCardIndexes){
+            if (i == idx){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkOccurenceBlack(int i){
+        for (int idx : blackCardIndexes){
+            if (i == idx){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getWhiteCardText(){
         iteratorWhite++;
-        return whiteCardTexts.get(iteratorWhite-1);
+
+        int whiteCardSize = whiteCardTexts.size();
+
+        int idx = (int)(Math.random()*(whiteCardSize +1)+0);
+        while (checkOccurenceWhite(idx)){
+            idx = (int)(Math.random()*(whiteCardSize +1)+0);
+        }
+        whiteCardIndexes.add(idx);
+
+        //System.out.println("AMOUNT OF WHITE-CARD TEXTS IN JSON " + whiteCardTexts.size()); // 4661
+        return whiteCardTexts.get(idx);
     }
 
     public String getBlackCardText(){
         iteratorBlack++;
-        return blackCardTexts.get(iteratorBlack-1);
+
+        int blackCardSize = blackCardTexts.size();
+
+        int idx = (int)(Math.random()*(blackCardSize +1)+0);
+        while (checkOccurenceBlack(idx)){
+            idx = (int)(Math.random()*(blackCardSize +1)+0);
+        }
+        blackCardIndexes.add(idx);
+        //System.out.println("AMOUNT OF BLACK-CARD TEXTS IN JSON " + blackCardTexts.size()); // 937
+        return blackCardTexts.get(idx);
     }
 }
