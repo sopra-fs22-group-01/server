@@ -30,7 +30,7 @@ public class Round {
     private int roundNumber;
     private int max_Rounds = 3;
 
-    //contdown of a specific round
+    //cont down of a specific round
     private Countdown selectionCountdown ;
     private Countdown votingCountdown;
     private Countdown rankingCountdown;
