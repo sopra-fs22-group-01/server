@@ -82,11 +82,6 @@ public class Round {
         this.votingCountdown.startCountdown();
     }
 
-    public boolean isGameOver(){
-
-
-        return false;
-    }
 
 
     //startNewRound gets called from gameManager after it checked if the game is over or not yet
