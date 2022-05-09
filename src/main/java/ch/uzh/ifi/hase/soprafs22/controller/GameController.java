@@ -170,7 +170,10 @@ public class GameController {
     public void incrementWhiteCard(@PathVariable long matchId, @PathVariable long cardOwnerId){
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the match";
         try {
-            gameService.incrementCardScore(matchId, cardOwnerId);
+            if (cardOwnerId >= 0){
+                gameService.incrementCardScore(matchId, cardOwnerId);
+            }
+
         }
         catch (IncorrectIdException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
