@@ -55,6 +55,9 @@ public class User implements Serializable {
   @Column
   private int score;
 
+  @Column
+  private String customWhiteText;
+
 
 
   /*
@@ -125,5 +128,12 @@ public class User implements Serializable {
   public void setUserStatus(UserStatus status) {
     this.userStatus = status;
   }
+
+  public String getCustomWhiteText() {
+        return this.customWhiteText;
+    }
+  public void setCustomWhiteText(String customWhiteText) {
+        this.customWhiteText = customWhiteText;
+    }
 
 }

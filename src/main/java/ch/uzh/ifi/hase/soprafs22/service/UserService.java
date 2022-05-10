@@ -177,6 +177,17 @@ public class UserService {
         return user.getIsReady();
     }
 
+  public String updateCustomWhiteText(UserPutDTO userPutDTO){
+      User dbUser = findUserById(userPutDTO.getId());
+      if (dbUser != null){
+          dbUser.setCustomWhiteText(userPutDTO.getCustomWhiteText());
+          return userPutDTO.getCustomWhiteText();
+      }
+      else{
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                  "Couldn't set your custom text");
+      }
+  }
 
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);

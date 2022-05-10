@@ -171,6 +171,39 @@ public class UserController {
         currentMatch.getRound().setBlackCard(black);
     }
 
+    // add bzw. create custom white card to user
+    @PutMapping("/matches/{lobbyId}/white-cards/{userId}/custom")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<String> createCustomCard(@PathVariable long lobbyId, @PathVariable long userId, @RequestBody UserPutDTO userPutDTO) throws Exception {
+        // updates in database
+        String text = userService.updateCustomWhiteText(userPutDTO);
+
+        // updates in the specific lobby -> not good solution
+        gameService.updateCustomText(lobbyId, userId, userPutDTO);
+        return ResponseEntity.ok(text);
+    }
+
+    /*
+        @PutMapping("/lobbies/{lobbyId}/users/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
+        String baseErrorMessage1 = "No lobby with this id could be found.";
+        try {
+            User user = userService.findUserById(userId); //throws exception if userid doesnt exist
+            userService.updateUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in the database
+            gameService.updateUserReadyStatus(lobbyId, userId); //updates the user in the array of the lobby, not the perfect solution
+        }
+        catch (IncorrectIdException e1){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    * */
+
     // get hand by userid
     @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
@@ -182,7 +215,7 @@ public class UserController {
         ArrayList<WhiteCard> playerHandCards = playerHand.getCardsFromHand();
 
         return ResponseEntity.ok(playerHandCards);
-
+    }
     /*    //------------------Old Code------------------------------
         ArrayList<User> allUsers = (ArrayList<User>) userService.test_getUsers();
         gameManager.createMatch(allUsers,matchId);
@@ -195,7 +228,7 @@ public class UserController {
 */
 
 
-    }
+
     // get all hands by matchId
     @GetMapping("/matches/{matchId}/hands")
     @ResponseStatus(HttpStatus.OK)

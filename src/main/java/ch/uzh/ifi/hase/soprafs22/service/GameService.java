@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,8 +87,18 @@ public class GameService {
         } catch (Exception e){
             return "Couldn't update readyStatus in Lobby through gameManager";
         }
+    }
 
+    // would actually work with all kinds of updates
+    public String updateCustomText(long lobbyId, long userId, UserPutDTO userPutDTO) throws Exception {
+        try {
+            Lobby requestedLobby = gameManager.getLobby(lobbyId);
+            requestedLobby.updateCustomText(userId, userPutDTO);
 
+            return "Successfully updated customText in Lobby through gameManager";
+        } catch (Exception e){
+            return "Couldn't update readyStatus in Lobby through gameManager";
+        }
     }
 
     public Match startMatch(long lobbyId) throws IncorrectIdException{
