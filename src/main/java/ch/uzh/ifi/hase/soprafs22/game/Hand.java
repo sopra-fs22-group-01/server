@@ -7,7 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
-//Not yet sure if Hand should be in game//TEST
+//Not yet sure if Hand should be in game//TEST a
 public class Hand {
 
     private ArrayList<WhiteCard> userHand = new ArrayList<WhiteCard>();
