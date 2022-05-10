@@ -171,6 +171,16 @@ public class UserController {
         currentMatch.getRound().setBlackCard(black);
     }
 
+    // add bzw. create custom white card to user
+    @PutMapping("/matches/{lobbyId}/white-cards/{userId}/custom")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<String> createCustomCard(@PathVariable long lobbyId, @PathVariable long userId, @RequestBody UserPutDTO userPutDTO) throws Exception {
+        String text = userService.updateCustomWhiteText(userPutDTO);
+
+        return ResponseEntity.ok(text);
+    }
+
     // get hand by userid
     @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
@@ -182,7 +192,7 @@ public class UserController {
         ArrayList<WhiteCard> playerHandCards = playerHand.getCardsFromHand();
 
         return ResponseEntity.ok(playerHandCards);
-
+    }
     /*    //------------------Old Code------------------------------
         ArrayList<User> allUsers = (ArrayList<User>) userService.test_getUsers();
         gameManager.createMatch(allUsers,matchId);
@@ -195,7 +205,7 @@ public class UserController {
 */
 
 
-    }
+
     // get all hands by matchId
     @GetMapping("/matches/{matchId}/hands")
     @ResponseStatus(HttpStatus.OK)
