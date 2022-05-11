@@ -18,33 +18,32 @@ public class UserPutDTO {
 
     private UserStatus userStatus;
 
-
     private Date birthday;
+
     private ReadyStatus isReady;
+
+    private String customWhiteText;
 
 
 
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-
     public void setPassword(String password){
         this.password = password;
     }
-
+    public String getPassword(){return password;}
 
     public void setDate(Date date){this.date = date;}
-
+    public Date getDate(){return this.date;}
 
     public void setId(long id){
         this.id = id;
     }
-
     public long getId() {
         return this.id;
     }
@@ -52,16 +51,13 @@ public class UserPutDTO {
     public Date getBirthday() {
         return birthday;
     }
-
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
-
     public UserStatus getUserStatus() {
         return userStatus;
     }
-
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
@@ -69,8 +65,13 @@ public class UserPutDTO {
     public ReadyStatus getIsReady() {
         return isReady;
     }
-
-    public String getPassword(){return password;}
-
     public void setIsReady(ReadyStatus readyStatus) {this.isReady = readyStatus;}
+
+    public String getCustomWhiteText() {
+        return this.customWhiteText;
+    }
+    public void setCustomWhiteText(String customWhiteText) {
+        this.customWhiteText = customWhiteText;
+    }
+
 }

@@ -3,6 +3,9 @@ package ch.uzh.ifi.hase.soprafs22.service;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -35,6 +38,7 @@ public class UserService {
 
   private final UserRepository userRepository;
   public UserRepository getUserRepository(){return this.userRepository;}
+  GameManager gameManager = GameManager.getInstance();
 
   @Autowired //what does @Autowired do exactly?
   public UserService(@Qualifier("userRepository") UserRepository userRepository) {
@@ -177,6 +181,17 @@ public class UserService {
         return user.getIsReady();
     }
 
+  public String updateCustomWhiteText(UserPutDTO userPutDTO){
+      User dbUser = findUserById(userPutDTO.getId());
+      if (dbUser != null){
+          dbUser.setCustomWhiteText(userPutDTO.getCustomWhiteText());
+          return userPutDTO.getCustomWhiteText();
+      }
+      else{
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                  "Couldn't set your custom text");
+      }
+  }
 
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);
@@ -213,6 +228,21 @@ public class UserService {
             userToBeUpdated.setScore(oldScore+1);
         }
 
+    }
+
+    public void resetMatchPlayers(long matchId) throws IncorrectIdException {
+        Match endedMatch = gameManager.getMatch(matchId);
+        // reset score and ready status for all players in match
+
+        // reset score and ready status for all players in database
+        ArrayList<User> currentPlayers = endedMatch.getMatchPlayers();
+        for (User player : currentPlayers){
+            long id = player.getId();
+            User user = findUserById(id);
+            user.setIsReady(ReadyStatus.UNREADY);
+            user.setScore(0);
+
+        }
     }
 
 

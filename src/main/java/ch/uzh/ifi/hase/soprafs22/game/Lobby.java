@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -92,6 +93,22 @@ public class Lobby {
 
                 else if (player.getIsReady().equals(ReadyStatus.UNREADY)) {
                     player.setIsReady(ReadyStatus.READY);
+                }
+            }
+        }
+    }
+
+    public void updateCustomText(long userId, UserPutDTO userPutDTO){
+        ReadyStatus readyStatus = userPutDTO.getIsReady();
+        String customText = userPutDTO.getCustomWhiteText();
+
+        for (User user: this.currentPlayers){
+            if (user.getId().equals(userId)){
+                /*if (readyStatus != null){
+                    user.setIsReady(readyStatus);
+                }*/
+                if (customText != null){
+                    user.setCustomWhiteText(customText);
                 }
             }
         }

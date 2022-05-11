@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,16 +87,34 @@ public class GameService {
         } catch (Exception e){
             return "Couldn't update readyStatus in Lobby through gameManager";
         }
+    }
 
+    // would actually work with all kinds of updates
+    public String updateCustomText(long lobbyId, long userId, UserPutDTO userPutDTO) throws Exception {
+        try {
+            Lobby requestedLobby = gameManager.getLobby(lobbyId);
+            requestedLobby.updateCustomText(userId, userPutDTO);
 
+            return "Successfully updated customText in Lobby through gameManager";
+        } catch (Exception e){
+            return "Couldn't update readyStatus in Lobby through gameManager";
+        }
     }
 
     public Match startMatch(long lobbyId) throws IncorrectIdException{
-        Lobby requestedLobby = gameManager.getLobby(lobbyId);
-        Match createdMatch = gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
-        //gameManager.deleteLobby(lobbyId);
-        return createdMatch;
-        //requestedLobby.createMatchWithPlayers();
+        //checking if match already created. If yes, return the Match. Else create the Match.
+        //if it's already created, you can get the Match with gameManager.getMatch(lobbyId)
+        //If not, it will throw an IncorrectIdException("The match was not found")
+        try {
+            Match existingMatch = gameManager.getMatch(lobbyId);
+            return existingMatch;
+        }
+        catch(IncorrectIdException e1){
+            Lobby requestedLobby = gameManager.getLobby(lobbyId);
+            Match createdMatch = gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
+            gameManager.deleteLobby(lobbyId);
+            return createdMatch;
+        }
     }
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{

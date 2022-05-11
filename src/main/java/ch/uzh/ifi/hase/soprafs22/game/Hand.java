@@ -6,8 +6,9 @@ import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-//Not yet sure if Hand should be in game//TEST
+//Not yet sure if Hand should be in game//TEST a
 public class Hand {
 
     private ArrayList<WhiteCard> userHand = new ArrayList<WhiteCard>();
@@ -37,12 +38,19 @@ public class Hand {
     //should draw ten white cards from the deck and save it in the hand
     public void createHand(){
         int numberOfCards = 0;
+        if (this.owner.getCustomWhiteText() != null){
+            WhiteCard customCard = new WhiteCard(this.owner);
+            customCard.createCard();
+            customCard.setText(this.owner.getCustomWhiteText());
+            this.userHand.add(customCard);
+            numberOfCards = 1;
+        }
         while (numberOfCards < 10){
             WhiteCard newCard = new WhiteCard(this.owner);
             newCard.createCard(); //setting owner and text for the card
             boolean cardWithSameText = false;
             for (WhiteCard card: userHand){
-                if(newCard.getText() == card.getText()){
+                if(Objects.equals(newCard.getText(), card.getText())){
                     cardWithSameText = true;
                     break;
                 }

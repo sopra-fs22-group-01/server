@@ -16,11 +16,11 @@ public class UserGetDTO {
     private UserStatus userStatus;
     private Date birthday;
     private int score;
+    private String customWhiteText;
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -28,7 +28,6 @@ public class UserGetDTO {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -36,8 +35,6 @@ public class UserGetDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
     public String getPassword() {
         return password;
     }
@@ -45,12 +42,13 @@ public class UserGetDTO {
     public Date getDate() {
         return date;
     }
-
     public void setDate(Date date) {
         this.date = date;
     }
 
-
+    public String getToken() {
+        return this.token;
+    }
     public void setToken(String token) {
         this.token = token;
     }
@@ -58,19 +56,13 @@ public class UserGetDTO {
     public UserStatus getUserStatus() {
         return userStatus;
     }
-
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
-    }
-
-    public String getToken() {
-        return this.token;
     }
 
     public Date getBirthday() {
         return birthday;
     }
-
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
@@ -78,7 +70,6 @@ public class UserGetDTO {
     public ReadyStatus getIsReady() {
         return isReady;
     }
-
     public void setIsReady(ReadyStatus readyStatus) {
         this.isReady = readyStatus;
     }
@@ -86,9 +77,16 @@ public class UserGetDTO {
     public int getScore(){
         return score;
     }
-
     public void setScore(int score){
         this.score = score;
     }
+
+    public String getCustomWhiteText() {
+        return this.customWhiteText;
+    }
+    public void setCustomWhiteText(String customWhiteText) {
+        this.customWhiteText = customWhiteText;
+    }
+
 }
 
