@@ -34,7 +34,7 @@ public class Match {
     }
 
     public void createRound(){
-        //initializes the round with the players of the match, creates automatically the hands
+        //initializes the round with the players of the match, creates automatically the  hands
         round = new Round(matchPlayers);
     }
 
