@@ -101,8 +101,6 @@ public class Round {
             for (Hand hand : hands){
                 hand.resetChosenCard();
             }
-            //sets the countdown to its initial time
-            //roundCountdown.startTimer();
 
     }
 

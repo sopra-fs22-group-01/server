@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.ApiRequestStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
@@ -290,7 +290,6 @@ public class GameController {
     }//
 
     // retrieve currentRound winnerCards
-    //retrieves the ranking of the players
     @GetMapping("/matches/{matchId}/winner")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -305,6 +304,26 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
+
+    //incrementsApiRequestCount and if all put request arrived, sets ApiRequestStatus to COMPLETE
+    @PutMapping("/matches/{matchId}/synchronization")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void incrementApiRequestCount(@PathVariable long matchId) throws IncorrectIdException {
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.incrementRequestCountAndCheckStatus();
+    }
+
+    @GetMapping("/matches/{matchId}/synchronization")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<ApiRequestStatus> getApiRequestStatus(@PathVariable long matchId) throws IncorrectIdException {
+        Match currentMatch = gameManager.getMatch(matchId);
+        ApiRequestStatus currentApiRequestStatus = currentMatch.getApiRequestStatus();
+
+        return ResponseEntity.ok(currentApiRequestStatus);
+    }
+
 }
 
 

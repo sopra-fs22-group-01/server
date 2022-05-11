@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.ApiRequestStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,4 +66,32 @@ class MatchTest {
         int actual = testUser.getScore();
         assertEquals(1, actual);
     }
+
+    @Test
+    public void initialApiRequestStatus_is_INCOMPLETE() {
+        assertEquals(ApiRequestStatus.INCOMPLETE,testMatch.getApiRequestStatus());
+    }
+
+    @Test
+    public void incrementRequestStatusCountAndCheckStatus_changesStatus() {
+        User testUser = new User();
+        testUsers.add(testUser);
+        testMatch.setMatchPlayers(testUsers);
+        testMatch.incrementRequestCountAndCheckStatus();
+        //expect the status to change since ApiStatusCount got incremented and therefore equals the amount of players
+        assertEquals(ApiRequestStatus.COMPLETE,testMatch.getApiRequestStatus());
+    }
+
+    @Test
+    public void incrementRequestStatusCountAndCheckStatus_doesnt_changeStatus() {
+        User testUser = new User();
+        User testUser2 = new User();
+        testUsers.add(testUser);
+        testUsers.add(testUser2);
+        testMatch.setMatchPlayers(testUsers);
+        testMatch.incrementRequestCountAndCheckStatus();
+        //expect the status to change since ApiStatusCount got incremented and therefore equals the amount of players
+        assertEquals(ApiRequestStatus.INCOMPLETE,testMatch.getApiRequestStatus());
+    }
+
 }
