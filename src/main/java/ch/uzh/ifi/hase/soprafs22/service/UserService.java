@@ -186,6 +186,13 @@ public class UserService {
         databaseUser.setIsReady(ReadyStatus.UNREADY);
     }
 
+    //sets the score of a user back to 0
+    public void resetUserScore(User user){
+        User databaseUser = findUserById(user.getId()); //user in database for id
+        databaseUser.setScore(0);
+    }
+
+
 
   public String updateCustomWhiteText(UserPutDTO userPutDTO){
       User dbUser = findUserById(userPutDTO.getId());

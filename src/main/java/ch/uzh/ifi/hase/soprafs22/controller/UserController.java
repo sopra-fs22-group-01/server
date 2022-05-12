@@ -217,13 +217,27 @@ public class UserController {
     public void resetReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
         try {
             User user = userService.findUserById(userId); //throws exception if userid doesnt exist
-            userService.resetUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in the database
+            userService.resetUserReadyStatus(user); //resets the ReadyStatus of a user in the database
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
+    @DeleteMapping("/users/{userId}/scores")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void resetUserScore(@PathVariable long userId) {
+        try {
+            User user = userService.findUserById(userId);
+            userService.resetUserScore(user); //finds user in db and resets score to 0
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
@@ -286,8 +300,6 @@ public class UserController {
         }catch (IncorrectIdException e) {
             return ResponseEntity.ok(MatchStatus.NotYetCreated);
         }
-
-
     }
 
     //testendpoint to get chosencard to see if chosen card is even saved in hand
