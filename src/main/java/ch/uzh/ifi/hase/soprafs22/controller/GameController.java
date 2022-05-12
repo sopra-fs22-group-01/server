@@ -119,7 +119,7 @@ public class GameController {
         }
     }
 
-    //Creates a new match and puts all players from the lobby into it
+    //Creates a new match and puts all players from the lobby into  it
     //Should delete the lobby
     @PostMapping("/matches/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
@@ -133,6 +133,17 @@ public class GameController {
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
+    }
+
+    //retrieves the round number of the match and return it
+    @GetMapping("/matches/{matchId}/roundnumbers")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Integer> getRoundNumberSpecificMatch(@PathVariable long matchId) throws IncorrectIdException {
+        //fetch the specific round number
+        Match currentMatch = gameManager.getMatch(matchId);
+        int roundNumber=currentMatch.getRound().getRoundNumber();
+        return ResponseEntity.ok(roundNumber);
     }
 
     //retrieves all users from a specific match and returns array of userGetDTO
