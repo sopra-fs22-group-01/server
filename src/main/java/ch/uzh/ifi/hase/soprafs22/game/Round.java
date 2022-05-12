@@ -54,9 +54,9 @@ public class Round {
         this.roundNumber = 1;
         //this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
 
-        selectionCountdown = new Countdown(20);
+        selectionCountdown = new Countdown(25);
         votingCountdown = new Countdown(15);
-        rankingCountdown = new Countdown(15);
+        rankingCountdown = new Countdown(5);
 
         startRoundStatus = StartRoundStatus.PENDING;
         //starts first selection countdown
