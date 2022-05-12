@@ -3,19 +3,12 @@ package ch.uzh.ifi.hase.soprafs22.game.helpers;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 public class ScoreBoard {
-    //private User winner;
 
     public ArrayList<User> getPlayersOfHighestRank(ArrayList<User> players) {
         //finds the players with the highest score
-
-        /*
-         changed return value to an Array of players,
-         so that it can be used in the getRanking method and with different rules
-         With the rule "the first player, who reaches 5 points, wins", it will just return a list with one player
-        */
 
         ArrayList<User> winners = new ArrayList<>();
         int biggestScore = 0;
@@ -34,7 +27,8 @@ public class ScoreBoard {
         }
         return winners;
     }
-//
+
+
     public ArrayList<Ranking> getRanking(ArrayList<User> players){
         /*
          not using users as keys as the user can change during the game (e.g. score of user),
@@ -55,27 +49,4 @@ public class ScoreBoard {
         }
         return rankings;
     }
-
-    /*
-    //returns arraylist of users with their current score (key= users, val = score)
-    public HashMap getCurrentScores(ArrayList<User> players){
-        HashMap<String, Integer> playerScores = new HashMap();
-        while (!players.isEmpty()){
-            for(User player: players){
-                playerScores.put(player.getUsername(), player.getScore());
-            }
-        }
-        return playerScores;
-    }
-    */
-
-    /*
-    public void updateScore(User player, int obtainedPoints){
-        //adding the achieved points to the user's score
-        int oldScore = player.getScore();
-        int newScore = oldScore + obtainedPoints;
-        player.setScore(newScore);
-    }
-    */
-
 }
