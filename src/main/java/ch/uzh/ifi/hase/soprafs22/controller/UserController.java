@@ -7,11 +7,7 @@ import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.Round;
-import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
-import ch.uzh.ifi.hase.soprafs22.game.card.Card;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.GameStatus;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -22,8 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,10 +211,25 @@ public class UserController {
         }
     }
 
+    @PutMapping("/lobbies/{lobbyId}/users/{userId}/status")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void resetReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
+        try {
+            User user = userService.findUserById(userId); //throws exception if userid doesnt exist
+            userService.resetUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in the database
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     // checks status of the match, to know if the game is over or there are still rounds to play
     @GetMapping("/matches/{matchId}/rounds")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<MatchStatus> checkMatchStatus(@PathVariable long matchId) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);

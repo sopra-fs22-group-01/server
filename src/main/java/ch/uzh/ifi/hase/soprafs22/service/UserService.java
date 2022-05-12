@@ -181,6 +181,12 @@ public class UserService {
         return user.getIsReady();
     }
 
+    public void resetUserReadyStatus(User user){
+        User databaseUser=findUserById(user.getId()); //user in database for id
+        databaseUser.setIsReady(ReadyStatus.UNREADY);
+    }
+
+
   public String updateCustomWhiteText(UserPutDTO userPutDTO){
       User dbUser = findUserById(userPutDTO.getId());
       if (dbUser != null){
