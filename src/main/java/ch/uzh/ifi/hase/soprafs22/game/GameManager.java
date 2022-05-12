@@ -93,7 +93,7 @@ public class GameManager {
         return false;
     }
 
-    //checks if new round should be started or nor
+    //checks  if new round should be started or nor
     public boolean evaluateNewRoundStart(long matchId) throws IncorrectIdException {
         Match currentMatch = getMatch(matchId);
 
