@@ -28,12 +28,12 @@ public class Round {
     //Saves the hand of each player. Each player is the owner of a hand.
     private ArrayList<Hand> hands = new ArrayList<>();
     private int roundNumber;
-    private int max_Rounds = 3;
+
 
 
     private int maxScore = 2;
 
-    //contdown of a specific round
+    //countdown of a specific round
     private Countdown selectionCountdown ;
     private Countdown votingCountdown;
     private Countdown rankingCountdown;
@@ -60,15 +60,12 @@ public class Round {
     }
 
     public int getSelectionTime(){
-        //return this.roundCountdown;
         return this.selectionCountdown.getCurrentTime();
     }
     public int getRankingTime(){
-        //return this.roundCountdown;
         return this.rankingCountdown.getCurrentTime();
     }
     public int getVotingTime(){
-        //return this.roundCountdown;
         return this.votingCountdown.getCurrentTime();
     }
 
@@ -122,8 +119,6 @@ public class Round {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMsg);
     }
     public ArrayList<Hand> getHands(){
-        String errorMsg = "Hands not found";
-
         return this.hands;
 
     }
@@ -168,7 +163,6 @@ public class Round {
     public ArrayList<WhiteCard> getRoundWinnerCards(){
         ArrayList<WhiteCard> highestScoreCards = new ArrayList<>();
         int currentHighScore = 0;
-        WhiteCard currentWinner;
 
         for (WhiteCard chosenCard : this.chosenCards) {
             if (chosenCard.getScore() == currentHighScore) {

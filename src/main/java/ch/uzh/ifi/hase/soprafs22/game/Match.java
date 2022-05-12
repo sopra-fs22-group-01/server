@@ -8,11 +8,7 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ApiRequestStatus;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
-/**
- * 
- * */
 
 public class Match {
     private Long id;
@@ -118,47 +114,5 @@ public class Match {
         }
 
     }
-
-
-
-
-
-
-    /*
-    // creating a hand with 10 cards
-    public void createHands(){
-        for (User player: players) {
-            Hand hand = new Hand(player);
-            hand.createHand();
-            allPlayersHands.add(hand);
-        }
-    }
-
-    public Hand getHandByUserId(Long userId){
-        String errorMsg = "Hand not found";
-
-        for (Hand hand: allPlayersHands){
-            if (Objects.equals(hand.getOwner().getId(), userId)){
-                return hand;
-            }
-        }
-
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMsg);
-
-    }
-    */
-
-    /*
-    // The method increases the winners' score
-    // It also tackles the edge case where there are multiple winners, their score are increased together
-    public void updateScoreBoard(){
-        ArrayList<WhiteCard> roundWinners = round.getRoundWinnerCards();
-        for(WhiteCard whiteCard: roundWinners){
-            User winner = whiteCard.getOwner();
-            int scoreCard = whiteCard.getScore();
-            scoreBoard.updateScore(winner, scoreCard);
-        }
-    }
-     */
 
 }

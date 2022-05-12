@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class GameManager {
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private ArrayList<Match> matches = new ArrayList<>();
-    //private long newMatchIdNumber = 0;
     private long newLobbyIdNumber = 0;
 
     private static GameManager gameManager = null;
@@ -97,16 +96,13 @@ public class GameManager {
     //checks if new round should be started or nor
     public boolean evaluateNewRoundStart(long matchId) throws IncorrectIdException {
         Match currentMatch = getMatch(matchId);
-        ScoreBoard currentScoreBoard = currentMatch.getScoreBoard();
-        ArrayList<User> playersOfHighestRank = currentScoreBoard.getPlayersOfHighestRank(currentMatch.getMatchPlayers());
-        System.out.println("before array gets accessed");
 
         //if game is over,returns false
         if(isGameOver(currentMatch)){
             return false;
         }
         //if game is not over yet, return true (and start new round)
-        //currentMatch.getRound().startNewRound();
+
         return true;
 
     }
@@ -117,21 +113,4 @@ public class GameManager {
         currentMatch.getRound().startNewRound();
     }
 
-    /*
-    public void deleteMatch(long matchId) {
-        for (Match match: matches){
-            if (match.getId() == matchId){
-                matches.remove(match);
-            }
-        }
-    }
-
-    public ArrayList<Long> getLobbiesId() {
-        ArrayList<Long> lobbiesId = new ArrayList<>();
-        for (Lobby lobby: lobbies){
-            lobbiesId.add(lobby.getId());
-        }
-        return lobbiesId;
-    }
-    */
 }

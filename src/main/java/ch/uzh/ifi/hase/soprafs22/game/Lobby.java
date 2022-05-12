@@ -4,9 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
-import ch.uzh.ifi.hase.soprafs22.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.ArrayList;
 
@@ -30,7 +28,6 @@ public class Lobby {
     public void setId(Long id) {this.id = id;}
 
     public int getCurrentPlayerCount() {return currentPlayerCount;}
-    //public void setCurrentPlayerCount(int currentPlayerCount){this.currentPlayerCount=currentPlayerCount;}
 
 
     public LobbyStatus getLobbyStatus() {
@@ -99,14 +96,10 @@ public class Lobby {
     }
 
     public void updateCustomText(long userId, UserPutDTO userPutDTO){
-        ReadyStatus readyStatus = userPutDTO.getIsReady();
         String customText = userPutDTO.getCustomWhiteText();
 
         for (User user: this.currentPlayers){
             if (user.getId().equals(userId)){
-                /*if (readyStatus != null){
-                    user.setIsReady(readyStatus);
-                }*/
                 if (customText != null){
                     user.setCustomWhiteText(customText);
                 }
