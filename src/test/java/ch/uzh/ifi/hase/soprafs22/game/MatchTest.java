@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.ApiRequestStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +69,7 @@ class MatchTest {
 
     @Test
     public void initialApiRequestStatus_is_INCOMPLETE() {
-        assertEquals(ApiRequestStatus.INCOMPLETE,testMatch.getApiRequestStatus());
+        assertEquals(VotingStatus.INCOMPLETE,testMatch.getVotingStatus());
     }
 
     @Test
@@ -77,9 +77,9 @@ class MatchTest {
         User testUser = new User();
         testUsers.add(testUser);
         testMatch.setMatchPlayers(testUsers);
-        testMatch.incrementRequestCountAndCheckStatus();
+        testMatch.incrementVoteCountAndCheckStatus();
         //expect the status to change since ApiStatusCount got incremented and therefore equals the amount of players
-        assertEquals(ApiRequestStatus.COMPLETE,testMatch.getApiRequestStatus());
+        assertEquals(VotingStatus.COMPLETE,testMatch.getVotingStatus());
     }
 
     @Test
@@ -89,9 +89,9 @@ class MatchTest {
         testUsers.add(testUser);
         testUsers.add(testUser2);
         testMatch.setMatchPlayers(testUsers);
-        testMatch.incrementRequestCountAndCheckStatus();
+        testMatch.incrementVoteCountAndCheckStatus();
         //expect the status to change since ApiStatusCount got incremented and therefore equals the amount of players
-        assertEquals(ApiRequestStatus.INCOMPLETE,testMatch.getApiRequestStatus());
+        assertEquals(VotingStatus.INCOMPLETE,testMatch.getVotingStatus());
     }
 
 }

@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.ApiRequestStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 
 import java.util.ArrayList;
 
@@ -18,8 +18,8 @@ public class Match {
     private Round round;
     private MatchStatus matchStatus;
 
-    private ApiRequestStatus apiRequestStatus;
-    private int requestCount;
+    private VotingStatus votingStatus;
+    private int voteCount;
 
 
     private boolean scoresAlreadyUpdated;
@@ -27,8 +27,8 @@ public class Match {
     public Match(Long id) {
         this.id = id;
         this.matchStatus = MatchStatus.MatchOngoing;
-        this.apiRequestStatus = ApiRequestStatus.INCOMPLETE;
-        this.requestCount = 0;
+        this.votingStatus = VotingStatus.INCOMPLETE;
+        this.voteCount = 0;
         this.scoresAlreadyUpdated = false;
     }
 
@@ -71,16 +71,17 @@ public class Match {
     }
     public void setId(Long id){this.id = id;}
 
-    private void setApiRequestStatus(ApiRequestStatus apiRequestStatus) {
-        this.apiRequestStatus = apiRequestStatus;
+    private void setVotingStatus(VotingStatus votingStatus) {
+        this.votingStatus = votingStatus;
     }
 
-    public ApiRequestStatus getApiRequestStatus() {
-        return this.apiRequestStatus;
+    public VotingStatus getVotingStatus() {
+        return this.votingStatus;
     }
 
-    public void resetApiRequestStatus(){
-        this.apiRequestStatus = ApiRequestStatus.INCOMPLETE;
+    public void resetVotingStatus(){
+        this.votingStatus = VotingStatus.INCOMPLETE;
+        this.voteCount = 0;
     }
 
 
@@ -106,11 +107,11 @@ public class Match {
         this.setScoresAlreadyUpdatedTrue();
     }
 
-    public void incrementRequestCountAndCheckStatus(){
-        this.requestCount++;
+    public void incrementVoteCountAndCheckStatus(){
+        this.voteCount++;
         int numberOfPlayers = this.getPlayerCount();
-        if(requestCount == numberOfPlayers){
-            setApiRequestStatus(ApiRequestStatus.COMPLETE);
+        if(voteCount == numberOfPlayers){
+            setVotingStatus(VotingStatus.COMPLETE);
         }
 
     }
