@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.StartRoundStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,6 +43,9 @@ public class Round {
         return roundNumber;
     }
 
+
+    StartRoundStatus startRoundStatus;
+
     // Constructor
     public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();
@@ -54,6 +58,7 @@ public class Round {
         votingCountdown = new Countdown(15);
         rankingCountdown = new Countdown(15);
 
+        startRoundStatus = StartRoundStatus.PENDING;
         //starts first selection countdown
         //remove after and start it with endpoint
     }
@@ -87,22 +92,29 @@ public class Round {
 
     //startNewRound gets called from gameManager after it checked if the game is over or not yet
     public void startNewRound(){
-            // returns true if keep playing
-            this.roundNumber++;
+            if(startRoundStatus == StartRoundStatus.PENDING){
 
-            // setting the new black card of the round
-            this.blackCard.createCard();
+                startRoundStatus = StartRoundStatus.STARTED;
+                // returns true if keep playing
+                this.roundNumber++;
 
-            // Updating the hand of each player by handing out one card
-            updateHands();
+                // setting the new black card of the round
+                this.blackCard.createCard();
 
-            // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
-            chosenCards.clear();
-            //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
-            for (Hand hand : hands){
-                hand.resetChosenCard();
+                // Updating the hand of each player by handing out one card
+                updateHands();
+
+                // deleting chosenCards by clearing the Array chosenCards and setting the chosenCards of each Hands to null
+                chosenCards.clear();
+                //and setting the chosenCards of each Hands to null by calling the resetChosenCard function
+                for (Hand hand : hands){
+                    hand.resetChosenCard();
+                }
             }
+    }
 
+    public void resetStartRoundStatus(){
+        this.startRoundStatus = StartRoundStatus.PENDING;
     }
 
     //can get deleted when everything implemented?

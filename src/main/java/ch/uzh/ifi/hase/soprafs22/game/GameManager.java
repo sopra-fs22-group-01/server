@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.NoLobbyException;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 
@@ -32,7 +33,7 @@ public class GameManager {
         Match generatedMatch = new Match(matchId);
         //setting the players for the Match
         generatedMatch.setMatchPlayers(players);
-        //match doesn't have anymore hands, should create a round whenever a match gets started. The round will create the hands
+        //match doesn't have  hands anymore, should create a round whenever a match gets started. The round will create the hands
         generatedMatch.createRound();
         //saving the Match in matches
         generatedMatch.createScoreBoard();
@@ -93,7 +94,7 @@ public class GameManager {
         return false;
     }
 
-    //checks if new round should be started or nor
+    //checks  if new round should be started or nor
     public boolean evaluateNewRoundStart(long matchId) throws IncorrectIdException {
         Match currentMatch = getMatch(matchId);
 
@@ -110,6 +111,7 @@ public class GameManager {
     public void startNewRound(long matchId) throws IncorrectIdException {
         Match currentMatch = getMatch(matchId);
         currentMatch.setScoresAlreadyUpdatedFalse();
+        currentMatch.resetVotingStatus();
         currentMatch.getRound().startNewRound();
     }
 

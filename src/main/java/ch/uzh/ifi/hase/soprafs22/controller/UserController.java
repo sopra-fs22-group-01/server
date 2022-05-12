@@ -224,7 +224,6 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<MatchStatus> checkMatchStatus(@PathVariable long matchId) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
-        // update player scores in currentMatch, not userService so we don't receive a COPY of a playersArray
 
         MatchStatus currentMatchStatus = currentMatch.getMatchStatus();
         if(currentMatchStatus == MatchStatus.MatchOngoing){
@@ -237,7 +236,7 @@ public class UserController {
 
     }
 
-    //updates the round such that next round can be played bzw. end game if it was last round
+    //updates the scores such that next round can be played bzw. end game if it was last round
     @PutMapping("/matches/{matchId}/scores")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -252,14 +251,15 @@ public class UserController {
 
             Round currentRound = currentMatch.getRound();
 
+            //makes sure a new round can later be started by one player
+            currentRound.resetStartRoundStatus();
+
             // gets winnerCards from last rounds to update all scores in database
             userService.updateScores(currentRound.getRoundWinnerCards()); //
 
             boolean keepPlaying = gameManager.evaluateNewRoundStart(matchId);
             if (!keepPlaying) {
                 currentMatch.setMatchStatus(MatchStatus.GameOver);
-
-
             }
 
         }

@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.*;
 import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.ApiRequestStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.*;
@@ -322,17 +322,17 @@ public class GameController {
     @ResponseBody
     public void incrementApiRequestCount(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
-        currentMatch.incrementRequestCountAndCheckStatus();
+        currentMatch.incrementVoteCountAndCheckStatus();
     }
 
     @GetMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ApiRequestStatus> getApiRequestStatus(@PathVariable long matchId) throws IncorrectIdException {
+    public ResponseEntity<VotingStatus> getApiRequestStatus(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
-        ApiRequestStatus currentApiRequestStatus = currentMatch.getApiRequestStatus();
+        VotingStatus currentVotingStatus = currentMatch.getVotingStatus();
 
-        return ResponseEntity.ok(currentApiRequestStatus);
+        return ResponseEntity.ok(currentVotingStatus);
     }
 
 }
