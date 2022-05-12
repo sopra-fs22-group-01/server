@@ -38,6 +38,10 @@ public class Round {
     private Countdown votingCountdown;
     private Countdown rankingCountdown;
 
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
     // Constructor
     public Round(ArrayList<User> players) {
         this.blackCard = new BlackCard();

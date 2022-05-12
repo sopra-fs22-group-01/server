@@ -135,6 +135,17 @@ public class GameController {
         }
     }
 
+    //retrieves the round number of the match and return it
+    @GetMapping("/matches/{matchId}/roundnumbers")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Integer> getRoundNumberSpecificMatch(@PathVariable long matchId) throws IncorrectIdException {
+        //fetch the specific round number
+        Match currentMatch = gameManager.getMatch(matchId);
+        int roundNumber=currentMatch.getRound().getRoundNumber();
+        return ResponseEntity.ok(roundNumber);
+    }
+
     //retrieves all users from a specific match and returns array of userGetDTO
     @GetMapping("/matches/{matchId}/users")
     @ResponseStatus(HttpStatus.OK)
