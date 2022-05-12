@@ -19,18 +19,21 @@ public class Match {
     private ArrayList<User> matchPlayers = new ArrayList<>();
 
     private ScoreBoard scoreBoard;
-    private Timer timer;
     private Round round;
     private MatchStatus matchStatus;
 
     private ApiRequestStatus apiRequestStatus;
     private int requestCount;
 
+
+    private boolean scoresAlreadyUpdated;
+
     public Match(Long id) {
         this.id = id;
         this.matchStatus = MatchStatus.MatchOngoing;
         this.apiRequestStatus = ApiRequestStatus.INCOMPLETE;
         this.requestCount = 0;
+        this.scoresAlreadyUpdated = false;
     }
 
     public void createRound(){
@@ -45,8 +48,18 @@ public class Match {
         return scoreBoard;
     }
 
+    public boolean isScoresAlreadyUpdated() {
+        return scoresAlreadyUpdated;
+    }
 
-    public Timer getTimer() {return timer;}
+    public void setScoresAlreadyUpdatedTrue() {
+        this.scoresAlreadyUpdated = true;
+    }
+
+
+    public void setScoresAlreadyUpdatedFalse() {
+        this.scoresAlreadyUpdated = false;
+    }
 
     public Round getRound(){return round;}
 
@@ -91,9 +104,10 @@ public class Match {
                if (whiteCard.getOwner().getId() == user.getId()){
                    int oldScore = user.getScore();
                    user.setScore(oldScore+1);
-               }//
+               }
            }
         }
+        this.setScoresAlreadyUpdatedTrue();
     }
 
     public void incrementRequestCountAndCheckStatus(){

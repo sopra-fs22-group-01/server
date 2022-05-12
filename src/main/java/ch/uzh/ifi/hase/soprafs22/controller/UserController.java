@@ -285,33 +285,52 @@ public class UserController {
         return ResponseEntity.ok(lobbyStatus);
     }*/
 
-    //updates the round such that next round can be played bzw. end game if it was last round
-    @PutMapping("/matches/{matchId}/rounds")
+    // checks status of the match, to know if the game is over or there are still rounds to play
+    @GetMapping("/matches/{matchId}/rounds")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public ResponseEntity<MatchStatus> updateRound(@PathVariable long matchId) throws Exception{
+    public ResponseEntity<MatchStatus> checkMatchStatus(@PathVariable long matchId) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
         // update player scores in curentMatch, not userService so we don't receive a COPY of a playersArray
-        currentMatch.updatePlayerScores();
 
-        Round currentRound = currentMatch.getRound();
-
-        // gets winnerCards from last rounds to update all scores in database
-        userService.updateScores(currentRound.getRoundWinnerCards()); //
-
-        // return true if new round gets started, false if match is over
-        boolean keepPlaying = gameManager.evaluateNewRoundStart(matchId);
-        if (!keepPlaying){
-            currentMatch.setMatchStatus(MatchStatus.GameOver);
-            userService.resetMatchPlayers(currentMatch.getId());
-            return ResponseEntity.ok(MatchStatus.GameOver);
+        MatchStatus currentMatchStatus = currentMatch.getMatchStatus();
+        if(currentMatchStatus == MatchStatus.MatchOngoing){
+            gameManager.startNewRound(matchId);
         }
-        else{
-            return ResponseEntity.ok(MatchStatus.MatchOngoing);
-        }
+
+        return ResponseEntity.ok(currentMatchStatus);
+        // return true if new round gets started, false if match is over (starts new round)
+
+
     }
 
+    //updates the round such that next round can be played bzw. end game if it was last round
+    @PutMapping("/matches/{matchId}/scores")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void updateScores(@PathVariable long matchId) throws Exception {
 
+        Match currentMatch = gameManager.getMatch(matchId);
+
+
+        if (!currentMatch.isScoresAlreadyUpdated()) {
+            // update player scores in currentMatch, not userService, so we don't receive a COPY of a playersArray
+            currentMatch.updatePlayerScores();
+
+            Round currentRound = currentMatch.getRound();
+
+            // gets winnerCards from last rounds to update all scores in database
+            userService.updateScores(currentRound.getRoundWinnerCards()); //
+
+            boolean keepPlaying = gameManager.evaluateNewRoundStart(matchId);
+            if (!keepPlaying) {
+                currentMatch.setMatchStatus(MatchStatus.GameOver);
+
+
+            }
+
+        }
+    }
 
 
     //get matchStatus

@@ -106,9 +106,15 @@ public class GameManager {
             return false;
         }
         //if game is not over yet, return true (and start new round)
-        currentMatch.getRound().startNewRound();
+        //currentMatch.getRound().startNewRound();
         return true;
 
+    }
+
+    public void startNewRound(long matchId) throws IncorrectIdException {
+        Match currentMatch = getMatch(matchId);
+        currentMatch.setScoresAlreadyUpdatedFalse();
+        currentMatch.getRound().startNewRound();
     }
 
     /*
