@@ -17,6 +17,7 @@ public class UserGetDTO {
     private Date birthday;
     private int score;
     private String customWhiteText;
+    private int superVote;
 
     public Long getId() {
         return id;
@@ -88,5 +89,11 @@ public class UserGetDTO {
         this.customWhiteText = customWhiteText;
     }
 
+    public int getSuperVote(){
+        return this.superVote;
+    }
+    public void setSuperVote(int superVote){
+        this.superVote = superVote;
+    }
 }
 

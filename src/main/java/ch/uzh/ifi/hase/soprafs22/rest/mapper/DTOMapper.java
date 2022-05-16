@@ -40,6 +40,7 @@ public interface DTOMapper {//TEST
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "isReady", target = "isReady")
     @Mapping(source = "customWhiteText", target = "customWhiteText")
+    @Mapping(source = "superVote", target = "superVote")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     // takes User as input and converts it to entity of UserGetDTO
@@ -53,6 +54,7 @@ public interface DTOMapper {//TEST
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "isReady", target = "isReady")
     @Mapping(source = "customWhiteText", target = "customWhiteText")
+    @Mapping(source = "superVote", target = "superVote")
     UserPutDTO convertEntityToUserPutDTO(User user);
 
 
@@ -80,5 +82,7 @@ public interface DTOMapper {//TEST
     @Mapping(source = "id", target = "id")
     @Mapping(source = "matchStatus", target = "matchStatus")
     @Mapping(source = "matchPlayers", target = "matchPlayers")
+    @Mapping(source = "laughStatus", target = "laughStatus")
+    @Mapping(source = "available_Supervotes", target = "available_Supervotes")
     MatchGetDTO convertEntityToMatchGetDTO(Match match);
 }

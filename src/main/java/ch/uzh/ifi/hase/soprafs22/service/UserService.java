@@ -209,6 +209,7 @@ public class UserService {
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);
       updateUserPassword(userPutDTO);
+      updateSupervote(userPutDTO.getId());
       //updateUserReadyStatus(userPutDTO);
       return "User successfully updated";
   }
@@ -233,7 +234,6 @@ public class UserService {
 
     //updates scores of all currentRound winners in database
     public void updateScores(ArrayList<WhiteCard> highestScoreCards){
-
         for (WhiteCard winnerCard: highestScoreCards){
             long id = winnerCard.getOwner().getId();
             User userToBeUpdated = findUserById(id);
@@ -261,15 +261,16 @@ public class UserService {
     public void setSuperVotes(List<User> players, int votes){
         for (User user : players){
             User currentUser = findUserById(user.getId());
-            currentUser.setSupervote(votes);
+            currentUser.setSuperVote(votes);
         }
     }
 
     public void updateSupervote(long userId){
         User user = findUserById(userId);
-        int available_votes = user.getSupervote();
+        int available_votes = user.getSuperVote();
         if (available_votes > 0){
-            user.setSupervote(available_votes-1);
+            user.setSuperVote(available_votes-1);
+
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

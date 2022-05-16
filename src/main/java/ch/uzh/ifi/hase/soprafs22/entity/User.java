@@ -59,7 +59,7 @@ public class User implements Serializable {
   private String customWhiteText;
 
   @Column
-  private int supervote;
+  private int superVote;
 
 
 
@@ -139,10 +139,8 @@ public class User implements Serializable {
         this.customWhiteText = customWhiteText;
     }
 
-  public int getSupervote(){
-        return this.supervote;
-    }
-  public void setSupervote(int supervote){
-        this.supervote = supervote;
+  public int getSuperVote(){return this.superVote;}
+  public void setSuperVote(int superVote){
+        this.superVote = superVote;
     }
 }

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.LaughStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
@@ -178,9 +179,6 @@ public class UserController {
         return ResponseEntity.ok(playerHandCards);
     }
 
-
-
-
     // get all hands by matchId
     @GetMapping("/matches/{matchId}/hands")
     @ResponseStatus(HttpStatus.OK)
@@ -336,17 +334,37 @@ public class UserController {
         }
     }
 
-    // tells server a supervote was casted and laugher should be played for all
+    // tells server a supervote was casted and laugher should be played for all, decreased available supervote by 1
     @PutMapping("/matches/{matchId}/supervote/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<boolean> getPlayLaughter(@PathVariable long matchId, @PathVariable long userId) throws IncorrectIdException {
-        //fetch the specific round number
-        userService.updateSupervote(userId);
+    public ResponseEntity<Boolean> getPlayLaughter(@PathVariable long matchId, @PathVariable long userId) throws IncorrectIdException {
 
+        // update laugh-status
         Match currentMatch = gameManager.getMatch(matchId);
-        int roundNumber=currentMatch.getRound().getRoundNumber();
-        return ResponseEntity.ok(roundNumber);
+        currentMatch.setLaughStatus(LaughStatus.Laughing);
+
+        //update in match
+        currentMatch.decreaseSuperVote(userId);
+        return ResponseEntity.ok(true);
+    }
+
+    //get laugh status
+    @GetMapping("/matches/{matchId}/laughStatus")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<LaughStatus> getMatchLaughStatus(@PathVariable long matchId) throws IncorrectIdException {
+        Match currentMatch = gameManager.getMatch(matchId);
+        return ResponseEntity.ok(currentMatch.getLaughStatus());
+    }
+
+    // only turn laughstatus to "silence" once everyone hear a laughter
+    @PutMapping("/matches/{matchId}/laugh")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void countLaughs(@PathVariable long matchId) throws IncorrectIdException {
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.updateLaughStatus();
     }
 
 
