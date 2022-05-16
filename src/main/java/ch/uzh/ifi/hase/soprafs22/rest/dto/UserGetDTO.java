@@ -18,6 +18,8 @@ public class UserGetDTO {
     private int score;
     private String customWhiteText;
     private int superVote;
+    private int overallWins;
+    private int playedGames;
 
     public Long getId() {
         return id;
@@ -95,5 +97,11 @@ public class UserGetDTO {
     public void setSuperVote(int superVote){
         this.superVote = superVote;
     }
+    public int getOverallWins() { return this.overallWins;}
+    public void setOverallWins(int overallWins) {this.overallWins = overallWins;}
+
+    public int getPlayedGames() { return this.playedGames;}
+    public void setPlayedGames(int playedGames) { this.playedGames = playedGames;}
+
 }
 

@@ -61,7 +61,11 @@ public class User implements Serializable {
   @Column
   private int superVote;
 
+  @Column
+  private int overallWins;
 
+  @Column
+  private int playedGames;
 
   /*
   doesn't work as Hand isn't a basic type
@@ -143,4 +147,10 @@ public class User implements Serializable {
   public void setSuperVote(int superVote){
         this.superVote = superVote;
     }
+  public int getOverallWins() { return this.overallWins;}
+  public void setOverallWins(int overallWins) {this.overallWins = overallWins;}
+
+  public int getPlayedGames() { return this.playedGames;}
+  public void setPlayedGames(int playedGames) { this.playedGames = playedGames;}
+
 }
