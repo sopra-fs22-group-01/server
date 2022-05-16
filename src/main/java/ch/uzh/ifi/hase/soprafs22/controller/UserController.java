@@ -163,6 +163,35 @@ public class UserController {
         return ResponseEntity.ok(text);
     }
 
+    // updates the user's overallWins score
+    @PutMapping("/users/{userId}/win")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void updateOverallWins(@PathVariable long userId) throws Exception {
+
+    }
+    // updates the user's PlayedGames score
+    @PutMapping("/users/{userId}/game")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void updatePlayedGames(@PathVariable long userId) throws Exception {
+
+    }
+
+    // updates the user's overallWins score
+    @GetMapping("/users/{userId}/win")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void getOverallWins(@PathVariable long userId) throws Exception {
+
+    }
+    // updates the user's PlayedGames score
+    @GetMapping("/users/{userId}/game")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void getPlayedGames(@PathVariable long userId) throws Exception {
+
+    }
 
     // get hand by userid
     @GetMapping("/matches/{matchId}/hands/{userId}")
