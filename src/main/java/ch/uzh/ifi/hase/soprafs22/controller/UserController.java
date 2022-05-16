@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.LaughStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
@@ -8,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.MatchGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
@@ -177,9 +179,6 @@ public class UserController {
         return ResponseEntity.ok(playerHandCards);
     }
 
-
-
-
     // get all hands by matchId
     @GetMapping("/matches/{matchId}/hands")
     @ResponseStatus(HttpStatus.OK)
@@ -314,5 +313,59 @@ public class UserController {
 
         return ResponseEntity.ok(chosenCard);
     }
+
+    //----------------------MOVED FROM GAMECONTROLLER--------------------------------------------------
+    //Creates a new match and puts all players from the lobby into  it
+    //Should delete the lobby
+    @PostMapping("/matches/{lobbyId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public MatchGetDTO startingMatch(@PathVariable long lobbyId){
+        String baseErrorMessage1 = "Match could not be created";
+        try {
+            Match newMatch = gameService.startMatch(lobbyId);
+            ArrayList<User> currentPlayers = newMatch.getMatchPlayers();
+            userService.setSuperVotes(currentPlayers, newMatch.getAvailable_Supervotes());
+
+            return DTOMapper.INSTANCE.convertEntityToMatchGetDTO(newMatch);
+        }
+        catch (IncorrectIdException e1){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
+        }
+    }
+
+    // tells server a supervote was casted and laugher should be played for all, decreased available supervote by 1
+    @PutMapping("/matches/{matchId}/supervote/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<Boolean> getPlayLaughter(@PathVariable long matchId, @PathVariable long userId) throws IncorrectIdException {
+
+        // update laugh-status
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.setLaughStatus(LaughStatus.Laughing);
+
+        //update in match
+        currentMatch.decreaseSuperVote(userId);
+        return ResponseEntity.ok(true);
+    }
+
+    //get laugh status .
+    @GetMapping("/matches/{matchId}/laughStatus")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<LaughStatus> getMatchLaughStatus(@PathVariable long matchId) throws IncorrectIdException {
+        Match currentMatch = gameManager.getMatch(matchId);
+        return ResponseEntity.ok(currentMatch.getLaughStatus());
+    }
+
+    // only turn laughstatus to "silence" once everyone hear a laughter
+    @PutMapping("/matches/{matchId}/laugh")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void countLaughs(@PathVariable long matchId) throws IncorrectIdException {
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.updateLaughStatus();
+    }
+
 
 }

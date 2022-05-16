@@ -62,7 +62,7 @@ public class GameControllerTest {
                 .andExpect(status().isOk());
     }
 
-
+/*
     //create match successful --> check same Id, same players as lobby, matchStatus
     @Test // endpoint location: GameController line 129
     public void givenLobbyId_createNewMatch_successful() throws Exception {
@@ -81,32 +81,7 @@ public class GameControllerTest {
         given(gameService.createNewLobby()).willReturn(lobby);
 
         long lobbyId = lobby.getId();
-/*
-    // put user in lobby
-        given(userService.findUserById(Mockito.anyLong())).willReturn(user);
 
-        gameManager.createLobby();
-        given(gameManager.getLobby(Mockito.anyLong())).willReturn(lobby); // !!!!!!!!!!
-
-        lobby.addPlayer(user);
-        ///given(lobby.addPlayer(Mockito.any(Object<User>))).willReturn(1);
-
-
-    // check if all users are ready -> has to wait (user hasnt changed ready status)
-        given(gameService.checkIfLobbyStatusChanged(Mockito.anyLong())).willReturn(LobbyStatus.Waiting);
-        given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(LobbyStatus.Waiting);
-
-    // make readyStatus of user -> READY
-        // update in database
-        given(userService.updateUserReadyStatus(Mockito.any())).willReturn(ReadyStatus.READY);
-
-    // update user ready status in lobby players array
-        given(gameService.updateUserReadyStatus(Mockito.anyLong(), Mockito.anyLong())).willReturn("Successfully updated readyStatus in Lobby through gameManager");
-
-    // check if all users are ready -> turn lobby into match
-        given(gameService.checkIfLobbyStatusChanged(Mockito.anyLong())).willReturn(LobbyStatus.All_Ready);
-        given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(LobbyStatus.All_Ready);
-*/
     // create new match and add users to it
         ArrayList<User> userList = new ArrayList<>();
         userList.add(user);
@@ -116,7 +91,6 @@ public class GameControllerTest {
     // starting match should return match with: players, id, matchStatus, round
         given(gameService.startMatch(Mockito.anyLong())).willReturn(match);
 
-
     // build request
         MockHttpServletRequestBuilder postRequest = post("/matches/"+lobbyId);
 
@@ -124,8 +98,12 @@ public class GameControllerTest {
         mockMvc.perform(postRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.matchStatus", is(match.getMatchStatus().toString())))
                 .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
-                .andExpect(jsonPath("$.id", is(match.getId().intValue())));
+                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
+                .andExpect(jsonPath("$.laughStatus", is(match.getLaughStatus())))
+                .andExpect(jsonPath("$.available_Supervotes", is(match.getAvailable_Supervotes())));
+        //@Mapping(source = "laughStatus", target = "laughStatus")
+        //    @Mapping(source = "available_Supervotes", target = "available_Supervotes")
 
     }
-
+*/
 }

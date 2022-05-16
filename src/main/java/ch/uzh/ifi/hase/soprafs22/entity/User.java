@@ -59,6 +59,9 @@ public class User implements Serializable {
   private String customWhiteText;
 
   @Column
+  private int superVote;
+
+  @Column
   private int overallWins;
 
   @Column
@@ -140,6 +143,10 @@ public class User implements Serializable {
         this.customWhiteText = customWhiteText;
     }
 
+  public int getSuperVote(){return this.superVote;}
+  public void setSuperVote(int superVote){
+        this.superVote = superVote;
+    }
   public int getOverallWins() { return this.overallWins;}
   public void setOverallWins(int overallWins) {this.overallWins = overallWins;}
 
