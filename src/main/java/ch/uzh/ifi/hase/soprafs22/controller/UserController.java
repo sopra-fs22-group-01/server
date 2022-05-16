@@ -349,7 +349,7 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
 
-    //get laugh status
+    //get laugh status .
     @GetMapping("/matches/{matchId}/laughStatus")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
