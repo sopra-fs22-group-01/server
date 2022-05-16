@@ -58,7 +58,11 @@ public class User implements Serializable {
   @Column
   private String customWhiteText;
 
+  @Column
+  private int overallWins;
 
+  @Column
+  private int playedGames;
 
   /*
   doesn't work as Hand isn't a basic type
@@ -135,5 +139,11 @@ public class User implements Serializable {
   public void setCustomWhiteText(String customWhiteText) {
         this.customWhiteText = customWhiteText;
     }
+
+  public int getOverallWins() { return this.overallWins;}
+  public void setOverallWins(int overallWins) {this.overallWins = overallWins;}
+
+  public int getPlayedGames() { return this.playedGames;}
+  public void setPlayedGames(int playedGames) { this.playedGames = playedGames;}
 
 }

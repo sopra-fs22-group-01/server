@@ -40,6 +40,8 @@ public interface DTOMapper {//TEST
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "isReady", target = "isReady")
     @Mapping(source = "customWhiteText", target = "customWhiteText")
+    @Mapping(source = "overallWins", target = "overallWins")
+    @Mapping(source = "playedGames", target = "playedGames")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     // takes User as input and converts it to entity of UserGetDTO
