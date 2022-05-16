@@ -22,6 +22,10 @@ public class Match {
     private int voteCount;
 
 
+
+    private int available_Supervotes;
+
+
     private boolean scoresAlreadyUpdated;
 
     public Match(Long id) {
@@ -30,6 +34,7 @@ public class Match {
         this.votingStatus = VotingStatus.INCOMPLETE;
         this.voteCount = 0;
         this.scoresAlreadyUpdated = false;
+        this.available_Supervotes = 1;
     }
 
     public void createRound(){
@@ -64,6 +69,9 @@ public class Match {
     }
     public void setMatchPlayers(ArrayList<User> users){
         this.matchPlayers = users;
+        for (User user : this.matchPlayers){
+            user.setSupervote(this.available_Supervotes);
+        }
     }
 
     public Long getId() {
@@ -115,5 +123,18 @@ public class Match {
         }
 
     }
+
+    public void decreaseSuperVote(long userId){
+        this.voteCount++;
+        int numberOfPlayers = this.getPlayerCount();
+        if(voteCount == numberOfPlayers){
+            setVotingStatus(VotingStatus.COMPLETE);
+        }
+
+    }
+
+    public int getAvailable_Supervotes() {return available_Supervotes;}
+
+    public void setAvailable_Supervotes(int available_Supervotes) {this.available_Supervotes = available_Supervotes;}
 
 }

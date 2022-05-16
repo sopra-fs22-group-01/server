@@ -258,5 +258,24 @@ public class UserService {
         }
     }
 
+    public void setSuperVotes(List<User> players, int votes){
+        for (User user : players){
+            User currentUser = findUserById(user.getId());
+            currentUser.setSupervote(votes);
+        }
+    }
+
+    public void updateSupervote(long userId){
+        User user = findUserById(userId);
+        int available_votes = user.getSupervote();
+        if (available_votes > 0){
+            user.setSupervote(available_votes-1);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "You used up your supervotes!");
+        }
+    }
+
 
 }

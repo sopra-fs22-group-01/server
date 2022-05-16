@@ -58,6 +58,9 @@ public class User implements Serializable {
   @Column
   private String customWhiteText;
 
+  @Column
+  private int supervote;
+
 
 
   /*
@@ -136,4 +139,10 @@ public class User implements Serializable {
         this.customWhiteText = customWhiteText;
     }
 
+  public int getSupervote(){
+        return this.supervote;
+    }
+  public void setSupervote(int supervote){
+        this.supervote = supervote;
+    }
 }
