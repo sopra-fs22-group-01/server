@@ -318,7 +318,7 @@ public class UserController {
 
         return ResponseEntity.ok(chosenCard);
     }
-
+/*
     // gets the user's overallWins score
     @GetMapping("/users/{userId}/win")
     @ResponseStatus(HttpStatus.OK)
@@ -333,5 +333,5 @@ public class UserController {
     public void getPlayedGames(@PathVariable long userId) throws Exception {
 
     }
-
+*/
 }
