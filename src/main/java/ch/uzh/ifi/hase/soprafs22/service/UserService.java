@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
@@ -258,5 +259,23 @@ public class UserService {
         }
     }
 
+    public void incrementPlayedGames(long userId) {
+        // updates the user's PlayedGames score
+        User user = findUserById(userId);
+        int userPlayedGames = user.getPlayedGames() + 1;
+        user.setPlayedGames(userPlayedGames);
+    }
 
+    public void updateOverallWins(long userId, long matchId) throws IncorrectIdException {
+        Match match = GameManager.getInstance().getMatch(matchId);
+        ScoreBoard scoreBoard = match.getScoreBoard();
+        ArrayList<User> winners = scoreBoard.getPlayersOfHighestRank(match.getMatchPlayers());
+        for (User winner : winners){
+            if (winner.getId().equals(userId)){
+                User user = findUserById(userId);
+                int userOverallWins = user.getOverallWins() + 1;
+                user.setOverallWins(userOverallWins);
+            }
+        }
+    }
 }

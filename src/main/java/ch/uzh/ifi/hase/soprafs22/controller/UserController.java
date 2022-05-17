@@ -163,36 +163,6 @@ public class UserController {
         return ResponseEntity.ok(text);
     }
 
-    // updates the user's overallWins score
-    @PutMapping("/users/{userId}/win")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void updateOverallWins(@PathVariable long userId) throws Exception {
-
-    }
-    // updates the user's PlayedGames score
-    @PutMapping("/users/{userId}/game")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void updatePlayedGames(@PathVariable long userId) throws Exception {
-
-    }
-
-    // updates the user's overallWins score
-    @GetMapping("/users/{userId}/win")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void getOverallWins(@PathVariable long userId) throws Exception {
-
-    }
-    // updates the user's PlayedGames score
-    @GetMapping("/users/{userId}/game")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void getPlayedGames(@PathVariable long userId) throws Exception {
-
-    }
-
     // get hand by userid
     @GetMapping("/matches/{matchId}/hands/{userId}")
     @ResponseStatus(HttpStatus.OK)
@@ -289,10 +259,10 @@ public class UserController {
     }
 
     //updates the scores such that next round can be played bzw. end game if it was last round
-    @PutMapping("/matches/{matchId}/scores")
+    @PutMapping("/matches/{matchId}/scores/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateScores(@PathVariable long matchId) throws Exception {
+    public void updateScores(@PathVariable long matchId, @PathVariable long userId) throws Exception {
 
         Match currentMatch = gameManager.getMatch(matchId);
 
@@ -313,7 +283,12 @@ public class UserController {
             if (!keepPlaying) {
                 currentMatch.setMatchStatus(MatchStatus.GameOver);
             }
+        }
 
+        //updates the score statistics of all users when game is over
+        if (currentMatch.getMatchStatus().equals(MatchStatus.GameOver)){
+            userService.incrementPlayedGames(userId);
+            userService.updateOverallWins(userId, matchId);
         }
     }
 
@@ -342,6 +317,21 @@ public class UserController {
         WhiteCard chosenCard = playerHand.getChosenCard();
 
         return ResponseEntity.ok(chosenCard);
+    }
+
+    // gets the user's overallWins score
+    @GetMapping("/users/{userId}/win")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void getOverallWins(@PathVariable long userId) throws Exception {
+
+    }
+    // gets the user's PlayedGames score
+    @GetMapping("/users/{userId}/game")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void getPlayedGames(@PathVariable long userId) throws Exception {
+
     }
 
 }
