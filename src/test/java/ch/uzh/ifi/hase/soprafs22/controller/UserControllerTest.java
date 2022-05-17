@@ -2,8 +2,12 @@ package ch.uzh.ifi.hase.soprafs22.controller;
 
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Lobby;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +46,13 @@ public class UserControllerTest {
   private MockMvc mockMvc;
 
   @MockBean
+  private GameService gameService;
+
+  @MockBean
   private UserService userService;
+
+  //@MockBean -> uncommenting this causes tests to fail
+  public GameManager gameManager = GameManager.getInstance();
 
   @Test
   public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
@@ -227,7 +238,50 @@ public class UserControllerTest {
     mockMvc.perform(putRequest).andExpect(status().isNoContent());
     //since user has been created in the database, a 204 error is expected.
   }
+/*
+    //create match successful --> check same Id, same players as lobby, matchStatus
+    @Test // endpoint location: GameController line 129
+    public void givenLobbyId_createNewMatch_successful() throws Exception {
+        // simulate all steps before creating match
 
+        // create user
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("testUsername");
+        user.setToken("1");
+        user.setUserStatus(UserStatus.ONLINE);
+        given(userService.createUser(Mockito.any())).willReturn(user);
+
+        // create lobby
+        Lobby lobby = new Lobby(0L);
+        given(gameService.createNewLobby()).willReturn(lobby);
+
+        long lobbyId = lobby.getId();
+
+        // create new match and add users to it
+        ArrayList<User> userList = new ArrayList<>();
+        userList.add(user);
+
+        Match match = new Match(lobbyId);
+        match.setMatchPlayers(userList);
+        // starting match should return match with: players, id, matchStatus, round
+        given(gameService.startMatch(Mockito.anyLong())).willReturn(match);
+
+
+        // build request
+        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobbyId);
+
+        // then perform request
+        mockMvc.perform(postRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.matchStatus", is(match.getMatchStatus().toString())))
+                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
+                .andExpect(jsonPath("$.id", is(match.getId().intValue())));
+               // .andExpect(jsonPath("$.laughStatus", is(match.getLaughStatus())))
+               // .andExpect(jsonPath("$.available_Supervotes", is(match.getAvailable_Supervotes())));
+        //@Mapping(source = "laughStatus", target = "laughStatus")
+        //    @Mapping(source = "available_Supervotes", target = "available_Supervotes")
+
+    }*/
 
   /**
    * Helper Method to convert userPostDTO into a JSON string such that the input

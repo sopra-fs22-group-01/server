@@ -17,6 +17,7 @@ public class UserGetDTO {
     private Date birthday;
     private int score;
     private String customWhiteText;
+    private int superVote;
     private int overallWins;
     private int playedGames;
 
@@ -90,6 +91,12 @@ public class UserGetDTO {
         this.customWhiteText = customWhiteText;
     }
 
+    public int getSuperVote(){
+        return this.superVote;
+    }
+    public void setSuperVote(int superVote){
+        this.superVote = superVote;
+    }
     public int getOverallWins() { return this.overallWins;}
     public void setOverallWins(int overallWins) {this.overallWins = overallWins;}
 

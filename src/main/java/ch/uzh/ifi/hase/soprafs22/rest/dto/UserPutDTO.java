@@ -23,7 +23,7 @@ public class UserPutDTO {
     private ReadyStatus isReady;
 
     private String customWhiteText;
-
+    private int superVote;
 
 
     public String getUsername() {
@@ -74,4 +74,10 @@ public class UserPutDTO {
         this.customWhiteText = customWhiteText;
     }
 
+    public int getSuperVote(){
+        return this.superVote;
+    }
+    public void setSuperVote(int superVote){
+        this.superVote = superVote;
+    }
 }

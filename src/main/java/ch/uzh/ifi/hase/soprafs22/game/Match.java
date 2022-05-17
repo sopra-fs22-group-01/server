@@ -1,11 +1,14 @@
 
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.constant.LaughStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,10 @@ public class Match {
     private VotingStatus votingStatus;
     private int voteCount;
 
+    private LaughStatus laughStatus;
+    private int count_laughs;
+
+    private int available_Supervotes;
 
     private boolean scoresAlreadyUpdated;
 
@@ -30,6 +37,9 @@ public class Match {
         this.votingStatus = VotingStatus.INCOMPLETE;
         this.voteCount = 0;
         this.scoresAlreadyUpdated = false;
+        this.available_Supervotes = 1;
+        this.laughStatus = LaughStatus.Silence;
+        this.count_laughs = 0;
     }
 
     public void createRound(){
@@ -64,6 +74,9 @@ public class Match {
     }
     public void setMatchPlayers(ArrayList<User> users){
         this.matchPlayers = users;
+        for (User user : this.matchPlayers){
+            user.setSuperVote(this.available_Supervotes);
+        }
     }
 
     public Long getId() {
@@ -113,7 +126,31 @@ public class Match {
         if(voteCount == numberOfPlayers){
             setVotingStatus(VotingStatus.COMPLETE);
         }
-
     }
 
+    public void decreaseSuperVote(long userId){
+        for (User user : this.matchPlayers){
+            if (user.getId() == userId){
+                int sVote = user.getSuperVote();
+                if (sVote <= 0){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No super-votes left !");
+                }
+                user.setSuperVote(sVote -1);
+            }
+        }
+    }
+
+    public int getAvailable_Supervotes() {return available_Supervotes;}
+    public void setAvailable_Supervotes(int available_Supervotes) {this.available_Supervotes = available_Supervotes;}
+
+    public LaughStatus getLaughStatus() {return laughStatus;}
+    public void setLaughStatus(LaughStatus laughStatus) {this.laughStatus = laughStatus;}
+
+    public void updateLaughStatus(){
+        this.count_laughs++;
+        if (this.count_laughs == this.matchPlayers.size()){
+            this.laughStatus = LaughStatus.Silence;
+            this.count_laughs = 0;
+        }
+    }
 }
