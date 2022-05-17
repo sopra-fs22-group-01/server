@@ -370,6 +370,4 @@ public class UserController {
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.updateLaughStatus();
     }
-
-
 }
