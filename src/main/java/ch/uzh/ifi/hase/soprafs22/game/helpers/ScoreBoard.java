@@ -35,15 +35,23 @@ public class ScoreBoard {
          instead using the username as it isn't possible to change it when a game is ongoing
          The rankings of the users are the values of the hashmap
         */
+
+        //this auxiliary array makes sure we don't delete players from the original player array from match.
+        ArrayList<User> tempPlayersCopy = new ArrayList<>();
+
+        for(User player: players){
+            tempPlayersCopy.add(player);
+        }
+
         ArrayList<Ranking> rankings = new ArrayList<>();
         //first all players with first rank gets saved, then all second rank players and so forth
         int rank = 1;
-        while (!players.isEmpty()){
-            ArrayList<User> users = getPlayersOfHighestRank(players);
+        while (!tempPlayersCopy.isEmpty()){
+            ArrayList<User> users = getPlayersOfHighestRank(tempPlayersCopy);
             for(User user: users){
                 Ranking ranking = new Ranking(rank, user.getUsername(), user.getScore());
                 rankings.add(ranking);
-                players.remove(user); //removing all user of the same rank from player
+                tempPlayersCopy.remove(user); //removing all user of the same rank from player
             }
             rank ++;
         }
