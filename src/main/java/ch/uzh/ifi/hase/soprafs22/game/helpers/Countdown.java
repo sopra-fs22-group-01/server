@@ -47,9 +47,6 @@ public class Countdown {
             };
         };
 
-        /*
-         *  schedule() method to schedule the execution with start time
-         */
 
         timer.schedule(task, 1000, 1000);
     }

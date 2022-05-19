@@ -67,11 +67,7 @@ public class User implements Serializable {
   @Column
   private int playedGames;
 
-  /*
-  doesn't work as Hand isn't a basic type
-  @Column
-  private Hand hand;
-  */
+
 
   public Long getId() {
     return id;

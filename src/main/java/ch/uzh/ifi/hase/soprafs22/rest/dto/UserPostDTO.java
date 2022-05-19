@@ -7,7 +7,6 @@ import java.util.Date;
 
 public class UserPostDTO {
 
-  //private String name;
 
   private String username;
 

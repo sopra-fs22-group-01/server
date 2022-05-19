@@ -118,23 +118,7 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
     }
-/*
-    //Creates a new match and puts all players from the lobby into  it
-    //Should delete the lobby
-    @PostMapping("/matches/{lobbyId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public MatchGetDTO startingMatch(@PathVariable long lobbyId){
-        String baseErrorMessage1 = "Match could not be created";
-        try {
-            Match newMatch = gameService.startMatch(lobbyId);
-            return DTOMapper.INSTANCE.convertEntityToMatchGetDTO(newMatch);
-        }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
-    }
-*/
+
     //retrieves the round number of the match and return it
     @GetMapping("/matches/{matchId}/roundnumbers")
     @ResponseStatus(HttpStatus.OK)

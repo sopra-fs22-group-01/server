@@ -22,7 +22,6 @@ import java.util.Scanner;
 @Transactional
 public class GameService {
 
-    //private final Logger log = LoggerFactory.getLogger(UserService.class);
     private static final GameManager gameManager = GameManager.getInstance();
 
 
@@ -151,15 +150,6 @@ public class GameService {
         return ranking;
     }
 
-    /*
-    public ArrayList<Lobby> getAllLobbies() {
-        ArrayList<Lobby> allLobbies = gameManager.getAllLobby();
-        return allLobbies;
-    }
 
-    public ArrayList<Long> getLobbiesId() {
-        return gameManager.getLobbiesId();
-    }
-    */
 
 }
