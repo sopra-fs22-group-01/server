@@ -210,8 +210,9 @@ public class UserService {
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);
       updateUserPassword(userPutDTO);
-      updateSupervote(userPutDTO.getId());
+      //updateSupervote(userPutDTO);
       //updateUserReadyStatus(userPutDTO);
+
       return "User successfully updated";
   }
 
@@ -272,17 +273,25 @@ public class UserService {
         }
     }
 
-    public void updateSupervote(long userId){
+    public void updateSupervote(UserPutDTO userPutDTO){
+        long userId = userPutDTO.getId();
+
+        //if (userPutDTO.getSuperVote() > 0){
+            //System.out.println("userPutDTO.getSuperVote: ");
+            //System.out.println(userPutDTO.getSuperVote());
+
+        // update supervote in database
         User user = findUserById(userId);
         int available_votes = user.getSuperVote();
         if (available_votes > 0){
             user.setSuperVote(available_votes-1);
-
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "You used up your supervotes!");
         }
+        //}
+
     }
 
 

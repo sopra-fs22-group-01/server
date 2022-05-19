@@ -97,6 +97,7 @@ public class UserGetDTO {
     public void setSuperVote(int superVote){
         this.superVote = superVote;
     }
+
     public int getOverallWins() { return this.overallWins;}
     public void setOverallWins(int overallWins) {this.overallWins = overallWins;}
 
