@@ -101,9 +101,7 @@ public final class ReadJSONFile {
         return count + findOccurrences(str, search, index+1);
     }
 
-    // Public methods to provide with a String text for cards
-
-    public boolean checkOccurenceWhite(int i){
+    private boolean checkOccurrenceWhite(int i){
         for (int idx : whiteCardIndexes){
             if (i == idx){
                 return true;
@@ -112,7 +110,7 @@ public final class ReadJSONFile {
         return false;
     }
 
-    public boolean checkOccurenceBlack(int i){
+    private boolean checkOccurrenceBlack(int i){
         for (int idx : blackCardIndexes){
             if (i == idx){
                 return true;
@@ -121,13 +119,15 @@ public final class ReadJSONFile {
         return false;
     }
 
+    // Public methods to provide with a String text for cards
+
     public String getWhiteCardText(){
         iteratorWhite++;
 
         int whiteCardSize = whiteCardTexts.size();
 
         int idx = (int)(Math.random()*(whiteCardSize +1)+0);
-        while (checkOccurenceWhite(idx)){
+        while (checkOccurrenceWhite(idx)){
             idx = (int)(Math.random()*(whiteCardSize +1)+0);
         }
         whiteCardIndexes.add(idx);
@@ -142,7 +142,7 @@ public final class ReadJSONFile {
         int blackCardSize = blackCardTexts.size();
 
         int idx = (int)(Math.random()*(blackCardSize +1)+0);
-        while (checkOccurenceBlack(idx)){
+        while (checkOccurrenceBlack(idx)){
             idx = (int)(Math.random()*(blackCardSize +1)+0);
         }
         blackCardIndexes.add(idx);
