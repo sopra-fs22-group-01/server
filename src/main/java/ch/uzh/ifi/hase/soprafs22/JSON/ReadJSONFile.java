@@ -30,6 +30,7 @@ public final class ReadJSONFile {
     private ReadJSONFile(){
         readJSON();
         eliminateDoubleBlank();
+        sortOutTooLongCards();
     }
 
     public static ReadJSONFile getInstance(){
@@ -85,6 +86,21 @@ public final class ReadJSONFile {
     // Eliminate black cards with double blanks
     private void eliminateDoubleBlank(){
         blackCardTexts.removeIf(blackCardText -> findOccurrences(blackCardText, '_', 0) > 1);
+    }
+
+    // sort out cards that have too long text
+    private void sortOutTooLongCards(){
+        blackCardTexts.removeIf(blackCardText -> countWords(blackCardText) > 20);
+        whiteCardTexts.removeIf(whiteCardText -> countWords(whiteCardText) > 15);
+    }
+
+    private static int countWords(String text){
+        if(text == null || text.isEmpty()){
+            return 0;
+        }
+
+        String[] words = text.split("\\s+");
+        return words.length;
     }
 
     // find occurrence of a character in a string recursively
