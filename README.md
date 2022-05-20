@@ -1,4 +1,4 @@
-# SoPra RESTful Service Template FS22
+# Cards Against Humanity Online 
 
 ## Getting started with Spring Boot
 
