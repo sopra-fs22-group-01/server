@@ -57,7 +57,7 @@ public class Round {
         selectionCountdown = new Countdown(25);
         // time for TTS, 5 seconds for each white card and 10 seconds for the black card
         votingCountdown = new Countdown(hands.size() * 5 + 10);
-        rankingCountdown = new Countdown(5);
+        rankingCountdown = new Countdown(10);
 
         startRoundStatus = StartRoundStatus.PENDING;
         //starts first selection countdown
