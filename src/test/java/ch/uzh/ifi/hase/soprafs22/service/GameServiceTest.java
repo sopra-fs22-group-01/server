@@ -50,13 +50,14 @@ public class GameServiceTest {
     }
     @AfterEach
     void tearDown() {
-         this.testUser = null;
+        this.testUser = null;
         this.testUser2 = null;
-        this.gameManager.resetGameManager();
         players.clear();
         this.testLobby = null;
         GameManager.resetGameManager();
+
         this.gameService = null;
+
     }
 
     @Test
@@ -164,7 +165,7 @@ public class GameServiceTest {
 
         gameService.checkIfLobbyStatusChanged(testLobby.getId());
 
-        assertEquals(LobbyStatus.Waiting, testLobby.getLobbyStatus());
+        assertEquals(LobbyStatus.All_Ready, testLobby.getLobbyStatus());
 
     }
 
@@ -180,9 +181,8 @@ public class GameServiceTest {
 
 
 
-
     //Doenst work either
-/*    @Test
+    @Test
     public void removePlayerFromLobby_success() throws Exception {
         testUser.setId(0L);
         Lobby lobby = gameService.createNewLobby();
@@ -196,18 +196,18 @@ public class GameServiceTest {
 
         assertEquals(0 ,lobby.getCurrentPlayers().size());
 
-    }*/
+    }
 
 
 
     //problem with the following two tests: When run with all other tests, matches list in GameManager somehow deleted
     //when we try to getMatch a second time (makes absolutely no sense and doesn't happen when the two tests are run separately)
 
-   /* @Test
+    @Test
     void getRanking_once_success() throws IncorrectIdException {
-        *//*testUser.setScore(1);
+        testUser.setScore(1);
         testUser2.setScore(2);
-        *//*
+
         User testUser3 = new User();
         User testUser4 = new User();
         testUser3.setUsername("testuser3");
@@ -251,6 +251,6 @@ public class GameServiceTest {
 
         int scoreOfWinnerV2 = testRanking2.get(0).getScore();
         assertEquals(2,scoreOfWinnerV2);
-    }*/
+    }
 
 }

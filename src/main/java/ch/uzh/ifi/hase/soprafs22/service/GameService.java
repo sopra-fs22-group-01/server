@@ -22,7 +22,7 @@ import java.util.Scanner;
 @Transactional
 public class GameService {
 
-    private static final GameManager gameManager = GameManager.getInstance();
+    private GameManager gameManager = GameManager.getInstance();
 
 
 
