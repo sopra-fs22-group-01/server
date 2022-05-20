@@ -11,14 +11,17 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,9 +51,17 @@ public class GameControllerTest {
     public GameManager gameManager = GameManager.getInstance();
 
 
+
+    @AfterEach
+    void tearDown() {
+        GameManager.resetGameManager();
+    }
+
     @Test
     public void getRules_success() throws Exception{
         ArrayList<String> expectedArrayList = gameService.getRulesFromText();
+
+
         given(gameService.getRulesFromText()).willReturn(expectedArrayList);
 
         // when/then -> do the request + validate the result
@@ -61,6 +72,114 @@ public class GameControllerTest {
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk());
     }
+
+
+    @Test
+    public void getLobbyStatus_success() throws Exception {
+        //given
+        Lobby testLobby = gameManager.createLobby();
+        testLobby.setLobbyStatus(LobbyStatus.All_Ready);
+
+
+
+        given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(testLobby.getLobbyStatus());
+
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/"+testLobby.getId()+"/status")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void getLobbyStatus_lobby_not_found() throws Exception {
+        //given
+        Lobby testLobby = gameManager.createLobby();
+        testLobby.setLobbyStatus(LobbyStatus.All_Ready);
+
+
+
+        given(gameService.getLobbyStatus(Mockito.anyLong())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT,"No lobby with this id could be found."));
+
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/"+12L+"/status")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isConflict());
+    }
+
+    @Test
+    public void createNewLobby_returns_ok() throws Exception {
+
+        //given
+        Lobby testLobby = gameService.createNewLobby();
+
+
+        given(gameService.createNewLobby()).willReturn(testLobby);
+
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(postRequest)
+                .andExpect(status().isOk());
+        //maybe add some "andExpect(jsonPath(......"
+    }
+
+
+    //---------THIS ONE DOESNT WORK YET
+    @Test
+    public void getAllLobbies_returns_ok() throws Exception {
+
+        //given
+        Lobby testLobby = gameService.createNewLobby();
+        Lobby testLobby2 = gameService.createNewLobby();
+        ArrayList<Lobby> lobbies = new ArrayList<>();
+        lobbies.add(testLobby);
+        lobbies.add(testLobby2);
+
+
+        given(gameManager.getAllLobby()).willReturn(lobbies);
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
+    }
+
+//DOESN'T WORK YET
+    @Test
+    public void getAllUsersByLobbyId_success() throws Exception {
+        //given
+        Lobby testLobby = gameManager.createLobby();
+        User user1 = new User();
+        User user2 = new User();
+        user1.setId(0L);
+        user2.setId(1L);
+        testLobby.addPlayer(user1);
+        testLobby.addPlayer(user2);
+        ArrayList<User> allTestUsers = new ArrayList<>();
+        allTestUsers.add(user1);
+        allTestUsers.add(user2);
+
+
+
+        given(gameManager.getLobby(0L).getCurrentPlayers()).willReturn(allTestUsers);
+
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/"+testLobby.getId()+"/users")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk());
+    }
+
+
+
+
+
+
 
 /*
     //create match successful --> check same Id, same players as lobby, matchStatus
