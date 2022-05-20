@@ -21,8 +21,6 @@ import org.json.simple.parser.ParseException;
 public final class ReadJSONFile {
     private static ArrayList<String> whiteCardTexts = new ArrayList<String>();
     private static ArrayList<String> blackCardTexts = new ArrayList<String>();
-    private static int iteratorWhite = 0;
-    private static int iteratorBlack = 0;
     private static ArrayList<Integer> whiteCardIndexes = new ArrayList<>();
     private static ArrayList<Integer> blackCardIndexes = new ArrayList<>();
 
@@ -122,7 +120,6 @@ public final class ReadJSONFile {
     // Public methods to provide with a String text for cards
 
     public String getWhiteCardText(){
-        iteratorWhite++;
 
         int whiteCardSize = whiteCardTexts.size();
 
@@ -137,7 +134,6 @@ public final class ReadJSONFile {
     }
 
     public String getBlackCardText(){
-        iteratorBlack++;
 
         int blackCardSize = blackCardTexts.size();
 
