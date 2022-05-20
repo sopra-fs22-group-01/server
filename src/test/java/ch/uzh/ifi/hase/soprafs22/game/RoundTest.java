@@ -104,5 +104,30 @@ class RoundTest {
         int actual = testWhiteCard.getScore();
         assertEquals(1, actual);
     }
+
+    @Test
+    public void startCountdownSuccess() throws InterruptedException {
+        testRound.startSelectionCountdown();
+        testRound.startVotingCountdown();
+        testRound.startRankingCountdown();
+
+        int startTimeSelection = testRound.getSelectionTime();
+        int startTimeVoting = testRound.getVotingTime();
+        int startTimeRanking = testRound.getSelectionTime();
+
+
+        Thread.sleep(1050);
+
+
+        int selectionTimeAfterOneSec = testRound.getSelectionTime();
+        int votingTimeAfterOneSec = testRound.getVotingTime();
+        int rankingTimeAfterOneSecond = testRound.getSelectionTime();
+
+
+        assertTrue(startTimeSelection > selectionTimeAfterOneSec);
+        assertTrue(startTimeVoting > votingTimeAfterOneSec);
+        assertTrue(startTimeRanking > rankingTimeAfterOneSecond);
+
+    }
 }
 

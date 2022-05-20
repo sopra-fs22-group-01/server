@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,19 +28,25 @@ public class GameServiceTest {
     private ArrayList<User> players;
     private Lobby testLobby;
 
-    @InjectMocks
+ //   @InjectMocks
     private GameService gameService;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
+        //MockitoAnnotations.openMocks(this);
+        this.gameService = new GameService();
         this.gameManager = GameManager.getInstance();
         this.testUser = new User();
         this.testUser2 = new User();
+        this.testUser.setId(0L);
+        this.testUser2.setId(1L);
+        testUser.setIsReady(ReadyStatus.UNREADY);
+        testUser2.setIsReady(ReadyStatus.UNREADY);
         this.players = new ArrayList<>();
         this.players.add(testUser);
         this.players.add(testUser2);
         this.testLobby = gameManager.createLobby();
+        testLobby.setLobbyStatus(LobbyStatus.Waiting);
     }
     @AfterEach
     void tearDown() {
@@ -48,6 +56,7 @@ public class GameServiceTest {
         players.clear();
         this.testLobby = null;
         GameManager.resetGameManager();
+        this.gameService = null;
     }
 
     @Test
@@ -108,6 +117,7 @@ public class GameServiceTest {
 
     @Test
     void checkIfMinimumNumberOfPlayers_returns_True() throws Exception {
+        gameManager = GameManager.getInstance();
         //adding a player
         Lobby someOtherLobby = gameService.createNewLobby();
         gameService.addPlayerToLobby(someOtherLobby.getId(),testUser);
@@ -142,6 +152,53 @@ public class GameServiceTest {
 
         assertTrue(actual);
     }
+
+    @Test
+    public void checkIfLobbyStatusChanges_changs_AllReady() throws Exception {
+
+        gameService.addPlayerToLobby(testLobby.getId(), testUser);
+        gameService.addPlayerToLobby(testLobby.getId(), testUser2);
+
+        gameService.updateUserReadyStatus(testLobby.getId(), testUser.getId());
+        gameService.updateUserReadyStatus(testLobby.getId(), testUser2.getId());
+
+        gameService.checkIfLobbyStatusChanged(testLobby.getId());
+
+        assertEquals(LobbyStatus.Waiting, testLobby.getLobbyStatus());
+
+    }
+
+
+    @Test
+    public void startMatch_success() throws IncorrectIdException {
+        Match testMatch = gameService.startMatch(0);
+
+        assertEquals(0,testMatch.getId());
+
+    }
+
+
+
+
+
+    //Doenst work either
+/*    @Test
+    public void removePlayerFromLobby_success() throws Exception {
+        testUser.setId(0L);
+        Lobby lobby = gameService.createNewLobby();
+        long lobbyId = lobby.getId();
+
+        gameService.addPlayerToLobby(lobbyId,testUser);
+        lobby = gameManager.getLobby(lobby.getId());
+        assertEquals(1 ,lobby.getCurrentPlayers().size());
+
+        gameService.removePlayerFromLobby(lobby.getId(), testUser.getId());
+
+        assertEquals(0 ,lobby.getCurrentPlayers().size());
+
+    }*/
+
+
 
     //problem with the following two tests: When run with all other tests, matches list in GameManager somehow deleted
     //when we try to getMatch a second time (makes absolutely no sense and doesn't happen when the two tests are run separately)

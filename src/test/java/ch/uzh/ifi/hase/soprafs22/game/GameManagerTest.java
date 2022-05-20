@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -118,5 +119,30 @@ class GameManagerTest {
         currentRound.startNewRound();
 
         assertFalse(gameManager.evaluateNewRoundStart(0L));
+    }
+
+    @Test
+    void deleteLobby_success(){
+        Lobby testLobby = gameManager.createLobby();
+
+        int sizeOfLobbiesBeforeDeletion = gameManager.getAllLobby().size();
+
+        assertEquals(1,sizeOfLobbiesBeforeDeletion);
+
+        gameManager.deleteLobby(testLobby.getId());
+
+        int sizeOfLobbiesAfterDeletion = gameManager.getAllLobby().size();
+
+        assertEquals(0, sizeOfLobbiesAfterDeletion);
+    }
+
+    @Test
+    void startNewRound_success() throws IncorrectIdException {
+        Match testMatch = gameManager.createMatch(players,0L);
+        testMatch.incrementVoteCountAndCheckStatus();
+
+        gameManager.startNewRound(testMatch.getId());
+        assertEquals(VotingStatus.INCOMPLETE,testMatch.getVotingStatus());
+        assertFalse(testMatch.isScoresUpdated());
     }
 }

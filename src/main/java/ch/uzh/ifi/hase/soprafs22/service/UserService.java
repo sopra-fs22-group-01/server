@@ -255,7 +255,6 @@ public class UserService {
             User user = findUserById(id);
             user.setIsReady(ReadyStatus.UNREADY);
             user.setScore(0);
-
         }
     }
 
