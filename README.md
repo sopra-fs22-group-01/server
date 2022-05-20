@@ -1,5 +1,4 @@
-# Cards Against Humanity Online 
-
+# Cards Against Humanity Online
 ## Introduction
 **Main Goal:** This project's main goal is to enable players to play Cards Against Humanity online without having to buy the cards. Additionally, there are some more features we introduced compared to original CAH game.<br>
 Besides, project's motivation from our side was to develop something which is also interesting to develop and to test.
