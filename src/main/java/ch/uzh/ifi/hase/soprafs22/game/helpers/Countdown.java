@@ -25,7 +25,7 @@ public class Countdown {
 
     // call this method to start the timer
     public void startCountdown(){
-        //sets the time which keeps track of the countdown to the current time.
+        //sets  the time which keeps track of the countdown to the current time.
         if(timerRunning){
             return;
         }
