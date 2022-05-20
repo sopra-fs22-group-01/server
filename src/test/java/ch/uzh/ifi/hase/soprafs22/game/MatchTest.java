@@ -1,12 +1,16 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.constant.LaughStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -92,6 +96,71 @@ class MatchTest {
         testMatch.incrementVoteCountAndCheckStatus();
         //expect the status to change since ApiStatusCount got incremented and therefore equals the amount of players
         assertEquals(VotingStatus.INCOMPLETE,testMatch.getVotingStatus());
+    }
+
+    @Test
+    public void decreaseSuperVote_success() {
+        int numberOfSuperVotes;
+
+        User testUser1 = new User();
+        User testUser2 = new User();
+        testUser1.setId(0L);
+        testUser2.setId(1L);
+
+        testUsers.add(testUser1);
+        testUsers.add(testUser2);
+
+        testMatch.setMatchPlayers(testUsers);
+
+        //number of superVotes before decreaseSuperVote should be 1
+        numberOfSuperVotes = testUser1.getSuperVote();
+        assertEquals(1,numberOfSuperVotes);
+
+        //number of superVotes after decreaseSuperVote() should be 0
+        testMatch.decreaseSuperVote(testUser1.getId());
+        numberOfSuperVotes = testUser1.getSuperVote();
+
+        assertEquals(0,numberOfSuperVotes);
+    }
+
+    @Test
+    public void decreaseSuperVote_error() {
+
+        User testUser1 = new User();
+        User testUser2 = new User();
+        testUser1.setId(0L);
+        testUser2.setId(1L);
+        testUsers.add(testUser1);
+        testUsers.add(testUser2);
+        testMatch.setMatchPlayers(testUsers);
+
+
+
+        //number of superVotes after decreaseSuperVote() should be 0
+        testMatch.decreaseSuperVote(testUser1.getId());
+        //when number of supervotes >= 0 and decreaseSuperVote() is called, BadRequest should be thrown
+        ResponseStatusException thrown = Assertions.assertThrows(ResponseStatusException.class, () -> {
+            testMatch.decreaseSuperVote(testUser1.getId());
+        }, "No super-votes left");
+
+        Assertions.assertEquals("400 BAD_REQUEST \"No super-votes left !\"",thrown.getMessage());
+    }
+
+    @Test
+    public void updateLaughStatus_success(){
+        User testUser1 = new User();
+        testUser1.setId(0L);
+        testUsers.add(testUser1);
+        testMatch.setMatchPlayers(testUsers);
+        testMatch.setLaughStatus(LaughStatus.Laughing);
+
+        //status before updateLaughStatus() gets called
+        LaughStatus statusBeforeUpdate = testMatch.getLaughStatus();
+        assertEquals(LaughStatus.Laughing,statusBeforeUpdate);
+
+        testMatch.updateLaughStatus();
+        LaughStatus statusAfterUpdate= testMatch.getLaughStatus();
+        assertEquals(LaughStatus.Silence,statusAfterUpdate);
     }
 
 }
