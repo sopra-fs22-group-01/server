@@ -62,8 +62,7 @@ public class GameControllerTest {
                 .andExpect(status().isOk());
     }
 
-/*
-    //create match successful --> check same Id, same players as lobby, matchStatus
+/*    //create match successful --> check same Id, same players as lobby, matchStatus
     @Test // endpoint location: GameController line 129
     public void givenLobbyId_createNewMatch_successful() throws Exception {
         // simulate all steps before creating match
@@ -74,7 +73,9 @@ public class GameControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setUserStatus(UserStatus.ONLINE);
-        given(userService.createUser(Mockito.any())).willReturn(user);
+        given(userService.createUser(Mockito.any())).willReturn(user); // can't work, since it will create ANY user,
+        // mockito.any has to be exchanged with the specific user we want to create. (user)
+
 
     // create lobby
         Lobby lobby = new Lobby(0L);
@@ -104,6 +105,5 @@ public class GameControllerTest {
         //@Mapping(source = "laughStatus", target = "laughStatus")
         //    @Mapping(source = "available_Supervotes", target = "available_Supervotes")
 
-    }
-*/
+    }*/
 }

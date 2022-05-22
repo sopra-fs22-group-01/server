@@ -17,6 +17,7 @@ public class GameManager {
     private long newLobbyIdNumber = 0;
 
     private static GameManager gameManager = null;
+
     public static synchronized GameManager getInstance(){
         if (gameManager == null){
             gameManager = new GameManager();

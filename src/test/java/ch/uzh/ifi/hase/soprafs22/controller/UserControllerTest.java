@@ -177,16 +177,19 @@ public class UserControllerTest {
     UserPutDTO userPutDTO = new UserPutDTO();
     userPutDTO.setUsername("testUsername");
 
+    //given pretty much equals mockito.when()
     given(userService.updateUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)); //.willReturn()??? Returns just a string
+
+
 
     // when/then -> do the request + validate the result
     //mocks a put request to the endpoint used to update the user.
     MockHttpServletRequestBuilder putRequest = put("/users/"+user.getId())
-            .contentType(MediaType.APPLICATION_JSON)//defines MediaType as JSON
-            .content(asJsonString(userPutDTO));//converts userPutDTO to JSON
+            .contentType(MediaType.APPLICATION_JSON)//sets request header
+            .content(asJsonString(userPutDTO));//converts userPutDTO to JSON and defines it as content to be sent
 
     // then
-    mockMvc.perform(putRequest).andExpect(status().isNotFound());
+    mockMvc.perform(putRequest).andExpect(status().isNotFound()); //kind of the assert part form an unitest
     //since no user has been created in the database, a 404 error is expected.
   }
 
