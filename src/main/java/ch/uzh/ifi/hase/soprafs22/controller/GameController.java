@@ -13,6 +13,9 @@ import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +31,13 @@ import java.util.List;
 @RestController
 public class GameController {
 
-    private final GameService gameService;
-    GameManager gameManager = GameManager.getInstance();
+    private  GameService gameService;
+
+    private GameManager gameManager;
 
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService,GameManager gameManager) {
+        this.gameManager = gameManager;
         this.gameService = gameService;
     }
 

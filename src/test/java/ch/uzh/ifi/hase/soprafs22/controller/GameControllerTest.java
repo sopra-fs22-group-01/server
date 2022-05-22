@@ -1,38 +1,37 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
 import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.Round;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
-import ch.uzh.ifi.hase.soprafs22.service.UserService;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
@@ -43,23 +42,29 @@ public class GameControllerTest {
     @MockBean
     private GameService gameService;
 
-    @MockBean
+   /* @MockBean
     private UserService userService;
+*/
 
-    //@MockBean -> uncommenting this causes tests to fail
-    //private GameManager gameManager = GameManager.getInstance();
-    public GameManager gameManager = GameManager.getInstance();
+    @MockBean
+    public GameManager gameManager;
 
 
 
-    @AfterEach
+ /*   @AfterEach
     void tearDown() {
         GameManager.resetGameManager();
     }
-
+*/
     @Test
     public void getRules_success() throws Exception{
-        ArrayList<String> expectedArrayList = gameService.getRulesFromText();
+
+        //this won't return anything, since the gameService is mocked
+        //ArrayList<String> expectedArrayList = gameService.getRulesFromText();
+
+        ArrayList<String> expectedArrayList = new ArrayList<>();
+        expectedArrayList.add("There  are two types of cards: Black cards and white cards.");
+
 
 
         given(gameService.getRulesFromText()).willReturn(expectedArrayList);
@@ -69,51 +74,60 @@ public class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk());
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andReturn();
+        String expected = "[\"There  are two types of cards: Black cards and white cards.\"]";
+        assertEquals(expected,result.getResponse().getContentAsString());
     }
 
 
     @Test
     public void getLobbyStatus_success() throws Exception {
         //given
-        Lobby testLobby = gameManager.createLobby();
+        Lobby testLobby = new Lobby(0L);
         testLobby.setLobbyStatus(LobbyStatus.All_Ready);
 
 
 
-        given(gameService.getLobbyStatus(Mockito.anyLong())).willReturn(testLobby.getLobbyStatus());
+        given(gameService.getLobbyStatus(testLobby.getId())).willReturn(testLobby.getLobbyStatus());
 
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/"+testLobby.getId()+"/status")
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(getRequest).andExpect(status().isOk());
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        assertEquals("\"All_Ready\"", content);
     }
 
 
     @Test
     public void getLobbyStatus_lobby_not_found() throws Exception {
-        //given
-        Lobby testLobby = gameManager.createLobby();
-        testLobby.setLobbyStatus(LobbyStatus.All_Ready);
 
 
-
+        //given defines what the mocked class should return when calling a specific method
         given(gameService.getLobbyStatus(Mockito.anyLong())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT,"No lobby with this id could be found."));
 
 
-        MockHttpServletRequestBuilder getRequest = get("/lobbies/"+12L+"/status")
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/"+anyLong()+"/status")
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(getRequest).andExpect(status().isConflict());
+        mockMvc.perform(getRequest)
+                .andExpect(status().isConflict());
     }
 
     @Test
-    public void createNewLobby_returns_ok() throws Exception {
+     void createNewLobby_returns_ok() throws Exception {
 
-        //given
-        Lobby testLobby = gameService.createNewLobby();
+        //
+        Lobby testLobby = new Lobby(1L);
+        //converts long to int, since ResponseEntity seems to convert long to int
+        int expected = Math.toIntExact(testLobby.getId());
 
 
         given(gameService.createNewLobby()).willReturn(testLobby);
@@ -123,18 +137,20 @@ public class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(postRequest)
-                .andExpect(status().isOk());
-        //maybe add some "andExpect(jsonPath(......"
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(expected)));
+
     }
 
 
-    //---------THIS ONE DOESNT WORK YET
+
+    //ADD assertions
     @Test
-    public void getAllLobbies_returns_ok() throws Exception {
+     void getAllLobbies_returns_ok() throws Exception {
 
         //given
-        Lobby testLobby = gameService.createNewLobby();
-        Lobby testLobby2 = gameService.createNewLobby();
+        Lobby testLobby = new Lobby(0L);
+        Lobby testLobby2 = new Lobby(1L);
         ArrayList<Lobby> lobbies = new ArrayList<>();
         lobbies.add(testLobby);
         lobbies.add(testLobby2);
@@ -147,13 +163,15 @@ public class GameControllerTest {
 
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk());
+
     }
 
 //DOESN'T WORK YET
     @Test
-    public void getAllUsersByLobbyId_success() throws Exception {
+    void getAllUsersByLobbyId_success() throws Exception {
         //given
-        Lobby testLobby = gameManager.createLobby();
+        Lobby testLobby = new Lobby(0L);
+        testLobby.setId(0L);
         User user1 = new User();
         User user2 = new User();
         user1.setId(0L);
@@ -165,7 +183,7 @@ public class GameControllerTest {
         allTestUsers.add(user2);
 
 
-
+        given(gameManager.getLobby(0L)).willReturn(testLobby);
         given(gameManager.getLobby(0L).getCurrentPlayers()).willReturn(allTestUsers);
 
 
@@ -175,6 +193,28 @@ public class GameControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isOk());
     }
 
+    @Test
+    void getRoundNumberSpecificMatch_success() throws Exception {
+        User testPlayer = new User();
+        testPlayer.setId(0L);
+        testPlayer.setUsername("player1");
+        Match testMatch = new Match(0L);
+        ArrayList<User> matchPlayers = new ArrayList<>();
+        matchPlayers.add(testPlayer);
+        testMatch.setMatchPlayers(matchPlayers);
+        testMatch.createRound();
+        Round testRound = testMatch.getRound();
+        int roundNumber = testRound.getRoundNumber();
+
+        given(gameManager.getMatch(0L)).willReturn(testMatch);
+
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+testMatch.getId()+"/roundnumbers")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk());
+
+
+    }
 
 
 

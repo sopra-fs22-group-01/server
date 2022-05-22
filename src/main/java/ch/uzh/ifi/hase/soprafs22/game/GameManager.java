@@ -7,10 +7,16 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
 
+@Scope("singleton")
+@Service
 public class GameManager {
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private ArrayList<Match> matches = new ArrayList<>();
