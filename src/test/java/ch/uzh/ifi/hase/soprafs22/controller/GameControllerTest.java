@@ -43,8 +43,7 @@ public class GameControllerTest {
     @MockBean
     private UserService userService;
 
-    //@MockBean -> uncommenting this causes tests to fail
-    //private GameManager gameManager = GameManager.getInstance();
+
     public GameManager gameManager = GameManager.getInstance();
 
 
