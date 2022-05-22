@@ -66,6 +66,15 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
     }
 
+    //gets a specific user from database through the user service and returns it as userGetDTO
+    @GetMapping("/users/")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO getUsernameByToken(@RequestParam String token) {
+        User requestedUser = userService.findUserByToken(token);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
+    }
+
 
     @PostMapping("/users") //creates a User object
     @ResponseStatus(HttpStatus.CREATED)
