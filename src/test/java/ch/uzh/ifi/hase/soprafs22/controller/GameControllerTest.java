@@ -9,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,18 +19,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
@@ -48,12 +50,8 @@ public class GameControllerTest {
     public GameManager gameManager;
 
 
-    /*   @AfterEach
-       void tearDown() {
-           GameManager.resetGameManager();
-       }
-   */
-    @Test
+
+
     public void getRules_success() throws Exception {
 
         //this won't return anything, since the gameService is mocked
@@ -81,10 +79,11 @@ public class GameControllerTest {
     @Test
     public void getLobbyStatus_success() throws Exception {
         //given
+
         Lobby testLobby = new Lobby(0L);
         testLobby.setLobbyStatus(LobbyStatus.All_Ready);
 
-
+        //given = when from springboot
         given(gameService.getLobbyStatus(testLobby.getId())).willReturn(testLobby.getLobbyStatus());
 
 
@@ -97,7 +96,7 @@ public class GameControllerTest {
 
         String content = result.getResponse().getContentAsString();
 
-        assertEquals("\"All_Ready\"", content);
+        assertTrue(content.contains("All_Ready"));
     }
 
 
@@ -160,17 +159,16 @@ public class GameControllerTest {
 
     }
 
-    //DOESN'T WORK YET
-    @Disabled
     @Test
     void getAllUsersByLobbyId_success() throws Exception {
+
         //given
+        int user1Id = 0;
+
         Lobby testLobby = new Lobby(0L);
         testLobby.setId(0L);
-        User user1 = new User();
-        User user2 = new User();
-        user1.setId(0L);
-        user2.setId(1L);
+        User user1 = createTestUser(user1Id);
+        User user2 = createTestUser(1L);
         testLobby.addPlayer(user1);
         testLobby.addPlayer(user2);
         ArrayList<User> allTestUsers = new ArrayList<>();
@@ -179,13 +177,16 @@ public class GameControllerTest {
 
 
         given(gameManager.getLobby(0L)).willReturn(testLobby);
-        given(gameManager.getLobby(0L).getCurrentPlayers()).willReturn(allTestUsers);
 
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/" + testLobby.getId() + "/users")
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(getRequest).andExpect(status().isOk());
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is(user1Id))) //longValue needed
+                .andDo(MockMvcResultHandlers.print());
+
     }
 
     @Test
@@ -209,7 +210,12 @@ public class GameControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isOk());
 
 
+
     }
+
+
+
+
 
 
 
@@ -260,4 +266,11 @@ public class GameControllerTest {
 
     }
 */
+
+
+    private User createTestUser(long id) {
+        User user = new User();
+        user.setId(id);
+        return user;
+    }
 }
