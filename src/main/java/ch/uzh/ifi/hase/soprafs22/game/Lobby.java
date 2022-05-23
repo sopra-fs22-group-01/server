@@ -47,6 +47,11 @@ public class Lobby {
     }
 
     public int addPlayer(User user) throws Exception {
+        for (User player: this.currentPlayers){
+            if (player.getId() == user.getId()){
+                throw new Exception("The user is already in the lobby");
+            }
+        }
         if (!currentPlayers.contains(user) && currentPlayerCount<=maximumPlayerCount) {
             currentPlayers.add(user);
             currentPlayerCount++;

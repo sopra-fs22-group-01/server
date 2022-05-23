@@ -60,6 +60,16 @@ public class GameManager {
         throw new IncorrectIdException("The lobby was not found");
     }
 
+    public void removePlayerFromOtherLobbies(long userId, long lobbyId) throws Exception {
+        for (Lobby lobby : this.lobbies){
+            for (User user : lobby.getCurrentPlayers()){
+                if (user.getId() == userId){
+                    lobby.removePlayer(userId);
+                }
+            }
+        }
+    }
+
     public ArrayList<Lobby> getAllLobby() {
         return GameManager.gameManager.lobbies;
     }

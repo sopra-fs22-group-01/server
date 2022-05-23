@@ -67,10 +67,10 @@ public class UserController {
     }
 
     //gets a specific user from database through the user service and returns it as userGetDTO
-    @GetMapping("/users/")
+    @GetMapping("/users/{token}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO getUsernameByToken(@RequestParam String token) {
+    public UserGetDTO getUsernameByToken(@PathVariable String token) {
         User requestedUser = userService.findUserByToken(token);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
     }
@@ -149,6 +149,7 @@ public class UserController {
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
             gameService.addPlayerToLobby(lobbyId, user);
+            gameManager.removePlayerFromOtherLobbies(userId, lobbyId);
             ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
             return ResponseEntity.ok(allUsers);
         }
