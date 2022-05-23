@@ -148,7 +148,7 @@ public class UserController {
         User user = userService.findUserById(userId); // gets user from correct user repository
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
-            gameManager.removePlayerFromOtherLobbies(userId, lobbyId);
+            gameManager.removePlayerFromAllLobbies(userId);
             gameService.addPlayerToLobby(lobbyId, user);
             ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
             return ResponseEntity.ok(allUsers);

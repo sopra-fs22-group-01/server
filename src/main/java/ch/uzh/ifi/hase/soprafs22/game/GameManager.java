@@ -1,11 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
-import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.exceptions.NoLobbyException;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 
 
@@ -60,19 +55,14 @@ public class GameManager {
         throw new IncorrectIdException("The lobby was not found");
     }
 
-    public void removePlayerFromOtherLobbies(long userId, long lobbyId) throws Exception {
+    public void removePlayerFromAllLobbies(long userId) throws Exception {
         for (Lobby lobby : this.lobbies){
-            System.out.println("check lobbyId: "+ lobby.getId().toString());
-            //if (lobby.getId() != lobbyId){
             for (User user : lobby.getCurrentPlayers()){
-                System.out.println("check userId: "+ user.getId().toString());
                 if (user.getId().equals(userId)){
-                    System.out.println("found user with UserId: "+ user.getId().toString());
                     lobby.removePlayer(userId);
+                    break;
                 }
             }
-            //}
-
         }
     }
 
