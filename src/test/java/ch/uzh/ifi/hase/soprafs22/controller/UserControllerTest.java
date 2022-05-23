@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the UserController works.
  */
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+public class  UserControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -51,8 +51,8 @@ public class UserControllerTest {
   @MockBean
   private UserService userService;
 
-  //@MockBean -> uncommenting this causes tests to fail
-  public GameManager gameManager = GameManager.getInstance();
+  @MockBean
+  public GameManager gameManager;
 
   @Test
   public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
@@ -215,7 +215,7 @@ public class UserControllerTest {
     given(userService.createUser(Mockito.any())).willReturn(user); //
     mockMvc.perform(postRequest).andExpect(status().isCreated()); // performs the post request
 
-    //user is created
+    //user is  created
 //-------------------------------------------------------------------------
 
     UserPutDTO userPutDTO = new UserPutDTO();

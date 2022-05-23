@@ -22,7 +22,11 @@ import java.util.Scanner;
 @Transactional
 public class GameService {
 
-    private GameManager gameManager = GameManager.getInstance();
+    private GameManager gameManager;
+
+    public GameService(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
 
 
@@ -46,7 +50,7 @@ public class GameService {
     public void addPlayerToLobby(long lobbyId, User user) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.addPlayer(user);
-   }
+    }
 
     public void removePlayerFromLobby(long lobbyId, long userId) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);

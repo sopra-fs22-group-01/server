@@ -28,11 +28,13 @@ import java.util.List;
 @RestController
 public class GameController {
 
-    private final GameService gameService;
-    GameManager gameManager = GameManager.getInstance();
+    private  GameService gameService;
+
+    private GameManager gameManager;
 
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService,GameManager gameManager) {
+        this.gameManager = gameManager;
         this.gameService = gameService;
     }
 
@@ -99,7 +101,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<ArrayList<Lobby>> getAllLobbies(){
-        ArrayList<Lobby> allLobbies=gameManager.getAllLobby();
+        ArrayList<Lobby> allLobbies=gameManager.getAllLobbies();
         return ResponseEntity.ok(allLobbies);
     }
 

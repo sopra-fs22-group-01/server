@@ -34,11 +34,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private GameService gameService = new GameService();
-    private GameManager gameManager = GameManager.getInstance();
+    private final GameService gameService;
+    private final GameManager gameManager;
 
-    UserController(UserService userService) {
+    UserController(UserService userService, GameService gameService, GameManager gameManager) {
         this.userService = userService;
+        this.gameService = gameService;
+        this.gameManager = gameManager;
     }
 
     @GetMapping("/users")

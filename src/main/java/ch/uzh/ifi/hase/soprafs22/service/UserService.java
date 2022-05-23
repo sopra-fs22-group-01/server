@@ -35,80 +35,82 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-  private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-  private final UserRepository userRepository;
-  public UserRepository getUserRepository(){return this.userRepository;}
-  GameManager gameManager = GameManager.getInstance();
+    private final UserRepository userRepository;
+    public UserRepository getUserRepository(){return this.userRepository;}
 
-  @Autowired //what does @Autowired do exactly?
-  public UserService(@Qualifier("userRepository") UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+    private GameManager gameManager;
 
-  public List<User> getUsers() {
-    return this.userRepository.findAll();
-  }
+    @Autowired //what does @Autowired do exactly?
+    public UserService(@Qualifier("userRepository") UserRepository userRepository, GameManager gameManager) {
+        this.userRepository = userRepository;
+        this.gameManager = gameManager;
+    }
 
-  public User createUser(User newUser) {
-    newUser.setToken(UUID.randomUUID().toString());
+    public List<User> getUsers() {
+        return this.userRepository.findAll();
+    }
 
-    //sets date and time to the moment it gets created
-    Date date = new Date();
-    newUser.setCreation_date(date);
+    public User createUser(User newUser) {
+        newUser.setToken(UUID.randomUUID().toString());
 
-    checkIfUserExists(newUser);
+        //sets date and time to the moment it gets created
+        Date date = new Date();
+        newUser.setCreation_date(date);
 
-    // saves the given entity but data is only persisted in the database once
-    // flush() is called
-    newUser = userRepository.save(newUser);
-    userRepository.flush();
+        checkIfUserExists(newUser);
 
-
-
-    log.debug("Created Information for User: {}", newUser);
-    return newUser;
-  }
-
-  /**
-   * This is a helper method that will check the uniqueness criteria of the
-   * username and the name
-   * defined in the User entity. The method will do nothing if the input is unique
-   * and throw an error otherwise.
-   *
-   * @param userToBeCreated
-   * @throws org.springframework.web.server.ResponseStatusException
-   * @see User
-   */
-  private void checkIfUserExists(User userToBeCreated) {
-      User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
-      //User userByName = userRepository.findByName(userToBeCreated.getName());
-
-      String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
-      if (userByUsername != null) {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                  String.format(baseErrorMessage, "username ", "is"));
-      }
-  }
-
-  private void checkIfUsernameUnique(String username){
-      List<User> allUsers=getUsers();
-      for(User user:allUsers){
-          if(user.getUsername().equals(username)){
-              String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
-              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                      String.format(baseErrorMessage, "username ", "is"));
-          }
-      }
-  }
+        // saves the given entity but data is only persisted in the database once
+        // flush() is called
+        newUser = userRepository.save(newUser);
+        userRepository.flush();
 
 
-  public void logOutUser(User userToLogOut){
-    userToLogOut.setUserStatus(UserStatus.OFFLINE);
-    userToLogOut.setIsReady(ReadyStatus.UNREADY);
-    userRepository.flush();
-    log.debug("Logged out user %s", userToLogOut.getUsername());
-  }
+
+        log.debug("Created Information for User: {}", newUser);
+        return newUser;
+    }
+
+    /**
+     * This is a helper method that will check the uniqueness criteria of the
+     * username and the name
+     * defined in the User entity. The method will do nothing if the input is unique
+     * and throw an error otherwise.
+     *
+     * @param userToBeCreated
+     * @throws org.springframework.web.server.ResponseStatusException
+     * @see User
+     */
+    private void checkIfUserExists(User userToBeCreated) {
+        User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
+        //User userByName = userRepository.findByName(userToBeCreated.getName());
+
+        String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+        if (userByUsername != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format(baseErrorMessage, "username ", "is"));
+        }
+    }
+
+    private void checkIfUsernameUnique(String username){
+        List<User> allUsers=getUsers();
+        for(User user:allUsers){
+            if(user.getUsername().equals(username)){
+                String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format(baseErrorMessage, "username ", "is"));
+            }
+        }
+    }
+
+
+    public void logOutUser(User userToLogOut){
+        userToLogOut.setUserStatus(UserStatus.OFFLINE);
+        userToLogOut.setIsReady(ReadyStatus.UNREADY);
+        userRepository.flush();
+        log.debug("Logged out user %s", userToLogOut.getUsername());
+    }
 
     public void logInUser(User userToLogIn){
         //userToLogIn.setToken(UUID.randomUUID().toString());
@@ -119,52 +121,52 @@ public class UserService {
         log.debug("Logged in user %s", userToLogIn.getUsername());
     }
 
-  //searches for the requested user in the database
-  public User findUserData(long id) {
-    User requestedUser = userRepository.findById(id);
-    if(requestedUser != null){
+    //searches for the requested user in the database
+    public User findUserData(long id) {
+        User requestedUser = userRepository.findById(id);
+        if(requestedUser != null){
+            return requestedUser;
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public User findUserByToken(String token){
+        User requestedUser = userRepository.findByToken(token);
         return requestedUser;
     }
-    else{
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+    public User findUserById(long id) {
+        User requestedUser = userRepository.findById(id);
+        if (requestedUser==null){
+            String baseErrorMessage = "User not found!";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format(baseErrorMessage));
+        }
+        return requestedUser;
     }
-  }
 
-  public User findUserByToken(String token){
-    User requestedUser = userRepository.findByToken(token);
-    return requestedUser;
-  }
-
-  public User findUserById(long id) {
-    User requestedUser = userRepository.findById(id);
-    if (requestedUser==null){
-        String baseErrorMessage = "User not found!";
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                String.format(baseErrorMessage));
+    public User findUserByUsername(String username){
+        User requestedUser = userRepository.findByUsername(username);
+        return requestedUser;
     }
-    return requestedUser;
-  }
 
-  public User findUserByUsername(String username){
-      User requestedUser = userRepository.findByUsername(username);
-      return requestedUser;
-  }
+    public void updateUserUsername(UserPutDTO userPutDTO){
+        User databaseUser=findUserById(userPutDTO.getId());
+        if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) { //if a username gets entered in the frontend and it is not an empty space
+            if (databaseUser != null) { //if it finds the user corresponding to the userid
+                checkIfUsernameUnique(userPutDTO.getUsername()); //if username is unique
+                databaseUser.setUsername(userPutDTO.getUsername()); //change username
+            }
+        }
+    }
 
-  public void updateUserUsername(UserPutDTO userPutDTO){
-      User databaseUser=findUserById(userPutDTO.getId());
-      if (userPutDTO.getUsername()!= null && userPutDTO.getUsername().trim().length() > 0) { //if a username gets entered in the frontend and it is not an empty space
-          if (databaseUser != null) { //if it finds the user corresponding to the userid
-              checkIfUsernameUnique(userPutDTO.getUsername()); //if username is unique
-              databaseUser.setUsername(userPutDTO.getUsername()); //change username
-          }
-      }
-  }
-
-  public void updateUserPassword(UserPutDTO userPutDTO){
-      User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
-      if(userPutDTO.getPassword()!=null){
-          databaseUser.setPassword(userPutDTO.getPassword());
-      }
+    public void updateUserPassword(UserPutDTO userPutDTO){
+        User databaseUser=findUserById(userPutDTO.getId()); //user in database for id
+        if(userPutDTO.getPassword()!=null){
+            databaseUser.setPassword(userPutDTO.getPassword());
+        }
     }
 
     public ReadyStatus updateUserReadyStatus(User user){
@@ -195,17 +197,17 @@ public class UserService {
 
 
 
-  public String updateCustomWhiteText(UserPutDTO userPutDTO){
-      User dbUser = findUserById(userPutDTO.getId());
-      if (dbUser != null){
-          dbUser.setCustomWhiteText(userPutDTO.getCustomWhiteText());
-          return userPutDTO.getCustomWhiteText();
-      }
-      else{
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                  "Couldn't set your custom text");
-      }
-  }
+    public String updateCustomWhiteText(UserPutDTO userPutDTO){
+        User dbUser = findUserById(userPutDTO.getId());
+        if (dbUser != null){
+            dbUser.setCustomWhiteText(userPutDTO.getCustomWhiteText());
+            return userPutDTO.getCustomWhiteText();
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Couldn't set your custom text");
+        }
+    }
 
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);
@@ -255,6 +257,7 @@ public class UserService {
             User user = findUserById(id);
             user.setIsReady(ReadyStatus.UNREADY);
             user.setScore(0);
+
         }
     }
 
@@ -286,7 +289,7 @@ public class UserService {
 
 
     public void updateOverallWins(long userId, long matchId) throws IncorrectIdException {
-        Match match = GameManager.getInstance().getMatch(matchId);
+        Match match = gameManager.getMatch(matchId);
         ScoreBoard scoreBoard = match.getScoreBoard();
         ArrayList<User> winners = scoreBoard.getPlayersOfHighestRank(match.getMatchPlayers());
         for (User winner : winners){

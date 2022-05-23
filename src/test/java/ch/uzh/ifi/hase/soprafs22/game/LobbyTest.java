@@ -1,11 +1,9 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
-import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,26 +15,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class LobbyTest {
     private User testUser1;
     private Lobby lobby;
-    private GameManager gameManager;
+    private GameManager gameManager = new GameManager();
 
     @BeforeEach
     void setUp() {
+        this.gameManager.reset();
         this.testUser1 = new User();
         this.testUser1.setId(1L);
         this.testUser1.setIsReady(ReadyStatus.UNREADY);
         this.lobby = new Lobby(1L);
-        this.gameManager = GameManager.getInstance();
+
 
 
 
     }
 
-    @AfterEach
-    void tearDown() {
-        this.testUser1 = null;
-        this.lobby = null;
-        GameManager.resetGameManager();
-    }
     @Test
     void getId(){
         assertEquals(1L, lobby.getId());
@@ -114,13 +107,6 @@ class LobbyTest {
         assertTrue(actual);
     }
 
-    @Test
-    void createMatchWithPlayers() throws IncorrectIdException {
-        lobby.createMatchWithPlayers();
-        Match createdMatch = gameManager.getMatch(lobby.getId());
-        assertEquals(lobby.getCurrentPlayers(), createdMatch.getMatchPlayers());
-        assertEquals(lobby.getId(), createdMatch.getId());
-    }
 
     @Test
     void setReadyStatusPlayerUnready() throws Exception {

@@ -1,12 +1,9 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
-import ch.uzh.ifi.hase.soprafs22.game.Match;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -41,9 +38,13 @@ public class UserServiceIntegrationTest {
     userRepository.deleteAll();
   }
 
+  @Autowired
+  private GameManager gameManager;
+
+
   @AfterEach
   public void tearDown(){
-    GameManager.resetGameManager();
+    gameManager.reset();
   }
 
   @Test
@@ -90,7 +91,7 @@ public class UserServiceIntegrationTest {
   @Test
   public void multipleUsers_login_joinLobby_success() throws Exception {
     //setUp
-    GameService testGameService = new GameService();
+    GameService testGameService = new GameService(gameManager);
     Lobby testLobby = testGameService.createNewLobby();
 
     //create  first user

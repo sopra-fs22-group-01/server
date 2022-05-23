@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
-import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
@@ -11,14 +10,14 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameManagerTest {
-    private GameManager gameManager;
+    private GameManager gameManager = new GameManager();
     private User testUser1 = new User();
     private User testUser2 = new User();
     private ArrayList<User> players;
 
     @BeforeEach
     void setUp() {
-        this.gameManager = GameManager.getInstance();
+        gameManager.reset();
         this.testUser1 = new User();
         this.testUser2 = new User();
         this.players = new ArrayList<>();
@@ -30,7 +29,7 @@ class GameManagerTest {
     void tearDown() {
         this.testUser1 = null;
         this.testUser2 = null;
-        this.gameManager.resetGameManager();
+        this.gameManager.reset();
         players.clear();
     }
 
@@ -66,7 +65,7 @@ class GameManagerTest {
     @Test
     void getAllLobby() {
         ArrayList<Lobby> emptyList = new ArrayList<>();
-        assertEquals(emptyList, gameManager.getAllLobby());
+        assertEquals(emptyList, gameManager.getAllLobbies());
     }
 
     @Test
@@ -125,13 +124,13 @@ class GameManagerTest {
     void deleteLobby_success(){
         Lobby testLobby = gameManager.createLobby();
 
-        int sizeOfLobbiesBeforeDeletion = gameManager.getAllLobby().size();
+        int sizeOfLobbiesBeforeDeletion = gameManager.getAllLobbies().size();
 
         assertEquals(1,sizeOfLobbiesBeforeDeletion);
 
         gameManager.deleteLobby(testLobby.getId());
 
-        int sizeOfLobbiesAfterDeletion = gameManager.getAllLobby().size();
+        int sizeOfLobbiesAfterDeletion = gameManager.getAllLobbies().size();
 
         assertEquals(0, sizeOfLobbiesAfterDeletion);
     }
