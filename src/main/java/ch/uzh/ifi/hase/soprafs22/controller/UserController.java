@@ -68,6 +68,15 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
     }
 
+    //gets a specific user from database through the user service and returns it as userGetDTO
+    @GetMapping("/users/{token}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO getUsernameByToken(@PathVariable String token) {
+        User requestedUser = userService.findUserByToken(token);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
+    }
+
 
     @PostMapping("/users") //creates a User object
     @ResponseStatus(HttpStatus.CREATED)
@@ -141,6 +150,7 @@ public class UserController {
         User user = userService.findUserById(userId); // gets user from correct user repository
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
+            gameManager.removePlayerFromAllLobbies(userId);
             gameService.addPlayerToLobby(lobbyId, user);
             ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
             return ResponseEntity.ok(allUsers);
