@@ -51,8 +51,8 @@ public class  UserControllerTest {
   @MockBean
   private UserService userService;
 
-  //@MockBean -> uncommenting this causes tests to fail
-  public GameManager gameManager = GameManager.getInstance();
+  @MockBean
+  public GameManager gameManager;
 
   @Test
   public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {

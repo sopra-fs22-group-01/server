@@ -13,9 +13,6 @@ import ch.uzh.ifi.hase.soprafs22.rest.mapper.DTOMapper;
 
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -104,7 +101,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<ArrayList<Lobby>> getAllLobbies(){
-        ArrayList<Lobby> allLobbies=gameManager.getAllLobby();
+        ArrayList<Lobby> allLobbies=gameManager.getAllLobbies();
         return ResponseEntity.ok(allLobbies);
     }
 

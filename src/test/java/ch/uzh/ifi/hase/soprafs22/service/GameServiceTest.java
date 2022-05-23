@@ -3,11 +3,8 @@ package ch.uzh.ifi.hase.soprafs22.service;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
-import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
-import ch.uzh.ifi.hase.soprafs22.game.Match;
-import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameServiceTest {
 
-    private GameManager gameManager;
+    private GameManager gameManager = new GameManager();
     private User testUser;
     private User testUser2;
     private ArrayList<User> players;
     private Lobby testLobby;
 
     @InjectMocks
-    private GameService gameService;
+    private GameService gameService = new GameService(gameManager);
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        this.gameManager = GameManager.getInstance();
+        this.gameManager.reset();
         this.testUser = new User();
         this.testUser2 = new User();
         this.players = new ArrayList<>();
@@ -40,15 +37,7 @@ public class GameServiceTest {
         this.players.add(testUser2);
         this.testLobby = gameManager.createLobby();
     }
-    @AfterEach
-    void tearDown() {
-         this.testUser = null;
-        this.testUser2 = null;
-        this.gameManager.resetGameManager();
-        players.clear();
-        this.testLobby = null;
-        GameManager.resetGameManager();
-    }
+
 
     @Test
     void getRulesFromText_success() throws Exception {
