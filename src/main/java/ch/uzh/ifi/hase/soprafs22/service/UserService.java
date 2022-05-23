@@ -209,13 +209,13 @@ public class UserService {
         }
     }
 
-    public String updateUser(UserPutDTO userPutDTO) {
-        updateUserUsername(userPutDTO);
-        updateUserPassword(userPutDTO);
-        updateSupervote(userPutDTO.getId());
-        //updateUserReadyStatus(userPutDTO);
-        return "User successfully updated";
-    }
+  public String updateUser(UserPutDTO userPutDTO) {
+      updateUserUsername(userPutDTO);
+      updateUserPassword(userPutDTO);
+      //updateSupervote(userPutDTO.getId());
+      //updateUserReadyStatus(userPutDTO);
+      return "User successfully updated";
+  }
 
   /*
     public LobbyStatus getLobbyStatus() {

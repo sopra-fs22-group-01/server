@@ -25,8 +25,8 @@ public class Countdown {
 
     // call this method to start the timer
     public void startCountdown(){
-        //sets the time which keeps track of the countdown to the current time.
-        if(timerRunning == true){
+        //sets  the time which keeps track of the countdown to the current time.
+        if(timerRunning){
             return;
         }
         timerRunning = true;
@@ -36,10 +36,8 @@ public class Countdown {
 
             // run() method to carry out the action of the task
             public void run() {
-                System.out.println("Keep on calling " + currentTime);
                 currentTime--;
                 if(currentTime <=0) {
-                    System.out.println("Stop calling");
                     timerRunning = false;
                     // cancel method to cancel the execution
                     timer.cancel();

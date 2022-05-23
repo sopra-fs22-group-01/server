@@ -67,6 +67,10 @@ public class Match {
         this.scoresAlreadyUpdated = false;
     }
 
+    public boolean isScoresUpdated(){
+        return this.scoresAlreadyUpdated;
+    }
+
     public Round getRound(){return round;}
 
     public ArrayList<User> getMatchPlayers(){

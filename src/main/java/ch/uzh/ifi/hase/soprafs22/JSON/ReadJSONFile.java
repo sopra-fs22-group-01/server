@@ -21,8 +21,6 @@ import org.json.simple.parser.ParseException;
 public final class ReadJSONFile {
     private static ArrayList<String> whiteCardTexts = new ArrayList<String>();
     private static ArrayList<String> blackCardTexts = new ArrayList<String>();
-    private static int iteratorWhite = 0;
-    private static int iteratorBlack = 0;
     private static ArrayList<Integer> whiteCardIndexes = new ArrayList<>();
     private static ArrayList<Integer> blackCardIndexes = new ArrayList<>();
 
@@ -32,6 +30,7 @@ public final class ReadJSONFile {
     private ReadJSONFile(){
         readJSON();
         eliminateDoubleBlank();
+        sortOutTooLongCards();
     }
 
     public static ReadJSONFile getInstance(){
@@ -89,6 +88,21 @@ public final class ReadJSONFile {
         blackCardTexts.removeIf(blackCardText -> findOccurrences(blackCardText, '_', 0) > 1);
     }
 
+    // sort out cards that have too long text
+    private void sortOutTooLongCards(){
+        blackCardTexts.removeIf(blackCardText -> countWords(blackCardText) > 20);
+        whiteCardTexts.removeIf(whiteCardText -> countWords(whiteCardText) > 15);
+    }
+
+    private static int countWords(String text){
+        if(text == null || text.isEmpty()){
+            return 0;
+        }
+
+        String[] words = text.split("\\s+");
+        return words.length;
+    }
+
     // find occurrence of a character in a string recursively
     private int findOccurrences(String str, char search, int index){
         if(index >= str.length()){
@@ -101,9 +115,7 @@ public final class ReadJSONFile {
         return count + findOccurrences(str, search, index+1);
     }
 
-    // Public methods to provide with a String text for cards
-
-    public boolean checkOccurenceWhite(int i){
+    private boolean checkOccurrenceWhite(int i){
         for (int idx : whiteCardIndexes){
             if (i == idx){
                 return true;
@@ -112,7 +124,7 @@ public final class ReadJSONFile {
         return false;
     }
 
-    public boolean checkOccurenceBlack(int i){
+    private boolean checkOccurrenceBlack(int i){
         for (int idx : blackCardIndexes){
             if (i == idx){
                 return true;
@@ -121,13 +133,14 @@ public final class ReadJSONFile {
         return false;
     }
 
+    // Public methods to provide with a String text for cards
+
     public String getWhiteCardText(){
-        iteratorWhite++;
 
         int whiteCardSize = whiteCardTexts.size();
 
         int idx = (int)(Math.random()*(whiteCardSize +1)+0);
-        while (checkOccurenceWhite(idx)){
+        while (checkOccurrenceWhite(idx)){
             idx = (int)(Math.random()*(whiteCardSize +1)+0);
         }
         whiteCardIndexes.add(idx);
@@ -137,12 +150,11 @@ public final class ReadJSONFile {
     }
 
     public String getBlackCardText(){
-        iteratorBlack++;
 
         int blackCardSize = blackCardTexts.size();
 
         int idx = (int)(Math.random()*(blackCardSize +1)+0);
-        while (checkOccurenceBlack(idx)){
+        while (checkOccurrenceBlack(idx)){
             idx = (int)(Math.random()*(blackCardSize +1)+0);
         }
         blackCardIndexes.add(idx);

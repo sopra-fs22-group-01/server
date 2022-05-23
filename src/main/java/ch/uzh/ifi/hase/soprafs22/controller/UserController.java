@@ -340,18 +340,20 @@ public class UserController {
         }
     }
 
-    // tells server a supervote was casted and laugher should be played for all, decreased available supervote by 1
-    @PutMapping("/matches/{matchId}/supervote/{userId}")
+    // tells server a supervote was cast and laugher should be played for all, decreases available supervote by 1
+    @PutMapping("/matches/{matchId}/supervotes/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<Boolean> getPlayLaughter(@PathVariable long matchId, @PathVariable long userId) throws IncorrectIdException {
-
-        // update laugh-status
+        // update laugh-status in match
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.setLaughStatus(LaughStatus.Laughing);
 
-        //update in match
+        //update available supervotes for player in match
         currentMatch.decreaseSuperVote(userId);
+
+        // update available supervote for player in database
+        userService.updateSupervote(userId);
         return ResponseEntity.ok(true);
     }
 
