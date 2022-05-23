@@ -129,23 +129,23 @@ public class GameController {
         int roundNumber=currentMatch.getRound().getRoundNumber();
         return ResponseEntity.ok(roundNumber);
     }
-/*
+
     // tells server a supervote was casted and laugher should be played for all
     @PutMapping("/matches/{matchId}/supervote")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<boolean> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
+    public ResponseEntity<Integer> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
         //fetch the specific round number
         Match currentMatch = gameManager.getMatch(matchId);
         int roundNumber=currentMatch.getRound().getRoundNumber();
         return ResponseEntity.ok(roundNumber);
     }
-
+/*
     //retrieves if a laugher was played
     @GetMapping("/matches/{matchId}/supervote")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<boolean> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
+    public ResponseEntity<Integer> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
         //fetch the specific round number
         Match currentMatch = gameManager.getMatch(matchId);
         int roundNumber=currentMatch.getRound().getRoundNumber();
