@@ -51,6 +51,7 @@ public class GameService {
     public void removePlayerFromLobby(long lobbyId, long userId) throws Exception {
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
         requestedLobby.removePlayer(userId);
+
     }
 
     public boolean checkIfMinimumNumberOfPlayers(long lobbyId) throws IncorrectIdException {

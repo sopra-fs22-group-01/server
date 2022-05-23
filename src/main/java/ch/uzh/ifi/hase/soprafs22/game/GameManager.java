@@ -62,11 +62,17 @@ public class GameManager {
 
     public void removePlayerFromOtherLobbies(long userId, long lobbyId) throws Exception {
         for (Lobby lobby : this.lobbies){
+            System.out.println("check lobbyId: "+ lobby.getId().toString());
+            //if (lobby.getId() != lobbyId){
             for (User user : lobby.getCurrentPlayers()){
-                if (user.getId() == userId){
+                System.out.println("check userId: "+ user.getId().toString());
+                if (user.getId().equals(userId)){
+                    System.out.println("found user with UserId: "+ user.getId().toString());
                     lobby.removePlayer(userId);
                 }
             }
+            //}
+
         }
     }
 

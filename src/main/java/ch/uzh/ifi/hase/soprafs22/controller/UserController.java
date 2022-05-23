@@ -148,8 +148,8 @@ public class UserController {
         User user = userService.findUserById(userId); // gets user from correct user repository
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
-            gameService.addPlayerToLobby(lobbyId, user);
             gameManager.removePlayerFromOtherLobbies(userId, lobbyId);
+            gameService.addPlayerToLobby(lobbyId, user);
             ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
             return ResponseEntity.ok(allUsers);
         }
