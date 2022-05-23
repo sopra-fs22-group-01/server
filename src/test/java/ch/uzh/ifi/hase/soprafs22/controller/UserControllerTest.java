@@ -215,7 +215,7 @@ public class  UserControllerTest {
     given(userService.createUser(Mockito.any())).willReturn(user); //
     mockMvc.perform(postRequest).andExpect(status().isCreated()); // performs the post request
 
-    //user is created
+    //user is  created
 //-------------------------------------------------------------------------
 
     UserPutDTO userPutDTO = new UserPutDTO();
