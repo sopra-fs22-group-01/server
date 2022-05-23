@@ -124,13 +124,13 @@ class GameManagerTest {
     void deleteLobby_success(){
         Lobby testLobby = gameManager.createLobby();
 
-        int sizeOfLobbiesBeforeDeletion = gameManager.getAllLobby().size();
+        int sizeOfLobbiesBeforeDeletion = gameManager.getAllLobbies().size();
 
         assertEquals(1,sizeOfLobbiesBeforeDeletion);
 
         gameManager.deleteLobby(testLobby.getId());
 
-        int sizeOfLobbiesAfterDeletion = gameManager.getAllLobby().size();
+        int sizeOfLobbiesAfterDeletion = gameManager.getAllLobbies().size();
 
         assertEquals(0, sizeOfLobbiesAfterDeletion);
     }
