@@ -662,7 +662,7 @@ public class GameControllerTest {
         assertTrue(result.getResponse().getContentAsString().contains("INCOMPLETE"));
     }
 
-@Disabled
+    @Disabled
     @Test
     void deleteUserFromLobby_success() throws Exception { //returns the winner cards
 
@@ -675,27 +675,12 @@ public class GameControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Disabled
-    @Test
-    void deleteUserFromLobby_throwsIncorrectIdException() throws Exception { //returns the winner cards
 
-        doThrow(new IncorrectIdException("The lobby was not found")).when(gameService).removePlayerFromLobby(anyLong(),anyLong());
 
-        MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/" + anyLong() + "/players/" + anyLong())
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(deleteRequest)
-                .andExpect(status().isConflict())
-                .andReturn();
-
-        assertTrue(result.getResolvedException().getMessage().contains("No lobby with this id could be found."));
-    }
-
-    @Disabled
     @Test
     void deleteUserFromLobby_throwsException() throws Exception { //returns the winner cards
 
-        doThrow(new Exception("The lobby was not found")).when(gameService).removePlayerFromLobby(anyLong(),anyLong());
+        doThrow(new Exception("The user doesn't exist in the lobby")).when(gameService).removePlayerFromLobby(anyLong(),anyLong());
 
         MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/" + anyLong() + "/players/" + anyLong())
                 .contentType(MediaType.APPLICATION_JSON);

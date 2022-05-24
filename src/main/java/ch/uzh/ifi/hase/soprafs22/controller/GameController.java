@@ -54,15 +54,12 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteUserFromLobby(@PathVariable long lobbyId, @PathVariable long userId){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
         String baseErrorMessage2 = "No such user exists in the lobby";
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
             gameManager.removePlayerFromAllLobbies(userId);
         }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
+
         catch (Exception e2) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage2);
         }

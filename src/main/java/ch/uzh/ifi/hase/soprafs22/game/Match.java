@@ -26,8 +26,9 @@ public class Match {
     private VotingStatus votingStatus;
     private AtomicInteger voteCount;
 
+    private static final int INIT_LAUGH_COUNT = 0;
     private LaughStatus laughStatus;
-    private int count_laughs;
+    private AtomicInteger laughCounter;
 
     private int available_Supervotes;
 
@@ -41,7 +42,7 @@ public class Match {
         this.scoresAlreadyUpdated = false;
         this.available_Supervotes = 1;
         this.laughStatus = LaughStatus.Silence;
-        this.count_laughs = 0;
+        this.laughCounter = new AtomicInteger(INIT_LAUGH_COUNT);
     }
 
     public void createRound(){
@@ -154,10 +155,10 @@ public class Match {
     public void setLaughStatus(LaughStatus laughStatus) {this.laughStatus = laughStatus;}
 
     public void updateLaughStatus(){
-        this.count_laughs++;
-        if (this.count_laughs == this.matchPlayers.size()){
+        this.laughCounter.incrementAndGet();
+        if (this.laughCounter.intValue() == this.matchPlayers.size()){
             this.laughStatus = LaughStatus.Silence;
-            this.count_laughs = 0;
+            this.laughCounter = new AtomicInteger(INIT_LAUGH_COUNT); //resets the laugh count to 0
         }
     }
 }
