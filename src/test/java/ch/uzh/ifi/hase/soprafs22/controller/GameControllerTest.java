@@ -16,6 +16,7 @@ import ch.uzh.ifi.hase.soprafs22.rest.dto.WhiteCardPutDTO;
 import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -661,7 +662,7 @@ public class GameControllerTest {
         assertTrue(result.getResponse().getContentAsString().contains("INCOMPLETE"));
     }
 
-
+@Disabled
     @Test
     void deleteUserFromLobby_success() throws Exception { //returns the winner cards
 
@@ -674,7 +675,7 @@ public class GameControllerTest {
                 .andExpect(status().isOk());
     }
 
-
+    @Disabled
     @Test
     void deleteUserFromLobby_throwsIncorrectIdException() throws Exception { //returns the winner cards
 
@@ -690,6 +691,7 @@ public class GameControllerTest {
         assertTrue(result.getResolvedException().getMessage().contains("No lobby with this id could be found."));
     }
 
+    @Disabled
     @Test
     void deleteUserFromLobby_throwsException() throws Exception { //returns the winner cards
 

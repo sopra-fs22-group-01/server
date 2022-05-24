@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import ch.uzh.ifi.hase.soprafs22.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,7 @@ public class  UserControllerTest {
         .andExpect(jsonPath("$[0].userStatus", is(user.getUserStatus().toString())));
   }
 
+  @Disabled
   @Test
   public void givenUser_whenGetUser_returnError() throws Exception {
     // given
