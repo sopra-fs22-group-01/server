@@ -3,7 +3,7 @@ This project contains everything you need to play a fun game of Cards Against Hu
 ## Introduction
 **Main Goal:** This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. By doing so we learned a lot about developing a web application and how to work efficiently in a group of 5.<br>
 
-**Motivation: ** Our general motivation for this projects was to expand our knowledge about software development with experience and practice. We choose to create a card game wich we all consider fun to play to help us stay motivated an keep morals up. 
+**Motivation:** Our general motivation for this projects was to expand our knowledge about software development with experience and practice. We choose to create a card game wich we all consider fun to play to help us stay motivated an keep morals up. 
 
 ## Technologies
 As for technologies, we used merely Windows as operating system and as for browsers, we used Google Chrome, Mozilla Firefox and Opera in general to test the project.
