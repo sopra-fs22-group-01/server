@@ -140,13 +140,13 @@ This software makes use of the following third party libraries:
 - Multiple sets of Cards to choose from; for example a family friendly with less offensive and less sexual content could be added.
 
 ## Authors and acknowledgement
-**Authors
+**Authors**
 - Larissa Senning
 - Nevio Liberato
 - Patric Salvisberg
 - Seyyid Palta
 - Thu An Phan
-- 
+
 We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli)
 
 
