@@ -19,7 +19,18 @@ The technologies used to develop the server side of this project were the follow
 </ul>
 
 ## High Level Components
-In this repository, three components ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
+In our backend code, we have five main components that are curcial for the game. They are all contained in our ([Main folder] src/main)
+<ul>
+  <li>The </li>
+  <li>GitHub for the version control and project organization</li>
+  <li>Heroku for the deployment</li>
+  <li>Postman for testing endpoints</li>
+  <li>Spring as application framework</li>
+  <li>Gradle as build manager</li>
+</ul>
+
+
+In our backend code, we have four main components that are crucial for the game. ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
 Every match has a round (Match.java having Round.java) and for each round, there are hands (Round.java having Hand.java).
 Hand.java keep track of hands of users and since User.java is an entity, it cannot have hand. Therefore, we did the other way around and every hand has a user.
 Match.java plays a huge role in our system since it creates a match after users are ready in the lobby.
