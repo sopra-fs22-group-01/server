@@ -132,28 +132,7 @@ public class GameController {
         return ResponseEntity.ok(roundNumber);
     }
 
-    // tells server a supervote was casted and laugher should be played for all
-    @PutMapping("/matches/{matchId}/supervote")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<Integer> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
-        //fetch the specific round number
-        Match currentMatch = gameManager.getMatch(matchId);
-        int roundNumber=currentMatch.getRound().getRoundNumber();
-        return ResponseEntity.ok(roundNumber);
-    }
-/*
-    //retrieves if a laugher was played
-    @GetMapping("/matches/{matchId}/supervote")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<Integer> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
-        //fetch the specific round number
-        Match currentMatch = gameManager.getMatch(matchId);
-        int roundNumber=currentMatch.getRound().getRoundNumber();
-        return ResponseEntity.ok(roundNumber);
-    }
-*/
+
     //retrieves all users from a specific match and returns array of userGetDTO
     @GetMapping("/matches/{matchId}/users")
     @ResponseStatus(HttpStatus.OK)
@@ -273,12 +252,9 @@ public class GameController {
     @PutMapping("/matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public ResponseEntity<ArrayList<WhiteCard>> addChosenCard(@PathVariable long matchId, @RequestBody WhiteCardPutDTO whiteCardPutDTO) throws Exception{
+    public void addChosenCard(@PathVariable long matchId, @RequestBody WhiteCardPutDTO whiteCardPutDTO) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.getRound().setChosenCard(DTOMapper.INSTANCE.convertWhiteCardPutDTOToEntity(whiteCardPutDTO));
-
-        // return array for debugging reasons -> delete later
-        return ResponseEntity.ok(currentMatch.getRound().getAllChosenCards());
     }
 
     // get all chosen card from matchId
@@ -312,7 +288,7 @@ public class GameController {
     @GetMapping("/matches/{matchId}/winner")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ArrayList<WhiteCard>> getWinner(@PathVariable long matchId){
+    public ResponseEntity<ArrayList<WhiteCard>> getWinningCards(@PathVariable long matchId){
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
         try {
 

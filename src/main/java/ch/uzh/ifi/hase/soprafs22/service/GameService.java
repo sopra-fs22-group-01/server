@@ -154,6 +154,4 @@ public class GameService {
         return ranking;
     }
 
-
-
 }
