@@ -19,7 +19,7 @@ The technologies used to develop the server side of this project were the follow
 </ul>
 
 ## High Level Components
-In our backend code, we have five main components that are curcial for the game. They are all contained in our ([Main folder] src/main)
+In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main folder]( src/main)
 <ul>
   <li>The </li>
   <li>GitHub for the version control and project organization</li>
