@@ -19,15 +19,15 @@ The technologies used to develop the server side of this project were the follow
 </ul>
 
 ## High Level Components
-In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder.The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
-<ul>
-  <li>The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
-  <li>GitHub for the version control and project organization</li>
+In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder. The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
+<ol>
+  <li> The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
+  <li> The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
   <li>Heroku for the deployment</li>
   <li>Postman for testing endpoints</li>
   <li>Spring as application framework</li>
   <li>Gradle as build manager</li>
-</ul>
+</ol>
 
 
 In our backend code, we have four main components that are crucial for the game. ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
