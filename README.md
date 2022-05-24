@@ -101,11 +101,6 @@ If you want to avoid running all tests with every change, use the following comm
 
 `./gradlew build --continuous -xtest`
 
-## API Endpoint Testing
-
-### Postman
-
--   We highly recommend to use [Postman](https://www.getpostman.com) in order to test your API Endpoints.
 
 ## Debugging
 
@@ -123,15 +118,11 @@ do the following:
 6. Step through the process one step at a time
 
 ## Testing
-
-Testing works automatically once you run the application (automated testing).<br>
-We have three types of tests here:<br>
-- Unit Tests
-- Integration Tests
-- REST Interface Tests
-<br>
+We wrote alot of testcases (Unit tests, integration tests and REST interface tests). These testcases are run automatically, everytime the application is build, or can be run individually in the [Tests](server/src/test/java/ch/uzh/ifi/hase/soprafs22) folder.
 
 Have a look here for Spring Boot Testing: https://www.baeldung.com/spring-boot-testing
+### API Endpoint Testing
+-   We  recommend to use [Postman](https://www.getpostman.com) in order to test  API Endpoints.
 
 ## Roadmap
 **These are the possible new features that new developers can add:**
