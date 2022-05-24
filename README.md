@@ -25,7 +25,7 @@ In our backend code, we have five main components that are curcial for the game.
 2.   The [Lobby](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) class, responsible for gathering players and starting new [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java).
 3.   The [Match](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) class, responsible for storing the [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), keeping count of scores and how has how many supervotes left.
 4.   The [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), responsible for storing the black card, the hands of the players, the chosen cards, handling the different countdowns and determining the winner of each round.
-5.   The [User](src/main/java/ch/uzh/ifi/hase/soprafs22/entity/User.java) entity class, used to store information about the user in the database like ID, username, password and statistical information about the game they participated in.
+5.   The [User](src/main/java/ch/uzh/ifi/hase/soprafs22/entity/User.java) entity class, used to store information about the user in the database like the userID, username, password and statistical information about the game they participated in.
 
 
 
@@ -37,8 +37,10 @@ One of the main responsibilities of Round.java is to start the timer during choo
 After each round, Round.java also accesses hands and updates them since players already played with one card and this has to be replaced.
 
 # Launch and Development
+To help you get started with this application, in the following paragraph you will find all the important information on the used framwork, what commands are used to build and run the project, how to run the tests and which dependencies exist.
 
 ## Getting started with Spring Boot
+First of all we advise everyone that is not familiar with Spring Boot ro read the following documentation and Guides:
 
 -   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
 -   Guides: http://spring.io/guides
