@@ -120,31 +120,35 @@ do the following:
 ## Testing
 We wrote alot of testcases (Unit tests, integration tests and REST interface tests). These testcases are run automatically, everytime the application is build, or can be run individually in the [Tests](server/src/test/java/ch/uzh/ifi/hase/soprafs22) folder.
 
-Have a look here for Spring Boot Testing: https://www.baeldung.com/spring-boot-testing
-### API Endpoint Testing
--   We  recommend to use [Postman](https://www.getpostman.com) in order to test  API Endpoints.
+If you want to write your own testcases and for more information about testing in Spring Boot have a look here: https://www.baeldung.com/spring-boot-testing
+
+To test new REST API Endpoints quickly, we  recommend to use [Postman](https://www.getpostman.com).
+
+## Server deployement
+For the deployement of the server, we recommend Heroku: https://id.heroku.com/
+
+## External dependencies
+This software makes use of the following third party libraries:
+- SimpleJSON API
+- Webspeech API 
+- Gradle
+- Spring Boot
 
 ## Roadmap
-**These are the possible new features that new developers can add:**
-- Rainbow Card which guarantees that the player who played this card, wins the round
-- Block Card which blocks a chosen player for one round and this player can neither play nor vote.
-- Family Edition would be something useful if you are going to play with children and families. Since our cards contain many offensive and sexual phrases.
+**Possible  features that new developers can add:**
+- Accessible functionalities to personalize properties of matches, like the timers, how many points for the win are needed, and the number of supervotes each player gets.
+- Multiple sets of Cards to choose from; for example a family friendly with less offensive and less sexual content could be added.
 
-## Authors
-**Authors (sorted alphabetically):**
+## Authors and acknowledgement
+**Authors
 - Larissa Senning
 - Nevio Liberato
 - Patric Salvisberg
 - Seyyid Palta
 - Thu An Phan
+- 
+We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli)
 
-## Acknowledgements
-This software makes use of the following third party libraries:
-- SimpleJSON API
-- Text-to-Speech API
-- Gradle
-- Spring Boot
-- REST API
 
 ## License
                                  Apache License
