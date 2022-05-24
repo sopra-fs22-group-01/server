@@ -7,12 +7,14 @@ This project contains everything you need to play a fun game of Cards Against Hu
 
 ## Technologies
 The technologies used to develop the server side of this project were the following:
-•	IntelliJ and Visual Studio Code as IDEs
-•	GitHub for the version control and project organization
-•	Heroku for the deployment
-•	Postman for testing endpoints
-•	Spring as application framework  
-•	Gradle as build manager
+<ul>
+  <li>IntelliJ and Visual Studio Code as IDEs</li>
+  <li>GitHub for the version control and project organization</li>
+  <li>Heroku for the deployment</li>
+  <li>Postman for testing endpoints</li>
+  <li>Spring as application framework</li>
+  <li>Gradle as build manager</li>
+</ul>
 
 ## High Level Components
 In this repository, three components ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
