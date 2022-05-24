@@ -76,6 +76,19 @@ public class GameManager {
         }
     }
 
+    // removes player from all lobbies
+    public void removePlayerFromAllLobbies(long userId) throws Exception {
+        for (Lobby lobby : this.lobbies){
+            for (User user : lobby.getCurrentPlayers()){
+                if (user.getId().equals(userId)){
+                    lobby.removePlayer(userId);
+                    break;
+                }
+            }
+        }
+    }
+
+
     //checks if leader of match reached max points
     public boolean isGameOver(Match currentMatch) {
         ArrayList<User> players = currentMatch.getMatchPlayers();

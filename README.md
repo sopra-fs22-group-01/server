@@ -1,30 +1,44 @@
 # Cards Against Humanity Online
+This project contains everything you need to play a fun game of Cards Against Humanity online with your friends. Enjoy our twist to the game and try out the additional features such as custom cards, and supervotes.
 ## Introduction
-**Main Goal:** This project's main goal is to enable players to play Cards Against Humanity online without having to buy the cards. Additionally, there are some more features we introduced compared to original CAH game.<br>
-Besides, project's motivation from our side was to develop something which is also interesting to develop and to test.
-From client's side, this project allows them to play with something fun with their friends online, even if they are not at the same place, they can still play and have some fun together during any pandemic or any kind of lockdown, where people cannot meet in person.
+### Main Goal
+This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. By doing so we learned a lot about developing a web application and how to work efficiently in a group of 5.
+
+### Motivation
+Our general motivation for this project was to expand our knowledge about software development with experience and practice. We choose to create a card game which we all consider fun to play to help us stay motivated and keep morals up.
 
 ## Technologies
-As for technologies, we used merely Windows as operating system and as for browsers, we used Google Chrome, Mozilla Firefox and Opera in general to test the project.
+The technologies used to develop the server side of this project were the following:
+
+-   IntelliJ and Visual Studio Code as IDEs
+-   GitHub for the version control and project organization
+-   Heroku for the deployment
+-   Postman for testing endpoints
+-   Spring as application framework
+-   Gradle as build manager
+
 
 ## High Level Components
-In this repository, three components ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
-Every match has a round (Match.java having Round.java) and for each round, there are hands (Round.java having Hand.java).
-Hand.java keep track of hands of users and since User.java is an entity, it cannot have hand. Therefore, we did the other way around and every hand has a user.
-Match.java plays a huge role in our system since it creates a match after users are ready in the lobby.
-One of the main responsibilities of Round.java is to start the timer during choosing a card to play, then during voting and lastly while displaying the winner.<br>
-After each round, Round.java also accesses hands and updates them since players already played with one card and this has to be replaced.
+In our backend code, we have five main components that are crucial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder.
+
+1.   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class, responsible for managing [Lobbies](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) and [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java). This means storing the available lobbies, creating and deleting of lobbies and matches.
+2.   The [Lobby](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) class, responsible for gathering players and starting new [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java).
+3.   The [Match](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) class, responsible for storing the [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), keeping count of scores, round number and supervotes.
+4.   The [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), responsible for storing the black card, the hands of the players, the chosen cards, handling the different countdowns and determining the winner of each round.
+5.   The [User](src/main/java/ch/uzh/ifi/hase/soprafs22/entity/User.java) entity class, used to store information about the user in the database like the userID, username, password and statistical information about the game they participated in.
 
 # Launch and Development
+To help you get started with this application, in the following paragraph you will find all the important information on the used framwork, what commands are used to build and run the project, how to run the tests and which dependencies exist.
 
 ## Getting started with Spring Boot
+First of all we advise everyone that is not familiar with Spring Boot ro read the following documentation and Guides:
 
 -   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
 -   Guides: http://spring.io/guides
     -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
     -   Building REST services with Spring: http://spring.io/guides/tutorials/bookmarks/
 
-## Setup this Template with your IDE of choice
+## Setup this project with the IDE of your choice
 
 Download your IDE of choice: (e.g., [Eclipse](http://www.eclipse.org/downloads/), [IntelliJ](https://www.jetbrains.com/idea/download/)), [Visual Studio Code](https://code.visualstudio.com/) and make sure Java 15 is installed on your system (for Windows-users, please make sure your JAVA_HOME environment variable is set to the correct version of Java).
 
@@ -87,11 +101,6 @@ If you want to avoid running all tests with every change, use the following comm
 
 `./gradlew build --continuous -xtest`
 
-## API Endpoint Testing
-
-### Postman
-
--   We highly recommend to use [Postman](https://www.getpostman.com) in order to test your API Endpoints.
 
 ## Debugging
 
@@ -109,37 +118,37 @@ do the following:
 6. Step through the process one step at a time
 
 ## Testing
+We wrote alot of testcases (Unit tests, integration tests and REST interface tests). These testcases are run automatically, everytime the application is build, or can be run individually in the [Tests](server/src/test/java/ch/uzh/ifi/hase/soprafs22) folder.
 
-Testing works automatically once you run the application (automated testing).<br>
-We have three types of tests here:<br>
-- Unit Tests
-- Integration Tests
-- REST Interface Tests
-<br>
+If you want to write your own testcases and for more information about testing in Spring Boot have a look here: https://www.baeldung.com/spring-boot-testing
 
-Have a look here for Spring Boot Testing: https://www.baeldung.com/spring-boot-testing
+To test new REST API Endpoints quickly, we  recommend to use [Postman](https://www.getpostman.com).
+
+## Server deployement
+For the deployement of the server, we recommend Heroku: https://id.heroku.com/
+
+## External dependencies
+This software makes use of the following third party libraries:
+- SimpleJSON API
+- Webspeech API 
+- Gradle
+- Spring Boot
 
 ## Roadmap
-**These are the possible new features that new developers can add:**
-- Rainbow Card which guarantees that the player who played this card, wins the round
-- Block Card which blocks a chosen player for one round and this player can neither play nor vote.
-- Family Edition would be something useful if you are going to play with children and families. Since our cards contain many offensive and sexual phrases.
+**Possible  features that new developers can add:**
+- Accessible functionalities to personalize properties of matches, like the timers, how many points for the win are needed, and the number of supervotes each player gets.
+- Multiple sets of Cards to choose from; for example a family friendly with less offensive and less sexual content could be added.
 
-## Authors
-**Authors (sorted alphabetically):**
+## Authors and acknowledgement
+**Authors**
 - Larissa Senning
 - Nevio Liberato
 - Patric Salvisberg
 - Seyyid Palta
 - Thu An Phan
 
-## Acknowledgements
-This software makes use of the following third party libraries:
-- SimpleJSON API
-- Text-to-Speech API
-- Gradle
-- Spring Boot
-- REST API
+We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli)
+
 
 ## License
                                  Apache License

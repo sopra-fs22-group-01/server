@@ -58,7 +58,7 @@ public class GameController {
         String baseErrorMessage2 = "No such user exists in the lobby";
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
-            gameService.removePlayerFromLobby(lobbyId, userId);
+            gameManager.removePlayerFromAllLobbies(userId);
         }
         catch (IncorrectIdException e1){
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
