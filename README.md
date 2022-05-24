@@ -1,9 +1,9 @@
 # Cards Against Humanity Online
+This project contains everything you need to play a fun game of Cards Against Humanity online with your friends. Enjoy our twist to the game and try out the additional features such as custom cards, and supervotes.
 ## Introduction
-**Main Goal:** This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. <br>
+**Main Goal:** This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. By doing so we learned a lot about developing a web application and how to work efficiently in a group of 5.<br>
 
-Besides, project's motivation from our side was to develop something which is also interesting to develop and to test.
-From client's side, this project allows them to play with something fun with their friends online, even if they are not at the same place, they can still play and have some fun together during any pandemic or any kind of lockdown, where people cannot meet in person.
+**Motivation: ** Our general motivation for this projects was to expand our knowledge about software development with experience and practice. We choose to create a card game wich we all consider fun to play to help us stay motivated an keep morals up. 
 
 ## Technologies
 As for technologies, we used merely Windows as operating system and as for browsers, we used Google Chrome, Mozilla Firefox and Opera in general to test the project.
