@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Match {
@@ -21,8 +22,9 @@ public class Match {
     private Round round;
     private MatchStatus matchStatus;
 
+    private static final int INIT_VOTE_COUNT = 0;
     private VotingStatus votingStatus;
-    private int voteCount;
+    private AtomicInteger voteCount;
 
     private LaughStatus laughStatus;
     private int count_laughs;
@@ -35,7 +37,7 @@ public class Match {
         this.id = id;
         this.matchStatus = MatchStatus.MatchOngoing;
         this.votingStatus = VotingStatus.INCOMPLETE;
-        this.voteCount = 0;
+        this.voteCount = new AtomicInteger(INIT_VOTE_COUNT);
         this.scoresAlreadyUpdated = false;
         this.available_Supervotes = 1;
         this.laughStatus = LaughStatus.Silence;
@@ -98,7 +100,7 @@ public class Match {
 
     public void resetVotingStatus(){
         this.votingStatus = VotingStatus.INCOMPLETE;
-        this.voteCount = 0;
+        this.voteCount = new AtomicInteger(INIT_VOTE_COUNT);
     }
 
 
@@ -125,13 +127,14 @@ public class Match {
     }
 
     public void incrementVoteCountAndCheckStatus(){
-        this.voteCount++;
+        this.voteCount.incrementAndGet();
         int numberOfPlayers = this.getPlayerCount();
-        if(voteCount == numberOfPlayers){
+        if(numberOfPlayers == voteCount.intValue()){
             setVotingStatus(VotingStatus.COMPLETE);
         }
     }
 
+    //TODO make supervote count thread safe
     public void decreaseSuperVote(long userId){
         for (User user : this.matchPlayers){
             if (user.getId() == userId){

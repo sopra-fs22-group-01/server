@@ -40,7 +40,7 @@ public class Round {
     private Countdown rankingCountdown;
 
     public int getRoundNumber() {
-        return roundNumber;
+        return this.roundNumber;
     }
 
 
