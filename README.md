@@ -21,8 +21,9 @@ The technologies used to develop the server side of this project were the follow
 ## High Level Components
 In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder.
 
-1.   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class, responsible for managing [Lobbies](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) and [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java).
-2.   
+1.   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class, responsible for managing [Lobbies](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) and [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java). This means storing the available lobbies, creating and deleting of lobbies and matches.
+2.   The [Lobby](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) class, responsible for gathering player and starting new Matches.
+3.   The [Match](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) class, responsible for storing the [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), keeping count of scores and how has how many supervotes left.
 
 
 
