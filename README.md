@@ -1,6 +1,7 @@
 # Cards Against Humanity Online
 ## Introduction
-**Main Goal:**This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. <br>
+**Main Goal:** This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. <br>
+
 Besides, project's motivation from our side was to develop something which is also interesting to develop and to test.
 From client's side, this project allows them to play with something fun with their friends online, even if they are not at the same place, they can still play and have some fun together during any pandemic or any kind of lockdown, where people cannot meet in person.
 
