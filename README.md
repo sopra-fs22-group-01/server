@@ -9,27 +9,21 @@ Our general motivation for this project was to expand our knowledge about softwa
 
 ## Technologies
 The technologies used to develop the server side of this project were the following:
-<ul>
-  <li>IntelliJ and Visual Studio Code as IDEs</li>
-  <li>GitHub for the version control and project organization</li>
-  <li>Heroku for the deployment</li>
-  <li>Postman for testing endpoints</li>
-  <li>Spring as application framework</li>
-  <li>Gradle as build manager</li>
-</ul>
+
+-   IntelliJ and Visual Studio Code as IDEs
+-   GitHub for the version control and project organization
+-   Heroku for the deployment
+-   Postman for testing endpoints
+-   Spring as application framework
+-   Gradle as build manager
+
 
 ## High Level Components
-In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder. The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
+In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder.
 
-1   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
-<ol>
-  <li> The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
-  <li> The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
-  <li>Heroku for the deployment</li>
-  <li>Postman for testing endpoints</li>
-  <li>Spring as application framework</li>
-  <li>Gradle as build manager</li>
-</ol>
+1.   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class, responsible for managing [Lobbies](/src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java /) and [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java)
+2.   
+
 
 
 In our backend code, we have four main components that are crucial for the game. ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
