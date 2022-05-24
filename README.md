@@ -27,15 +27,6 @@ In our backend code, we have five main components that are crucial for the game.
 4.   The [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), responsible for storing the black card, the hands of the players, the chosen cards, handling the different countdowns and determining the winner of each round.
 5.   The [User](src/main/java/ch/uzh/ifi/hase/soprafs22/entity/User.java) entity class, used to store information about the user in the database like the userID, username, password and statistical information about the game they participated in.
 
-
-
-In our backend code, we have four main components that are crucial for the game. ([Round.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), [Match.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) and [Hand.java](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Hand.java)) create the main program and helps execute the game.<br>
-Every match has a round (Match.java having Round.java) and for each round, there are hands (Round.java having Hand.java).
-Hand.java keep track of hands of users and since User.java is an entity, it cannot have hand. Therefore, we did the other way around and every hand has a user.
-Match.java plays a huge role in our system since it creates a match after users are ready in the lobby.
-One of the main responsibilities of Round.java is to start the timer during choosing a card to play, then during voting and lastly while displaying the winner.<br>
-After each round, Round.java also accesses hands and updates them since players already played with one card and this has to be replaced.
-
 # Launch and Development
 To help you get started with this application, in the following paragraph you will find all the important information on the used framwork, what commands are used to build and run the project, how to run the tests and which dependencies exist.
 
@@ -47,7 +38,7 @@ First of all we advise everyone that is not familiar with Spring Boot ro read th
     -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
     -   Building REST services with Spring: http://spring.io/guides/tutorials/bookmarks/
 
-## Setup this Template with your IDE of choice
+## Setup this project with the IDE of your choice
 
 Download your IDE of choice: (e.g., [Eclipse](http://www.eclipse.org/downloads/), [IntelliJ](https://www.jetbrains.com/idea/download/)), [Visual Studio Code](https://code.visualstudio.com/) and make sure Java 15 is installed on your system (for Windows-users, please make sure your JAVA_HOME environment variable is set to the correct version of Java).
 
