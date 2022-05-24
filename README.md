@@ -22,8 +22,10 @@ The technologies used to develop the server side of this project were the follow
 In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder.
 
 1.   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class, responsible for managing [Lobbies](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) and [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java). This means storing the available lobbies, creating and deleting of lobbies and matches.
-2.   The [Lobby](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) class, responsible for gathering player and starting new Matches.
+2.   The [Lobby](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) class, responsible for gathering players and starting new [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java).
 3.   The [Match](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java) class, responsible for storing the [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), keeping count of scores and how has how many supervotes left.
+4.   The [Round](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Round.java), responsible for storing the black card, the hands of the players, the chosen cards, handling the different countdowns and determining the winner of each round.
+5.   The [User](src/main/java/ch/uzh/ifi/hase/soprafs22/entity/User.java) entity class, used to store information about the user in the database like ID, username, password and statistical information about the game they participated in.
 
 
 
