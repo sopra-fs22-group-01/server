@@ -21,7 +21,7 @@ The technologies used to develop the server side of this project were the follow
 ## High Level Components
 In our backend code, we have five main components that are curcial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder. The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
 
--   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
+1   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class
 <ol>
   <li> The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
   <li> The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class </li>
