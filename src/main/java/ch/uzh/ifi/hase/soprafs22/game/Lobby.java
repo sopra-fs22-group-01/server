@@ -18,7 +18,7 @@ public class Lobby {
     private int currentPlayerCount=0;
     private final int maximumPlayerCount = 5;
     private AtomicInteger voteCount;
-    private VotingStatus votingStatus;
+    /*private VotingStatus votingStatus;*/
 
     //constructor
     public Lobby(Long id) {
@@ -117,19 +117,19 @@ public class Lobby {
         }
     }
 
-    public void incrementVoteCountAndCheckStatus() {
+   /* public void incrementVoteCountAndCheckStatus() {
         this.voteCount.incrementAndGet();
         int numberOfPlayers = this.getPlayerCount();
         if(numberOfPlayers == voteCount.intValue()){
             setVotingStatus(VotingStatus.COMPLETE);
         }
-    }
+    }*/
 
-    private void setVotingStatus(VotingStatus votingStatus) {
+    /*private void setVotingStatus(VotingStatus votingStatus) {
         this.votingStatus = votingStatus;
-    }
+    }*/
 
-    public VotingStatus getVotingStatus() {
+    /*public VotingStatus getVotingStatus() {
         return this.votingStatus;
-    }
+    }*/
 }

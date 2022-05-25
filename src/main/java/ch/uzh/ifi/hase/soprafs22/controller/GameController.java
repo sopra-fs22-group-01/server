@@ -316,7 +316,7 @@ public class GameController {
         return ResponseEntity.ok(currentVotingStatus);
     }
 
-    //incrementsApiRequestCount and if all put request arrived, sets ApiRequestStatus to COMPLETE
+/*    //incrementsApiRequestCount and if all put request arrived, sets ApiRequestStatus to COMPLETE
     @PutMapping("/lobbies/{lobbyId}/synchronization")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -332,7 +332,7 @@ public class GameController {
         Lobby currentLobby = gameManager.getLobby(lobbyId);
         VotingStatus currentVotingStatus = currentLobby.getVotingStatus();
         return ResponseEntity.ok(currentVotingStatus);
-    }
+    }*/
 
 
 }
