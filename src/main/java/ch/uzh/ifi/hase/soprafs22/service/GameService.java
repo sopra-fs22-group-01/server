@@ -105,22 +105,7 @@ public class GameService {
         }
     }
 
-    public Match startMatch(long lobbyId) throws IncorrectIdException{
-        //checking if match already created. If yes, return the Match. Else create the Match.
-        //if it's already created, you can get the Match with gameManager.getMatch(lobbyId)
-        //If not, it will throw an IncorrectIdException("The match was not found")
-        try {
-            Match existingMatch = gameManager.getMatch(lobbyId);
-            existingMatch.resetVotingStatus();
-            return existingMatch;
-        }
-        catch(IncorrectIdException e1){
-            Lobby requestedLobby = gameManager.getLobby(lobbyId);
-            Match createdMatch = gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
-            /*gameManager.deleteLobby(lobbyId);*/
-            return createdMatch;
-        }
-    }
+
 
     public LobbyStatus getLobbyStatus(long lobbyId) throws IncorrectIdException{
         Lobby requestedLobby = gameManager.getLobby(lobbyId);
@@ -156,12 +141,30 @@ public class GameService {
         return ranking;
     }
 
-    public void  deleteLobby (long lobbyId) throws IncorrectIdException{
+    public void  deleteLobby(long lobbyId) throws Exception {
         try {
             Lobby existingLobby = gameManager.getLobby(lobbyId);
-            gameManager.deleteLobby(existingLobby.getId());
+            ArrayList <Lobby> lobbies= gameManager.getAllLobbies();
+            lobbies.remove(existingLobby);
         }
-        catch(IncorrectIdException e1){}
+        catch(IncorrectIdException e1){
+           throw new Exception("Could not delete lobby LOL ");
+        }
+    }
+
+    public Match startMatch(long lobbyId) throws IncorrectIdException {
+        //checking if match already created. If yes, return the Match. Else create the Match.
+        //if it's already created, you can get the Match with gameManager.getMatch(lobbyId)
+        //If not, it will throw an IncorrectIdException("The match was not found")
+        try {
+            Match existingMatch = gameManager.getMatch(lobbyId);
+            return existingMatch;
+        }
+        catch(IncorrectIdException e1){
+            Lobby requestedLobby = gameManager.getLobby(lobbyId);
+            Match createdMatch = gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
+            return createdMatch;
+        }
     }
 
 }

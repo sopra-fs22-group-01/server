@@ -220,6 +220,7 @@ public class GameController {
     @ResponseBody
     public void startSelectionCountdown(@PathVariable long matchId) throws Exception {
         Match currentMatch  = gameManager.getMatch(matchId);
+        currentMatch.resetVotingStatus();
         Round currentRound = currentMatch.getRound();
         currentRound.startSelectionCountdown(); //starts selection countdown
     }

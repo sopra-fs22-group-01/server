@@ -389,7 +389,7 @@ public class UserController {
     @DeleteMapping("/lobbies/{lobbyId}/")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteLobby(@PathVariable long lobbyId) throws IncorrectIdException {
+    public void deleteLobby(@PathVariable long lobbyId) throws Exception {
         gameService.deleteLobby(lobbyId);
     }
 }
