@@ -113,7 +113,6 @@ public class UserService {
     }
 
     public void logInUser(User userToLogIn){
-        //userToLogIn.setToken(UUID.randomUUID().toString());
         userToLogIn.setUserStatus(UserStatus.ONLINE);
         userToLogIn.setIsReady(ReadyStatus.UNREADY);
         userToLogIn.setScore(0);

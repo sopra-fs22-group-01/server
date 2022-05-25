@@ -225,7 +225,7 @@ class GameServiceTest {
         BlackCard blackCardThroughGameService = gameService.getBlackCard(0L);
         BlackCard blackCardThroughRound = testMatch.getRound().getBlackCard();
 
-        assertEquals(blackCardThroughGameService, blackCardThroughGameService);
+        assertEquals(blackCardThroughRound, blackCardThroughGameService);
     }
 
     @Test
