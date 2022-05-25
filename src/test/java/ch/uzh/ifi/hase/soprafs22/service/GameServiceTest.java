@@ -3,9 +3,16 @@ package ch.uzh.ifi.hase.soprafs22.service;
 
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
+import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.GameManager;
+import ch.uzh.ifi.hase.soprafs22.game.Hand;
 import ch.uzh.ifi.hase.soprafs22.game.Lobby;
-import org.junit.jupiter.api.AfterEach;
+import ch.uzh.ifi.hase.soprafs22.game.Match;
+import ch.uzh.ifi.hase.soprafs22.game.card.BlackCard;
+import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
+import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +22,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameServiceTest {
+class GameServiceTest {
 
     private GameManager gameManager = new GameManager();
     private User testUser;
@@ -32,6 +39,8 @@ public class GameServiceTest {
         this.gameManager.reset();
         this.testUser = new User();
         this.testUser2 = new User();
+        testUser.setId(0L);
+        testUser2.setId(1L);
         this.players = new ArrayList<>();
         this.players.add(testUser);
         this.players.add(testUser2);
@@ -47,8 +56,6 @@ public class GameServiceTest {
         assertEquals(expected,testArray.get(0) );
 
     }
-
-
 
 
     @Test
@@ -72,28 +79,7 @@ public class GameServiceTest {
     }
 
 
-  /*  @Test
-    void removePlayerFromLobby_success() throws Exception {
-        //adding a player
-        testUser.setId(1L);
-        testLobby.addPlayer(testUser);
 
-        //before adding a player
-        int playerCountBeforeRemoval = testLobby.getCurrentPlayerCount();
-        int expectedCountBeforeRemoval = 1;
-        //check if no players in lobby at beginning
-        assertEquals(expectedCountBeforeRemoval, playerCountBeforeRemoval);
-
-        //removing a player
-        testLobby.removePlayer(testUser);
-
-        int expectedCountAfterRemoval = 0;
-        int playerCountAfterRemoval = testLobby.getCurrentPlayerCount();
-        //check if player got added
-        assertEquals(expectedCountAfterRemoval, playerCountAfterRemoval);
-
-
-    }*/
 
     @Test
     void checkIfMinimumNumberOfPlayers_returns_True() throws Exception {
@@ -132,9 +118,11 @@ public class GameServiceTest {
         assertTrue(actual);
     }
 
-    /*
+
     @Test
-    public void checkIfLobbyStatusChanges_changs_AllReady() throws Exception {
+    void checkIfLobbyStatusChanges_changs_AllReady() throws Exception {
+        testUser.setIsReady(ReadyStatus.UNREADY);
+        testUser2.setIsReady(ReadyStatus.UNREADY);
 
         gameService.addPlayerToLobby(testLobby.getId(), testUser);
         gameService.addPlayerToLobby(testLobby.getId(), testUser2);
@@ -150,7 +138,7 @@ public class GameServiceTest {
 
 
     @Test
-    public void startMatch_success() throws IncorrectIdException {
+    void startMatch_success() throws IncorrectIdException {
         Match testMatch = gameService.startMatch(0);
 
         assertEquals(0,testMatch.getId());
@@ -160,9 +148,8 @@ public class GameServiceTest {
 
 
 
-    //Doenst work either
     @Test
-    public void removePlayerFromLobby_success() throws Exception {
+    void removePlayerFromLobby_success() throws Exception {
         testUser.setId(0L);
         Lobby lobby = gameService.createNewLobby();
         long lobbyId = lobby.getId();
@@ -182,11 +169,11 @@ public class GameServiceTest {
     //problem with the following two tests: When run with all other tests, matches list in GameManager somehow deleted
     //when we try to getMatch a second time (makes absolutely no sense and doesn't happen when the two tests are run separately)
 
-   /* @Test
+    @Test
     void getRanking_once_success() throws IncorrectIdException {
-        *//*testUser.setScore(1);
+        testUser.setScore(1);
         testUser2.setScore(2);
-        *//*
+
         User testUser3 = new User();
         User testUser4 = new User();
         testUser3.setUsername("testuser3");
@@ -230,6 +217,54 @@ public class GameServiceTest {
 
         int scoreOfWinnerV2 = testRanking2.get(0).getScore();
         assertEquals(2,scoreOfWinnerV2);
-    }*/
+    }
+
+    @Test
+    void getBlackCard_success() throws IncorrectIdException {
+        Match testMatch = gameService.startMatch(0L);
+        BlackCard blackCardThroughGameService = gameService.getBlackCard(0L);
+        BlackCard blackCardThroughRound = testMatch.getRound().getBlackCard();
+
+        assertEquals(blackCardThroughGameService, blackCardThroughGameService);
+    }
+
+    @Test
+    void incrementCardScore_success() throws IncorrectIdException {
+        Match testMatch = gameService.startMatch(0L);
+        ArrayList<User> testPlayers = new ArrayList<>();
+        testPlayers.add(testUser);
+        testMatch.setMatchPlayers(testPlayers);
+        Hand testUserHand = new Hand(testUser);
+        testUserHand.createHand();
+        WhiteCard firstWhiteCard = testUserHand.getCardsFromHand().get(0);
+
+        assertEquals(0,firstWhiteCard.getScore());
+
+        testUserHand.setChosenCard(firstWhiteCard);
+        testMatch.getRound().setChosenCard(firstWhiteCard);
+        gameService.incrementCardScore(testMatch.getId(),testUser.getId());
+
+        assertEquals(1,firstWhiteCard.getScore());;
+    }
+
+
+    @Test
+    void updateCustomText_success() throws Exception {
+        UserPutDTO testUserPutDTO = new UserPutDTO();
+        testUserPutDTO.setId(testUser.getId());
+        testUserPutDTO.setCustomWhiteText("Some custom text");
+
+        testLobby.addPlayer(testUser);
+        testLobby.updateCustomText(testUser.getId(),testUserPutDTO);
+
+        assertEquals(testUserPutDTO.getCustomWhiteText(),testUser.getCustomWhiteText());;
+    }
+
+
+
+
+
 
 }
+
+

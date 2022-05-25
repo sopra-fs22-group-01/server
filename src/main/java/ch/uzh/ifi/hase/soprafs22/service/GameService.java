@@ -151,7 +151,7 @@ public class GameService {
         Match match = gameManager.getMatch(matchId);
         ScoreBoard scoreBoard = match.getScoreBoard();
         ArrayList<User> matchPlayers = match.getMatchPlayers();
-        ArrayList<Ranking> ranking = scoreBoard.getRanking(matchPlayers);//!!! might remove players from match
+        ArrayList<Ranking> ranking = scoreBoard.getRanking(matchPlayers);
         return ranking;
     }
 
