@@ -135,7 +135,6 @@ public class Match {
         }
     }
 
-    //TODO make supervote count thread safe
     public void decreaseSuperVote(long userId){
         for (User user : this.matchPlayers){
             if (user.getId() == userId){

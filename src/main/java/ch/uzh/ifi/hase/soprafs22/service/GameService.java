@@ -141,18 +141,18 @@ public class GameService {
         return ranking;
     }
 
-    public void  deleteLobby(long lobbyId) throws Exception {
+    public void  deleteLobby(long lobbyId)  {
         try {
             Lobby existingLobby = gameManager.getLobby(lobbyId);
             ArrayList <Lobby> lobbies= gameManager.getAllLobbies();
             lobbies.remove(existingLobby);
         }
         catch(IncorrectIdException e1){
-           throw new Exception("Could not delete lobby LOL ");
+            System.out.println("Dont touch it, it works");
         }
     }
 
-    public Match startMatch(long lobbyId) throws IncorrectIdException {
+    public synchronized Match startMatch(long lobbyId) throws IncorrectIdException {
         //checking if match already created. If yes, return the Match. Else create the Match.
         //if it's already created, you can get the Match with gameManager.getMatch(lobbyId)
         //If not, it will throw an IncorrectIdException("The match was not found")

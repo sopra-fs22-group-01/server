@@ -386,7 +386,7 @@ public class UserController {
     }
 
     // delete lobby only once even if several requests
-    @DeleteMapping("/lobbies/{lobbyId}/")
+    @DeleteMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteLobby(@PathVariable long lobbyId) throws Exception {
