@@ -111,12 +111,13 @@ public class GameService {
         //If not, it will throw an IncorrectIdException("The match was not found")
         try {
             Match existingMatch = gameManager.getMatch(lobbyId);
+            existingMatch.resetVotingStatus();
             return existingMatch;
         }
         catch(IncorrectIdException e1){
             Lobby requestedLobby = gameManager.getLobby(lobbyId);
             Match createdMatch = gameManager.createMatch(requestedLobby.getCurrentPlayers(), lobbyId);
-            gameManager.deleteLobby(lobbyId);
+            /*gameManager.deleteLobby(lobbyId);*/
             return createdMatch;
         }
     }
@@ -153,6 +154,14 @@ public class GameService {
         ArrayList<User> matchPlayers = match.getMatchPlayers();
         ArrayList<Ranking> ranking = scoreBoard.getRanking(matchPlayers);
         return ranking;
+    }
+
+    public void  deleteLobby (long lobbyId) throws IncorrectIdException{
+        try {
+            Lobby existingLobby = gameManager.getLobby(lobbyId);
+            gameManager.deleteLobby(existingLobby.getId());
+        }
+        catch(IncorrectIdException e1){}
     }
 
 }

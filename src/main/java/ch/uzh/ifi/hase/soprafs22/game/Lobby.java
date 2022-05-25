@@ -3,10 +3,12 @@ package ch.uzh.ifi.hase.soprafs22.game;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
+import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
 
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Lobby {
 
@@ -15,10 +17,13 @@ public class Lobby {
     private ArrayList<User> currentPlayers = new ArrayList<>();
     private int currentPlayerCount=0;
     private final int maximumPlayerCount = 5;
+    private AtomicInteger voteCount;
+    private VotingStatus votingStatus;
 
     //constructor
     public Lobby(Long id) {
         this.id = id;
+        this.voteCount = new AtomicInteger(0);
     }
 
     //getters and setters
@@ -28,6 +33,10 @@ public class Lobby {
     public void setId(Long id) {this.id = id;}
 
     public int getCurrentPlayerCount() {return currentPlayerCount;}
+
+    public int getPlayerCount(){
+        return currentPlayers.size();
+    }
 
 
     public LobbyStatus getLobbyStatus() {
@@ -108,5 +117,19 @@ public class Lobby {
         }
     }
 
+    public void incrementVoteCountAndCheckStatus() {
+        this.voteCount.incrementAndGet();
+        int numberOfPlayers = this.getPlayerCount();
+        if(numberOfPlayers == voteCount.intValue()){
+            setVotingStatus(VotingStatus.COMPLETE);
+        }
+    }
 
+    private void setVotingStatus(VotingStatus votingStatus) {
+        this.votingStatus = votingStatus;
+    }
+
+    public VotingStatus getVotingStatus() {
+        return this.votingStatus;
+    }
 }

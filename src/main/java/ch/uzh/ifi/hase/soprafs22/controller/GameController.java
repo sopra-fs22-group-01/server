@@ -301,7 +301,7 @@ public class GameController {
     @PutMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void incrementApiRequestCount(@PathVariable long matchId) throws IncorrectIdException {
+    public void incrementApiRequestCountMatch(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.incrementVoteCountAndCheckStatus();
     }
@@ -309,12 +309,30 @@ public class GameController {
     @GetMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<VotingStatus> getApiRequestStatus(@PathVariable long matchId) throws IncorrectIdException {
+    public ResponseEntity<VotingStatus> getApiRequestStatusMatch(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
         VotingStatus currentVotingStatus = currentMatch.getVotingStatus();
-
         return ResponseEntity.ok(currentVotingStatus);
     }
+
+    //incrementsApiRequestCount and if all put request arrived, sets ApiRequestStatus to COMPLETE
+    @PutMapping("/lobbies/{lobbyId}/synchronization")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void incrementApiRequestCountLobby(@PathVariable long lobbyId) throws IncorrectIdException {
+        Lobby currentLobby = gameManager.getLobby(lobbyId);
+        currentLobby.incrementVoteCountAndCheckStatus();
+    }
+
+    @GetMapping("/lobbies/{lobbyId}/synchronization")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<VotingStatus> getApiRequestStatusLobby(@PathVariable long lobbyId) throws IncorrectIdException {
+        Lobby currentLobby = gameManager.getLobby(lobbyId);
+        VotingStatus currentVotingStatus = currentLobby.getVotingStatus();
+        return ResponseEntity.ok(currentVotingStatus);
+    }
+
 
 }
 
