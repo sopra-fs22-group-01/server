@@ -83,7 +83,20 @@ public class Round {
         this.selectionCountdown.startCountdown();
     }
     public void startRankingCountdown(){
-        this.rankingCountdown.startCountdown();
+        ArrayList<WhiteCard> roundWinners = getRoundWinnerCards();
+        int numberOfWinners = roundWinners.size();
+        //checking if only one or zero winner
+        if(numberOfWinners <= 1){
+            //setTimer to 15 and startCountdown
+            this.rankingCountdown.setTime(15);
+            this.rankingCountdown.startCountdown();
+        }
+        else {
+            //setTimer depending on how many winner exist and start countdown
+            int adjustedTime = numberOfWinners * 15;
+            this.rankingCountdown.setTime(adjustedTime);
+            this.rankingCountdown.startCountdown();
+        }
     }
     public void startVotingCountdown(){
         this.votingCountdown.startCountdown();

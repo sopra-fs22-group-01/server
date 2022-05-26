@@ -53,4 +53,7 @@ public class Countdown {
         return this.currentTime;
     }
 
+    public void setTime(int newTime) {
+        this.currentTime = newTime;
+    }
 }
