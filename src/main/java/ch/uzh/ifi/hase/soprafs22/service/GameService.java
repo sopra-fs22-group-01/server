@@ -133,6 +133,7 @@ public class GameService {
         return createdLobby;
     }
 
+
     public ArrayList<Ranking> getRanking(long matchId) throws IncorrectIdException {
         Match match = gameManager.getMatch(matchId);
         ScoreBoard scoreBoard = match.getScoreBoard();
