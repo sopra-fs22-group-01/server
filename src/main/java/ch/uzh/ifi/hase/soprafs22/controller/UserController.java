@@ -385,6 +385,7 @@ public class UserController {
         currentMatch.updateLaughStatus();
     }
 
+
     // delete lobby only once even if several requests
     @DeleteMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
