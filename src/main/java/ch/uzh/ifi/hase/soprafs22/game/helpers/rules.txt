@@ -1,12 +1,18 @@
 There  are two types of cards: Black cards and white cards.
 -	Black Card: A Black Card contains a sentence which misses one or several words that have to be completed by a white card.
 -	White Card: A white card contains a part of a sentence that can be used to fill in the missing part of a black card.
-Start of the Game:
-At the start of a match, each player gets 10 white cards from which they can later choose from.
-A black card gets displayed for X seconds. During the time the black card gets displayed, each player has to select the white card they want to play by clicking on the one they want to choose.
-After the time is up, the cards get displayed to the players one after another. The players then get time to vote for their favourite, by clicking on the white card they like the most.
-After the voting time is up, the player with the most voted card gets a point.
-The player who first reaches X points wins the match.
-
-Special: Each player has a limited number of supervotes, which they can give if they find a card extraordinarily funny. A super vote counts as two votes.
+Start of the Match:
+Before the match begins, you can create a custom card. You're free to choose what you want to write on this card.
+At the start of a match, each player gets 10 white cards from which they can later choose from. If you have created a custom card, this card will be one of your 10 cards.
+During the Match:
+First, a black card and your ten white cards are getting displayed for 45 seconds. During this time, each player has to select the white card they want to play by clicking on the card.
+After the time is up, all cards, which were chosen from the players, are getting displayed. The players then get time to vote for their favourite, by clicking on the white card they like the most.
+After you clicked on your favourite card, you can choose if you want to use your supervote.
+If you choose to give your supervote, your vote will count as two votes and increase the chance that your favourite card wins. You only get a limited amount of supervotes.
+The time you got to vote is dependent on the number of chosen cards. If it has many chosen cards, you get more time to read through all of them.
+After the voting time is up, the player with the most voted card gets a point. If some players get the same amount of votes, all of them get a point.
+The round is now finished and the winner of the round gets displayed. If it isn't the end of the game, the next round will begin automatically.
+End of the Match:
+The game ends as soon as a player reaches five points and the ranking of the players get displayed.
+You can always take a look at your overall statistic, which can be found on the profile page.
 

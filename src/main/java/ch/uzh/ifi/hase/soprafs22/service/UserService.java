@@ -133,6 +133,11 @@ public class UserService {
 
     public User findUserByToken(String token){
         User requestedUser = userRepository.findByToken(token);
+        if (requestedUser == null){
+            String baseErrorMessage = "User not found!";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format(baseErrorMessage));
+        }
         return requestedUser;
     }
 
@@ -140,7 +145,7 @@ public class UserService {
         User requestedUser = userRepository.findById(id);
         if (requestedUser==null){
             String baseErrorMessage = "User not found!";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format(baseErrorMessage));
         }
         return requestedUser;
@@ -180,7 +185,7 @@ public class UserService {
             }
             return user.getIsReady();
         }
-        return user.getIsReady();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     public void resetUserReadyStatus(User user){

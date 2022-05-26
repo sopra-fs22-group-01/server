@@ -301,7 +301,7 @@ public class GameController {
     @PutMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void incrementApiRequestCount(@PathVariable long matchId) throws IncorrectIdException {
+    public void incrementApiRequestCountMatch(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.incrementVoteCountAndCheckStatus();
     }
@@ -309,12 +309,21 @@ public class GameController {
     @GetMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<VotingStatus> getApiRequestStatus(@PathVariable long matchId) throws IncorrectIdException {
+    public ResponseEntity<VotingStatus> getApiRequestStatusMatch(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
         VotingStatus currentVotingStatus = currentMatch.getVotingStatus();
-
         return ResponseEntity.ok(currentVotingStatus);
     }
+
+    // put selected white card from hand into array of allChosenCards with matchId
+    @PutMapping("/matches/{matchId}/synchronization/reset")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void resetVotingCount(@PathVariable long matchId) throws IncorrectIdException{
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.resetVotingStatus();
+    }
+
 
 }
 
