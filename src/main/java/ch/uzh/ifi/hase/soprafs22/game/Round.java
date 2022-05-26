@@ -54,7 +54,7 @@ public class Round {
         this.roundNumber = 1;
         //this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
 
-        selectionCountdown = new Countdown(25);
+        selectionCountdown = new Countdown(45);
         // time for TTS, 5 seconds for each white card and 10 seconds for the black card
         votingCountdown = new Countdown(hands.size() * 5 + 10);
         rankingCountdown = new Countdown(15);
