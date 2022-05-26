@@ -13,7 +13,6 @@ The time you got to vote is dependent on the number of chosen cards. If it has m
 After the voting time is up, the player with the most voted card gets a point. If some players get the same amount of votes, all of them get a point.
 The round is now finished and the winner of the round gets displayed. If it isn't the end of the game, the next round will begin automatically.
 End of the Match:
-The game ends after five rounds and the ranking of the players get displayed.
-The player who has the most points after the last round of the match wins. It's possible that more than one player wins.
+The game ends as soon as a player reaches five points and the ranking of the players get displayed.
 You can always take a look at your overall statistic, which can be found on the profile page.
 
