@@ -220,7 +220,6 @@ public class GameController {
     @ResponseBody
     public void startSelectionCountdown(@PathVariable long matchId) throws Exception {
         Match currentMatch  = gameManager.getMatch(matchId);
-        currentMatch.resetVotingStatus();
         Round currentRound = currentMatch.getRound();
         currentRound.startSelectionCountdown(); //starts selection countdown
     }
@@ -316,23 +315,14 @@ public class GameController {
         return ResponseEntity.ok(currentVotingStatus);
     }
 
-/*    //incrementsApiRequestCount and if all put request arrived, sets ApiRequestStatus to COMPLETE
-    @PutMapping("/lobbies/{lobbyId}/synchronization")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
-    public void incrementApiRequestCountLobby(@PathVariable long lobbyId) throws IncorrectIdException {
-        Lobby currentLobby = gameManager.getLobby(lobbyId);
-        currentLobby.incrementVoteCountAndCheckStatus();
-    }
-
-    @GetMapping("/lobbies/{lobbyId}/synchronization")
+    // put selected white card from hand into array of allChosenCards with matchId
+    @PutMapping("/matches/{matchId}/synchronization/reset")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<VotingStatus> getApiRequestStatusLobby(@PathVariable long lobbyId) throws IncorrectIdException {
-        Lobby currentLobby = gameManager.getLobby(lobbyId);
-        VotingStatus currentVotingStatus = currentLobby.getVotingStatus();
-        return ResponseEntity.ok(currentVotingStatus);
-    }*/
+    public void resetVotingCount(@PathVariable long matchId) throws IncorrectIdException{
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.resetVotingStatus();
+    }
 
 
 }
