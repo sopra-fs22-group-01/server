@@ -85,6 +85,7 @@ public class Round {
     public void startRankingCountdown(){
         ArrayList<WhiteCard> roundWinners = getRoundWinnerCards();
         int numberOfWinners = roundWinners.size();
+
         //checking if only one or zero winner
         if(numberOfWinners <= 1){
             //setTimer to 15 and startCountdown
