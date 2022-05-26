@@ -88,12 +88,12 @@ public class Round {
         //checking if only one or zero winner
         if(numberOfWinners <= 1){
             //setTimer to 15 and startCountdown
-            this.rankingCountdown.setTime(15);
+            this.rankingCountdown.setTime(10);
             this.rankingCountdown.startCountdown();
         }
         else {
             //setTimer depending on how many winner exist and start countdown
-            int adjustedTime = numberOfWinners * 15;
+            int adjustedTime = numberOfWinners * 10;
             this.rankingCountdown.setTime(adjustedTime);
             this.rankingCountdown.startCountdown();
         }
