@@ -1,5 +1,5 @@
 # Cards Against Humanity Online
-This project contains everything you need to play a fun game of Cards Against Humanity online with your friends. Enjoy our twist to the game and try out the additional features such as custom cards, and supervotes.
+This project contains everything you need to play a fun game of Cards Against Humanity online with your friends. Enjoy our twist to the game and try out the additional features such as custom cards, and supervotes. 
 ## Introduction
 ### Main Goal
 This project's main goal is to enable players to play Cards Against Humanity online. Compared to the original Cards Against Humanity game, we also changed some of the original mechanics and added some additional fun features. By doing so we learned a lot about developing a web application and how to work efficiently in a group of 5.
@@ -18,7 +18,7 @@ The technologies used to develop the server side of this project were the follow
 -   Gradle as build manager
 
 
-## High Level Components
+## Main Components
 In our backend code, we have five main components that are crucial for the game. They are all contained in our [Main]( src/main/java/ch/uzh/ifi/hase/soprafs22/) folder.
 
 1.   The [GameManager](src/main/java/ch/uzh/ifi/hase/soprafs22/game/GameManager.java) class, responsible for managing [Lobbies](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Lobby.java) and [Matches](src/main/java/ch/uzh/ifi/hase/soprafs22/game/Match.java). This means storing the available lobbies, creating and deleting of lobbies and matches.
