@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
+import ch.uzh.ifi.hase.soprafs22.constant.LaughStatus;
+import ch.uzh.ifi.hase.soprafs22.constant.MatchStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.ReadyStatus;
 import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.Lob;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,7 +129,6 @@ public class  UserControllerTest {
 
         // this mocks the UserService -> we define above what the userService should
         // return when getUsers() is called
-        //given(userRepository.findById(user.getId())).willReturn(null);
         given(userService.findUserData(user.getId())).willThrow(new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED));
         //throws 404 in post man,but somehow throws 405 here--> i know should be NOT_FOUND, but could not get it to run
 
@@ -495,7 +498,7 @@ public class  UserControllerTest {
 
         ArrayList<User> users = new ArrayList<>();
         users.add(user);
-        given(userService.findUserById(user.getId())).willThrow();
+        given(userService.findUserById(user.getId())).willReturn(user);
 
         doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
         doNothing().when(gameService).addPlayerToLobby(lobby.getId(), user);
@@ -508,7 +511,7 @@ public class  UserControllerTest {
 
         // then
         mockMvc.perform(postRequest)
-                .andExpect(status().isConflict())
+                .andExpect(status().isConflict()) // "No lobby with this id could be found."
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -1010,52 +1013,518 @@ public class  UserControllerTest {
     }
 
 
+    @Test // GET matchStatus success -> complete
+    void getMatchStatus_seeIfStartNewRoundOrEndGame_Success() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
 
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        doNothing().when(gameManager).startNewRound(match.getId());
 
-/*
-    //create match successful --> check same Id, same players as lobby, matchStatus
-    @Test // endpoint location: GameController line 129
-    public void givenLobbyId_createNewMatch_successful() throws Exception {
-        // simulate all steps before creating match
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/rounds")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
 
-        // create user
+        // then
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+        match.setMatchStatus(MatchStatus.GameOver);
+        // then
+        MvcResult result2 = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        assertEquals("\"GameOver\"", result2.getResponse().getContentAsString());
+    }
+
+    @Test // GET matchStatus no success -> complete
+    void getMatchStatus_seeIfStartNewRoundOrEndGame_noSuccess() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+
+        given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
+        doNothing().when(gameManager).startNewRound(match.getId());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/rounds")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(getRequest)
+                //.andExpect(status().isOk())
+                .andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+    }
+
+    @Test // PUT start next round/end game -> complete
+    void startNextRound_and_EndGameStatus_Success() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.createRound();
+        Round round = match.getRound();
+        round.resetStartRoundStatus();
+
+        ArrayList<WhiteCard> winnerCards = new ArrayList<>();
+        WhiteCard c = new WhiteCard();
+        c.setText("winnerCard");
+        winnerCards.add(c);
+
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        doNothing().when(userService).updateScores(Mockito.any());
+        given(gameManager.evaluateNewRoundStart(match.getId())).willReturn(true); // true= open next round
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/scores/1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(putRequest)
+                .andExpect(status().isNoContent())
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
         User user = new User();
         user.setId(1L);
-        user.setUsername("testUsername");
-        user.setToken("1");
-        user.setUserStatus(UserStatus.ONLINE);
-        given(userService.createUser(Mockito.any())).willReturn(user);
+        match.setMatchStatus(MatchStatus.GameOver);
+        doNothing().when(userService).incrementPlayedGames(Mockito.anyLong());
+        doNothing().when(userService).updateOverallWins(user.getId(), match.getId()); //<----------
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest2 = put("/matches/"+match.getId()+"/scores/1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
 
-        // create lobby
+        // then
+        MvcResult result2 = mockMvc.perform(putRequest)
+                .andExpect(status().isNoContent())
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+    }
+
+    @Test // PUT start next round/end game -> complete
+    void startNextRound_and_EndGameStatus_noSuccess() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.createRound();
+        Round round = match.getRound();
+        round.resetStartRoundStatus();
+
+        ArrayList<WhiteCard> winnerCards = new ArrayList<>();
+        WhiteCard c = new WhiteCard();
+        c.setText("winnerCard");
+        winnerCards.add(c);
+
+        given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
+        doNothing().when(userService).updateScores(Mockito.any());
+        given(gameManager.evaluateNewRoundStart(match.getId())).willReturn(true); // true= open next round
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/scores/1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(putRequest)
+                //.andExpect(status().isConflict())
+                .andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+    }
+
+    @Test // GET match status success -> complete
+    void getMatchStatus_Success() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        //doNothing().when(userService).updateScores(Mockito.any());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+        match.setMatchStatus(MatchStatus.GameOver);
+        // then
+        MvcResult result2 = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        assertEquals("\"GameOver\"", result2.getResponse().getContentAsString());
+    }
+
+    @Test // GET match status success -> complete
+    void getMatchStatus_noSuccess() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+
+        given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
+        //doNothing().when(userService).updateScores(Mockito.any());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", is("NotYetCreated")))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+    }
+
+    @Test // POST create new match success -> not complete
+    void createNewMatch_matchExists() throws Exception {
+        // given
+        User user = new User();
+        user.setId(2L);
+        user.setUsername("anna");
+        user.setIsReady(ReadyStatus.READY);
+
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user);
+
         Lobby lobby = new Lobby(0L);
-        given(gameService.createNewLobby()).willReturn(lobby);
+        Match match = new Match(lobby.getId());
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setMatchPlayers(users);
+        match.setAvailable_Supervotes(1);
 
-        long lobbyId = lobby.getId();
+        given(gameService.startMatch(lobby.getId())).willReturn(match);
+        doNothing().when(userService).setSuperVotes(users, match.getAvailable_Supervotes());
 
-        // create new match and add users to it
-        ArrayList<User> userList = new ArrayList<>();
-        userList.add(user);
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobby.getId())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
 
-        Match match = new Match(lobbyId);
-        match.setMatchPlayers(userList);
-        // starting match should return match with: players, id, matchStatus, round
-        given(gameService.startMatch(Mockito.anyLong())).willReturn(match);
-
-
-        // build request
-        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobbyId);
-
-        // then perform request
-        mockMvc.perform(postRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$.matchStatus", is(match.getMatchStatus().toString())))
+        // then
+        MvcResult result = mockMvc.perform(postRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
+                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
                 .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
-                .andExpect(jsonPath("$.id", is(match.getId().intValue())));
-               // .andExpect(jsonPath("$.laughStatus", is(match.getLaughStatus())))
-               // .andExpect(jsonPath("$.available_Supervotes", is(match.getAvailable_Supervotes())));
-        //@Mapping(source = "laughStatus", target = "laughStatus")
-        //    @Mapping(source = "available_Supervotes", target = "available_Supervotes")
+                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
+                //.andExpect(jsonPath("$", is("NotYetCreated")))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
 
-    }*/
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+    }
+
+    @Test // POST create new match no success -> complete
+    void createNewMatch_matchDoesntExist() throws Exception {
+        // given
+        User user = new User();
+        user.setId(2L);
+        user.setUsername("anna");
+        user.setIsReady(ReadyStatus.READY);
+
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user);
+
+        Lobby lobby = new Lobby(0L);
+        Match match = new Match(lobby.getId());
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setMatchPlayers(users);
+        match.setAvailable_Supervotes(1);
+
+        given(gameService.startMatch(lobby.getId())).willThrow(new IncorrectIdException(""));
+        doNothing().when(userService).setSuperVotes(users, match.getAvailable_Supervotes());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobby.getId())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(postRequest)
+                .andExpect(status().isConflict())
+                //.andExpect(status().isNotFound())
+//                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
+//                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
+//                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
+//                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
+//                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
+                //.andExpect(jsonPath("$", is("NotYetCreated")))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+    }
+
+    @Test // PUT cast supervote, decrease supervote by 1 success -> complete
+    void castSuperVote_Success() throws Exception {
+        // given
+        User user = new User();
+        user.setId(2L);
+        user.setUsername("anna");
+        user.setIsReady(ReadyStatus.READY);
+
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user);
+
+        Lobby lobby = new Lobby(0L);
+        Match match = new Match(lobby.getId());
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setMatchPlayers(users);
+        match.setAvailable_Supervotes(1);
+        match.setLaughStatus(LaughStatus.Laughing);
+
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        doNothing().when(userService).updateSupervote(user.getId());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(putRequest)
+                .andExpect(status().isOk())
+                //.andExpect(status().isNotFound())
+//                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
+//                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
+//                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
+//                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
+//                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
+                .andExpect(jsonPath("$", is(true)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+    }
+
+    @Test // PUT change LaugingStatus with supervote no success -> no complete
+    void castSuperVote_noSuccess() throws Exception {
+        // given
+        User user = new User();
+        user.setId(2L);
+        user.setUsername("anna");
+        user.setIsReady(ReadyStatus.READY);
+
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user);
+
+        Lobby lobby = new Lobby(0L);
+        Match match = new Match(lobby.getId());
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setMatchPlayers(users);
+        match.setAvailable_Supervotes(1);
+        match.setLaughStatus(LaughStatus.Laughing);
+
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(userService).updateSupervote(user.getId());
+        //doNothing().when(userService).updateSupervote(user.getId());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(putRequest)
+                .andExpect(status().isBadRequest())
+                //.andExpect(status().isNotFound())
+//                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
+//                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
+//                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
+//                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
+//                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
+                //.andExpect(jsonPath("$", is(true)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+    }
+
+    @Test // GET laugh status success -> complete
+    void getLaughStatus_Success() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setLaughStatus(LaughStatus.Laughing);
+
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        //doNothing().when(userService).updateScores(Mockito.any());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/laughStatus")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is("Laughing")))
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+
+        match.setLaughStatus(LaughStatus.Silence);
+        // then
+        MvcResult result2 = mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is("Silence")))
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"GameOver\"", result2.getResponse().getContentAsString());
+    }
+
+    @Test // GET laugh status no success -> complete
+    void getLaughStatus_noSuccess() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setLaughStatus(LaughStatus.Laughing);
+
+        given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
+        //doNothing().when(userService).updateScores(Mockito.any());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/laughStatus")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", is("Laughing")))
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+    }
+
+    @Test // PUT increase laughCount success ->  complete
+    void increase_laughCount_Success() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setLaughStatus(LaughStatus.Laughing);
+
+        given(gameManager.getMatch(match.getId())).willReturn(match);
+        //doNothing().when(userService).updateScores(Mockito.any());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(putRequest)
+                .andExpect(status().isOk())
+                //.andExpect(jsonPath("$", is("Laughing")))
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+    }
+
+    @Test // PUT increase laughCount no success -> not complete
+    void increase_laughCount_noSuccess() throws Exception {
+        // given
+        Match match = new Match(0L);
+        match.setMatchStatus(MatchStatus.MatchOngoing);
+        match.setLaughStatus(LaughStatus.Laughing);
+
+        given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
+        //doNothing().when(userService).updateScores(Mockito.any());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO))
+                ;
+
+        // then
+        MvcResult result = mockMvc.perform(putRequest)
+                .andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", is("Laughing")))
+                //.andExpect(status().isNotFound())
+                //.andExpect(jsonPath("$", hasSize(10)))
+                //.andDo(MockMvcResultHandlers.print());
+                .andReturn();
+
+        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
+    }
+
 
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input

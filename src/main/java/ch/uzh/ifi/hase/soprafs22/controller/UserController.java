@@ -235,7 +235,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/users/{userId}/scores") // tested: ok
+    @DeleteMapping("/users/{userId}/scores") // tested: ok, fail
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void resetUserScore(@PathVariable long userId) {
@@ -252,60 +252,65 @@ public class UserController {
 
 
     // checks  status of the match, to know if the game is over or there are still rounds to play
-    @GetMapping("/matches/{matchId}/rounds")
+    @GetMapping("/matches/{matchId}/rounds") // tested: ok, fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<MatchStatus> checkMatchStatus(@PathVariable long matchId) throws Exception{
-        Match currentMatch = gameManager.getMatch(matchId);
+        try{
+            Match currentMatch = gameManager.getMatch(matchId);
+            MatchStatus currentMatchStatus = currentMatch.getMatchStatus();
+            if(currentMatchStatus == MatchStatus.MatchOngoing){
+                gameManager.startNewRound(matchId);
+            }
+            return ResponseEntity.ok(currentMatchStatus);
+            // return true if new round gets started, false if match is over (starts new round)
 
-        MatchStatus currentMatchStatus = currentMatch.getMatchStatus();
-        if(currentMatchStatus == MatchStatus.MatchOngoing){
-            gameManager.startNewRound(matchId);
+        }catch (IncorrectIdException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-
-        return ResponseEntity.ok(currentMatchStatus);
-        // return true if new round gets started, false if match is over (starts new round)
-
-
     }
 
     //updates the scores such that next round can be played bzw. end game if it was last round
-    @PutMapping("/matches/{matchId}/scores/{userId}")
+    @PutMapping("/matches/{matchId}/scores/{userId}") // tested: ok (with MatchOngoing, GameOver), fail
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateScores(@PathVariable long matchId, @PathVariable long userId) throws Exception {
+        try{
+            Match currentMatch = gameManager.getMatch(matchId); // incorredctIdexception "The match was not found"
 
-        Match currentMatch = gameManager.getMatch(matchId);
 
+            if (!currentMatch.isScoresAlreadyUpdated()) {
+                // update player scores in currentMatch, not userService, so we don't receive a COPY of a playersArray
+                currentMatch.updatePlayerScores();
 
-        if (!currentMatch.isScoresAlreadyUpdated()) {
-            // update player scores in currentMatch, not userService, so we don't receive a COPY of a playersArray
-            currentMatch.updatePlayerScores();
+                Round currentRound = currentMatch.getRound();
 
-            Round currentRound = currentMatch.getRound();
+                //makes sure a new round can later be started by one player
+                currentRound.resetStartRoundStatus();
 
-            //makes sure a new round can later be started by one player
-            currentRound.resetStartRoundStatus();
+                // gets winnerCards from last rounds to update all scores in database
+                userService.updateScores(currentRound.getRoundWinnerCards()); // void method
 
-            // gets winnerCards from last rounds to update all scores in database
-            userService.updateScores(currentRound.getRoundWinnerCards()); //
-
-            boolean keepPlaying = gameManager.evaluateNewRoundStart(matchId);
-            if (!keepPlaying) {
-                currentMatch.setMatchStatus(MatchStatus.GameOver);
+                boolean keepPlaying = gameManager.evaluateNewRoundStart(matchId); // checks if someone reached max points
+                if (!keepPlaying) {
+                    currentMatch.setMatchStatus(MatchStatus.GameOver);
+                }
             }
+
+            //updates the score statistics of all users when game is over
+            if (currentMatch.getMatchStatus().equals(MatchStatus.GameOver)){
+                userService.incrementPlayedGames(userId);
+                userService.updateOverallWins(userId, matchId);
+            }
+        }catch(IncorrectIdException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        //updates the score statistics of all users when game is over
-        if (currentMatch.getMatchStatus().equals(MatchStatus.GameOver)){
-            userService.incrementPlayedGames(userId);
-            userService.updateOverallWins(userId, matchId);
-        }
     }
 
 
     //get matchStatus
-    @GetMapping("/matches/{matchId}/status")
+    @GetMapping("/matches/{matchId}/status") // tested: ok, failed ok
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<MatchStatus> getMatchStatus(@PathVariable long matchId) {
@@ -316,9 +321,9 @@ public class UserController {
             return ResponseEntity.ok(MatchStatus.NotYetCreated);
         }
     }
-
+/*
     //testendpoint to get chosencard to see if chosen card is even saved in hand
-    @GetMapping("/matches/{matchId}/chosencard/{userId}")
+    @GetMapping("/matches/{matchId}/chosencard/{userId}") // NOT TESTED
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<WhiteCard> getChosenCard(@PathVariable long matchId, @PathVariable long userId) throws Exception {
@@ -328,18 +333,18 @@ public class UserController {
         WhiteCard chosenCard = playerHand.getChosenCard();
 
         return ResponseEntity.ok(chosenCard);
-    }
+    }*/
 
     //----------------------MOVED FROM GAMECONTROLLER--------------------------------------------------
     //Creates a new match and puts all players from the lobby into  it
     //Should delete the lobby
-    @PostMapping("/matches/{lobbyId}")
+    @PostMapping("/matches/{lobbyId}") // tested: ok, fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public MatchGetDTO startingMatch(@PathVariable long lobbyId){
         String baseErrorMessage1 = "Match could not be created";
         try {
-            Match newMatch = gameService.startMatch(lobbyId);
+            Match newMatch = gameService.startMatch(lobbyId); // incorrectIdException: returns new match
             ArrayList<User> currentPlayers = newMatch.getMatchPlayers();
             userService.setSuperVotes(currentPlayers, newMatch.getAvailable_Supervotes());
 
@@ -351,7 +356,7 @@ public class UserController {
     }
 
     // tells server a supervote was cast and laugher should be played for all, decreases available supervote by 1
-    @PutMapping("/matches/{matchId}/supervotes/{userId}")
+    @PutMapping("/matches/{matchId}/supervotes/{userId}") // tested: ok, fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<Boolean> getPlayLaughter(@PathVariable long matchId, @PathVariable long userId) throws IncorrectIdException {
@@ -363,17 +368,22 @@ public class UserController {
         currentMatch.decreaseSuperVote(userId);
 
         // update available supervote for player in database
-        userService.updateSupervote(userId);
+        userService.updateSupervote(userId); // bad request: "You used up your supervotes!"
         return ResponseEntity.ok(true);
     }
 
     //get laugh status .
-    @GetMapping("/matches/{matchId}/laughStatus")
+    @GetMapping("/matches/{matchId}/laughStatus") // tested: ok, fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<LaughStatus> getMatchLaughStatus(@PathVariable long matchId) throws IncorrectIdException {
-        Match currentMatch = gameManager.getMatch(matchId);
-        return ResponseEntity.ok(currentMatch.getLaughStatus());
+        try{
+            Match currentMatch = gameManager.getMatch(matchId);
+            return ResponseEntity.ok(currentMatch.getLaughStatus());
+        }catch(IncorrectIdException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     // only turn laughstatus to "silence" once everyone hear a laughter
@@ -381,7 +391,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void countLaughs(@PathVariable long matchId) throws IncorrectIdException {
-        Match currentMatch = gameManager.getMatch(matchId);
-        currentMatch.updateLaughStatus();
+        try{
+            Match currentMatch = gameManager.getMatch(matchId);
+            currentMatch.updateLaughStatus();
+        }catch(IncorrectIdException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
     }
 }
