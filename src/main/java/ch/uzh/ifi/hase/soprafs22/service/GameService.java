@@ -11,8 +11,10 @@ import ch.uzh.ifi.hase.soprafs22.game.helpers.LobbyStatus;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Ranking;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.ScoreBoard;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPutDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,7 +103,7 @@ public class GameService {
 
             return "Successfully updated customText in Lobby through gameManager";
         } catch (Exception e){
-            return "Couldn't update readyStatus in Lobby through gameManager";
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 

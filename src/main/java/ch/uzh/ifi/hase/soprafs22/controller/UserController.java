@@ -43,7 +43,7 @@ public class UserController {
         this.gameManager = gameManager;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users") // tested: ok,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getAllUsers() {
@@ -60,7 +60,7 @@ public class UserController {
 
 
     //gets a specific user from database through the user service and returns it as userGetDTO
-    @GetMapping("/users/")
+    @GetMapping("/users/") // tested: ok and fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO getUsername(@RequestParam long id) {
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     //gets a specific user from database through the user service and returns it as userGetDTO
-    @GetMapping("/users/{token}")
+    @GetMapping("/users/{token}") // tested: ok and fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO getUsernameByToken(@PathVariable String token) {
@@ -79,7 +79,7 @@ public class UserController {
 
 
     @PostMapping("/users") //creates a User object
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED) // tested: failed, ok
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
         // convert API user to internal representation
@@ -89,13 +89,12 @@ public class UserController {
         User createdUser = userService.createUser(userInput);
         userService.logInUser(createdUser);
 
-
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
 
-    @PostMapping("/users/")
+    @PostMapping("/users/") // tested: ok, failed
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO loggIn(@RequestBody UserPostDTO userPostDTO) {
@@ -120,17 +119,18 @@ public class UserController {
     }
 
     //Maps data from profile changes
-    @PutMapping("/users/{id}")
+    @PutMapping("/users/{id}") // tested: ok, fail
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void saveChanges(@RequestBody UserPutDTO userPutDTO, @PathVariable long id) {
+        // find by ID to get error if this user doesn't exist
         userService.findUserById(id); //throws exception if userid doesnt exist
         userService.updateUser(userPutDTO);
     }
 
 
     //mapper for the logout with token
-    @PutMapping("/logout/")
+    @PutMapping("/logout/") // tested, ok , fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO loggOut(@RequestParam String token) {
@@ -141,7 +141,7 @@ public class UserController {
 
 
     //Adds a user to the list of all current players in the lobby
-    @PostMapping("/lobbies/{lobbyId}/lists/players/{userId}")
+    @PostMapping("/lobbies/{lobbyId}/lists/players/{userId}") // tested ok, failed
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<ArrayList<User>> addUserToLobby(@PathVariable long lobbyId, @PathVariable long userId){
@@ -150,8 +150,8 @@ public class UserController {
         User user = userService.findUserById(userId); // gets user from correct user repository
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
-            gameManager.removePlayerFromAllLobbies(userId);
-            gameService.addPlayerToLobby(lobbyId, user);
+            gameManager.removePlayerFromAllLobbies(userId); // no error from here
+            gameService.addPlayerToLobby(lobbyId, user); // incorrect exception if lobby not found to add users to
             ArrayList<User> allUsers = gameManager.getLobby(lobbyId).getCurrentPlayers();
             return ResponseEntity.ok(allUsers);
         }
@@ -165,20 +165,20 @@ public class UserController {
 
 
     // add bzw. create custom white card to user
-    @PutMapping("/matches/{lobbyId}/white-cards/{userId}/custom")
+    @PutMapping("/matches/{lobbyId}/white-cards/{userId}/custom") // tested: ok, failed (no check for CONFLICT.error)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<String> createCustomCard(@PathVariable long lobbyId, @PathVariable long userId, @RequestBody UserPutDTO userPutDTO) throws Exception {
         // updates in database
-        String text = userService.updateCustomWhiteText(userPutDTO);
+        String text = userService.updateCustomWhiteText(userPutDTO); // bad request if user not found
 
         // updates in the specific lobby -> not good solution
-        gameService.updateCustomText(lobbyId, userId, userPutDTO);
+        gameService.updateCustomText(lobbyId, userId, userPutDTO); // CONFLICT error if lobby not found
         return ResponseEntity.ok(text);
     }
 
     // get hand by userid
-    @GetMapping("/matches/{matchId}/hands/{userId}")
+    @GetMapping("/matches/{matchId}/hands/{userId}") // tested: ok, fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<ArrayList<WhiteCard>> getHand(@PathVariable long matchId, @PathVariable long userId) throws Exception {
@@ -190,8 +190,8 @@ public class UserController {
         return ResponseEntity.ok(playerHandCards);
     }
 
-    // get all hands by matchId
-    @GetMapping("/matches/{matchId}/hands")
+    // get all hands by matchId NEED WHERE?
+    @GetMapping("/matches/{matchId}/hands") // NOT TESTED
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<ArrayList<Hand>> getAllHands(@PathVariable long matchId) throws Exception {
@@ -203,13 +203,13 @@ public class UserController {
 
     //Maps data from ready-status changes
     //used to flip the ready-status
-    @PutMapping("/lobbies/{lobbyId}/users/{userId}")
+    @PutMapping("/lobbies/{lobbyId}/users/{userId}") // tested: ok, fail
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
         String baseErrorMessage1 = "No lobby with this id could be found.";
         try {
-            User user = userService.findUserById(userId); //throws exception if userid doesnt exist
+            User user = userService.findUserById(userId); //throws exception if userid doesnt exist, NOT FOUND
             userService.updateUserReadyStatus(user); //doesn't update the user in the array of the lobby, only the user in the database
             gameService.updateUserReadyStatus(lobbyId, userId); //updates the user in the array of the lobby, not the perfect solution
         }
@@ -221,7 +221,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/lobbies/{lobbyId}/users/{userId}/status")
+    @PutMapping("/lobbies/{lobbyId}/users/{userId}/status") // tested: ok, fail
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void resetReadyStatus(@PathVariable long lobbyId, @PathVariable long userId) {
@@ -230,12 +230,12 @@ public class UserController {
             userService.resetUserReadyStatus(user); //resets the ReadyStatus of a user in the database
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
 
-    @DeleteMapping("/users/{userId}/scores")
+    @DeleteMapping("/users/{userId}/scores") // tested: ok
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void resetUserScore(@PathVariable long userId) {
@@ -244,7 +244,7 @@ public class UserController {
             userService.resetUserScore(user); //finds user in db and resets score to 0
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
     }
