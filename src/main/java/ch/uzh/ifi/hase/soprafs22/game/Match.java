@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Match {
@@ -21,11 +22,13 @@ public class Match {
     private Round round;
     private MatchStatus matchStatus;
 
+    private static final int INIT_VOTE_COUNT = 0;
     private VotingStatus votingStatus;
-    private int voteCount;
+    private AtomicInteger voteCount;
 
+    private static final int INIT_LAUGH_COUNT = 0;
     private LaughStatus laughStatus;
-    private int count_laughs;
+    private AtomicInteger laughCounter;
 
     private int available_Supervotes;
 
@@ -35,11 +38,11 @@ public class Match {
         this.id = id;
         this.matchStatus = MatchStatus.MatchOngoing;
         this.votingStatus = VotingStatus.INCOMPLETE;
-        this.voteCount = 0;
+        this.voteCount = new AtomicInteger(INIT_VOTE_COUNT);
         this.scoresAlreadyUpdated = false;
         this.available_Supervotes = 1;
         this.laughStatus = LaughStatus.Silence;
-        this.count_laughs = 0;
+        this.laughCounter = new AtomicInteger(INIT_LAUGH_COUNT);
     }
 
     public void createRound(){
@@ -98,7 +101,7 @@ public class Match {
 
     public void resetVotingStatus(){
         this.votingStatus = VotingStatus.INCOMPLETE;
-        this.voteCount = 0;
+        this.voteCount = new AtomicInteger(INIT_VOTE_COUNT);
     }
 
 
@@ -125,9 +128,9 @@ public class Match {
     }
 
     public void incrementVoteCountAndCheckStatus(){
-        this.voteCount++;
+        this.voteCount.incrementAndGet();
         int numberOfPlayers = this.getPlayerCount();
-        if(voteCount == numberOfPlayers){
+        if(numberOfPlayers == voteCount.intValue()){
             setVotingStatus(VotingStatus.COMPLETE);
         }
     }
@@ -151,10 +154,10 @@ public class Match {
     public void setLaughStatus(LaughStatus laughStatus) {this.laughStatus = laughStatus;}
 
     public void updateLaughStatus(){
-        this.count_laughs++;
-        if (this.count_laughs == this.matchPlayers.size()){
+        this.laughCounter.incrementAndGet();
+        if (this.laughCounter.intValue() == this.matchPlayers.size()){
             this.laughStatus = LaughStatus.Silence;
-            this.count_laughs = 0;
+            this.laughCounter = new AtomicInteger(INIT_LAUGH_COUNT); //resets the laugh count to 0
         }
     }
 }

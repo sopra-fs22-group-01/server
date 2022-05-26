@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs22.game;
 
+import ch.uzh.ifi.hase.soprafs22.controller.UserController;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.exceptions.IncorrectIdException;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.VotingStatus;
+import ch.uzh.ifi.hase.soprafs22.service.GameService;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -120,21 +122,25 @@ class GameManagerTest {
         assertFalse(gameManager.evaluateNewRoundStart(0L));
     }
 
+
     @Test
-    void deleteLobby_success(){
+    void deleteLobby_success() throws Exception {
+        GameService gameService = new GameService(gameManager);
         Lobby testLobby = gameManager.createLobby();
 
         int sizeOfLobbiesBeforeDeletion = gameManager.getAllLobbies().size();
 
         assertEquals(1,sizeOfLobbiesBeforeDeletion);
 
-        gameManager.deleteLobby(testLobby.getId());
+
+        gameService.deleteLobby(testLobby.getId());
 
         int sizeOfLobbiesAfterDeletion = gameManager.getAllLobbies().size();
 
         assertEquals(0, sizeOfLobbiesAfterDeletion);
     }
 
+    //TODO: Check this test when all tests are run together. seems to fail sometimes
     @Test
     void startNewRound_success() throws IncorrectIdException {
         Match testMatch = gameManager.createMatch(players,0L);

@@ -40,7 +40,7 @@ public class Round {
     private Countdown rankingCountdown;
 
     public int getRoundNumber() {
-        return roundNumber;
+        return this.roundNumber;
     }
 
 
@@ -54,7 +54,7 @@ public class Round {
         this.roundNumber = 1;
         //this.roundCountdown = new Countdown(); // singleton, otherwise a countdown for each player would be created
 
-        selectionCountdown = new Countdown(25);
+        selectionCountdown = new Countdown(45);
         // time for TTS, 5 seconds for each white card and 10 seconds for the black card
         votingCountdown = new Countdown(hands.size() * 5 + 10);
         rankingCountdown = new Countdown(15);
@@ -83,7 +83,21 @@ public class Round {
         this.selectionCountdown.startCountdown();
     }
     public void startRankingCountdown(){
-        this.rankingCountdown.startCountdown();
+        ArrayList<WhiteCard> roundWinners = getRoundWinnerCards();
+        int numberOfWinners = roundWinners.size();
+
+        //checking if only one or zero winner
+        if(numberOfWinners <= 1){
+            //setTimer to 15 and startCountdown
+            this.rankingCountdown.setTime(10);
+            this.rankingCountdown.startCountdown();
+        }
+        else {
+            //setTimer depending on how many winner exist and start countdown
+            int adjustedTime = numberOfWinners * 10;
+            this.rankingCountdown.setTime(adjustedTime);
+            this.rankingCountdown.startCountdown();
+        }
     }
     public void startVotingCountdown(){
         this.votingCountdown.startCountdown();

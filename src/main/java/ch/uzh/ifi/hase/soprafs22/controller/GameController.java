@@ -54,15 +54,12 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteUserFromLobby(@PathVariable long lobbyId, @PathVariable long userId){
-        String baseErrorMessage1 = "No lobby with this id could be found.";
         String baseErrorMessage2 = "No such user exists in the lobby";
         //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         try {
             gameManager.removePlayerFromAllLobbies(userId);
         }
-        catch (IncorrectIdException e1){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
-        }
+
         catch (Exception e2) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage2);
         }
@@ -132,28 +129,7 @@ public class GameController {
         return ResponseEntity.ok(roundNumber);
     }
 
-    // tells server a supervote was casted and laugher should be played for all
-    @PutMapping("/matches/{matchId}/supervote")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<Integer> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
-        //fetch the specific round number
-        Match currentMatch = gameManager.getMatch(matchId);
-        int roundNumber=currentMatch.getRound().getRoundNumber();
-        return ResponseEntity.ok(roundNumber);
-    }
-/*
-    //retrieves if a laugher was played
-    @GetMapping("/matches/{matchId}/supervote")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<Integer> getPlayLaughter(@PathVariable long matchId) throws IncorrectIdException {
-        //fetch the specific round number
-        Match currentMatch = gameManager.getMatch(matchId);
-        int roundNumber=currentMatch.getRound().getRoundNumber();
-        return ResponseEntity.ok(roundNumber);
-    }
-*/
+
     //retrieves all users from a specific match and returns array of userGetDTO
     @GetMapping("/matches/{matchId}/users")
     @ResponseStatus(HttpStatus.OK)
@@ -273,12 +249,9 @@ public class GameController {
     @PutMapping("/matches/{matchId}/white-card/selection")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public ResponseEntity<ArrayList<WhiteCard>> addChosenCard(@PathVariable long matchId, @RequestBody WhiteCardPutDTO whiteCardPutDTO) throws Exception{
+    public void addChosenCard(@PathVariable long matchId, @RequestBody WhiteCardPutDTO whiteCardPutDTO) throws Exception{
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.getRound().setChosenCard(DTOMapper.INSTANCE.convertWhiteCardPutDTOToEntity(whiteCardPutDTO));
-
-        // return array for debugging reasons -> delete later
-        return ResponseEntity.ok(currentMatch.getRound().getAllChosenCards());
     }
 
     // get all chosen card from matchId
@@ -312,7 +285,7 @@ public class GameController {
     @GetMapping("/matches/{matchId}/winner")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<ArrayList<WhiteCard>> getWinner(@PathVariable long matchId){
+    public ResponseEntity<ArrayList<WhiteCard>> getWinningCards(@PathVariable long matchId){
         String baseErrorMessage1 = "Wrong ID, Couldn't retrieve the winner";
         try {
 
@@ -328,7 +301,7 @@ public class GameController {
     @PutMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void incrementApiRequestCount(@PathVariable long matchId) throws IncorrectIdException {
+    public void incrementApiRequestCountMatch(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
         currentMatch.incrementVoteCountAndCheckStatus();
     }
@@ -336,12 +309,21 @@ public class GameController {
     @GetMapping("/matches/{matchId}/synchronization")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<VotingStatus> getApiRequestStatus(@PathVariable long matchId) throws IncorrectIdException {
+    public ResponseEntity<VotingStatus> getApiRequestStatusMatch(@PathVariable long matchId) throws IncorrectIdException {
         Match currentMatch = gameManager.getMatch(matchId);
         VotingStatus currentVotingStatus = currentMatch.getVotingStatus();
-
         return ResponseEntity.ok(currentVotingStatus);
     }
+
+    // put selected white card from hand into array of allChosenCards with matchId
+    @PutMapping("/matches/{matchId}/synchronization/reset")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void resetVotingCount(@PathVariable long matchId) throws IncorrectIdException{
+        Match currentMatch = gameManager.getMatch(matchId);
+        currentMatch.resetVotingStatus();
+    }
+
 
 }
 
