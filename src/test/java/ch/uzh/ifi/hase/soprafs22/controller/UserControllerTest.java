@@ -343,7 +343,7 @@ public class  UserControllerTest {
     }
 
 
-    @Test // PUT change username/pw fail -> complete
+    @Test // PUT change username/pw fail -> complete.
     void updateUser_userNotFound_userUpdated() throws Exception {
         // given
         User user = new User();
