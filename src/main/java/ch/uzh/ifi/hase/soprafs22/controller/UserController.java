@@ -335,7 +335,7 @@ public class UserController {
         return ResponseEntity.ok(chosenCard);
     }*/
 
-    //----------------------MOVED FROM GAMECONTROLLER--------------------------------------------------
+    //----------------------MOVED FROM GAMECONTROLLER---------------------------------------------------
     //Creates a new match and puts all players from the lobby into  it
     //Should delete the lobby
     @PostMapping("/matches/{lobbyId}") // tested: ok, fail

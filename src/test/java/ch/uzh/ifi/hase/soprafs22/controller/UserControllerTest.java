@@ -90,7 +90,6 @@ public class  UserControllerTest {
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                //.andExpect(jsonPath("$[0].name", is(user.getName())))
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].userStatus", is(user.getUserStatus().toString())));
     }
@@ -130,7 +129,6 @@ public class  UserControllerTest {
         // this mocks the UserService -> we define above what the userService should
         // return when getUsers() is called
         given(userService.findUserData(user.getId())).willThrow(new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED));
-        //throws 404 in post man,but somehow throws 405 here--> i know should be NOT_FOUND, but could not get it to run
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/?id="+user.getId().toString());
@@ -218,7 +216,6 @@ public class  UserControllerTest {
                 .andReturn()
         ;
 
-        //assertEquals("test", result.getResponse().getContentAsString());
 
     }
 
@@ -238,11 +235,6 @@ public class  UserControllerTest {
 
         given(userService.createUser(Mockito.any())).willReturn(user); //simulates userService
 
-        // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest1 = post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO1));
-
         UserPostDTO userPostDTO2 = new UserPostDTO();
         userPostDTO2.setUsername("testUsername");
 
@@ -257,8 +249,8 @@ public class  UserControllerTest {
                 .andExpect(status().isConflict());
     }
 
-    @Test // POST log-in user sucess -> complete
-    void logInUser_success() throws Exception { //successful put request
+    @Test // POST log-in user success -> complete
+    void logInUser_success() throws Exception {
         // given
         User user = new User();
         user.setUsername("testUsername");
@@ -293,7 +285,7 @@ public class  UserControllerTest {
     }
 
     @Test // POST log-in user no sucess -> complete
-    void logInUser_unsuccessful() throws Exception { //successful put request
+    void logInUser_unsuccessful() throws Exception {
         // given
         User user = new User();
         user.setUsername("testUsername");
@@ -338,7 +330,6 @@ public class  UserControllerTest {
         // return when getUsers() is called
         given(userService.findUserById(user.getId())).willReturn(user);
         given(userService.updateUser(userPutDTO)).willReturn("User successfully updated");
-        //doNothing().when(userService).updateUser(userPutDTO);
 
         // when
         MockHttpServletRequestBuilder putRequest = put("/users/"+user.getId().toString())
@@ -386,19 +377,12 @@ public class  UserControllerTest {
         user.setToken("1");
         user.setId(1L);
 
-        //UserPostDTO userPostDTO = new UserPostDTO();
-        //userPostDTO.setUsername(user.getUsername());
-        //userPostDTO.setPassword(user.getPassword());
-
         //List<User> allUsers = Collections.singletonList(user);
         given(userService.findUserByToken(user.getToken())).willReturn(user);
         doNothing().when(userService).logOutUser(user);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/logout/?token="+user.getToken())
-                .contentType(MediaType.APPLICATION_JSON)
-                //.content(asJsonString(userPostDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/logout/?token="+user.getToken());
 
         // then
         mockMvc.perform(putRequest)
@@ -421,10 +405,6 @@ public class  UserControllerTest {
         user.setToken("1");
         user.setId(1L);
 
-        //UserPostDTO userPostDTO = new UserPostDTO();
-        //userPostDTO.setUsername(user.getUsername());
-        //userPostDTO.setPassword(user.getPassword());
-
         //List<User> allUsers = Collections.singletonList(user);
         given(userService.findUserByToken(user.getToken())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
         doNothing().when(userService).logOutUser(user);
@@ -432,7 +412,6 @@ public class  UserControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/logout/?token="+user.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                //.content(asJsonString(userPostDTO))
                 ;
 
         // then
@@ -474,10 +453,6 @@ public class  UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].userStatus", is(user.getUserStatus().toString())))
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -504,7 +479,6 @@ public class  UserControllerTest {
         doNothing().when(gameService).addPlayerToLobby(lobby.getId(), user);
 
         given(gameManager.getLobby(Mockito.anyLong())).willThrow(new IncorrectIdException("The lobby was not found"));
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/lobbies/1/lists/players/2");
@@ -535,8 +509,6 @@ public class  UserControllerTest {
         users.add(user);
         given(userService.updateCustomWhiteText(Mockito.any())).willReturn(userPutDTO.getCustomWhiteText());
         given(gameService.updateCustomText(lobby.getId(), user.getId(), userPutDTO)).willReturn("Successfully updated customText in Lobby through gameManager");
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/matches/"+lobby.getId()+"/white-cards/"+user.getId()+"/custom")
@@ -547,11 +519,6 @@ public class  UserControllerTest {
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
         assertEquals(userPutDTO.getCustomWhiteText(), result.getResponse().getContentAsString());
@@ -570,18 +537,8 @@ public class  UserControllerTest {
         userPutDTO.setId(2L);
         userPutDTO.setCustomWhiteText("My own card");
 
-        //Lobby lobby = new Lobby(1L);
-        //lobby.addPlayer(user);
-
-        //ArrayList<User> users = new ArrayList<>();
-        //users.add(user);
         given(gameService.updateCustomText(1L, user.getId(), userPutDTO)).willReturn("Successfully updated customText in Lobby through gameManager");
         given(userService.updateCustomWhiteText(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        //given(userService.updateCustomWhiteText(Mockito.any())).willReturn(userPutDTO.getCustomWhiteText());
-
-
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/matches/"+"0"+"/white-cards/"+user.getId()+"/custom")
@@ -592,14 +549,8 @@ public class  UserControllerTest {
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // GET hand by userId success -> complete
@@ -635,33 +586,16 @@ public class  UserControllerTest {
         //ArrayList<User> users = new ArrayList<>();
         //users.add(user);
         given(gameManager.getMatch(match.getId())).willReturn(match);
-        //given(match.getRound()).willReturn(round);
-        //given(round.getHandByUserId(user.getId())).willReturn(userHand);
-        //given(userHand.getCardsFromHand()).willReturn(hand);
-
-
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/hands/"+user.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/hands/"+user.getId());
 
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(10)))
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // GET hand by userId no success -> complete
@@ -688,42 +622,16 @@ public class  UserControllerTest {
         userHand.setUserHand(hand);
 
         Match match = new Match(1L);
-//        match.setMatchPlayers(users);
-//        match.createRound();
-//        Round round = match.getRound();
-//        Hand hand1 = round.getHandByUserId(user.getId());
-//        hand1.setUserHand(hand);
-//        ArrayList<WhiteCard> userhand1 = hand1.getCardsFromHand();
-        //ArrayList<User> users = new ArrayList<>();
-        //users.add(user);
         given(gameManager.getMatch(match.getId())).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        //given(match.getRound()).willReturn(round);
-        //given(round.getHandByUserId(user.getId())).willReturn(userHand);
-        //given(userHand.getCardsFromHand()).willReturn(hand);
-
-
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/hands/"+user.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/hands/"+user.getId());
 
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isBadRequest())
-                //.andExpect(jsonPath("$", hasSize(10)))
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // PUT flip ready status -> complete
@@ -734,61 +642,19 @@ public class  UserControllerTest {
         user.setPassword("password");
         user.setIsReady(ReadyStatus.READY);
         user.setId(2L);
-//        ArrayList<User> users = new ArrayList<>();
-//        users.add(user);
-//
-//        ArrayList<WhiteCard> hand = new ArrayList<>();
-//
-//        int numberOfCards = 0;
-//        while (numberOfCards < 10){
-//            WhiteCard newCard = new WhiteCard(user);
-//            newCard.setText(numberOfCards+"th card");
-//            hand.add(newCard);
-//            numberOfCards++;
-//        }
-//
-//        Hand userHand = new Hand(user);
-//        userHand.setUserHand(hand);
-//
-//        Match match = new Match(1L);
-//        match.setMatchPlayers(users);
-//        match.createRound();
-//        Round round = match.getRound();
-//        Hand hand1 = round.getHandByUserId(user.getId());
-//        hand1.setUserHand(hand);
-//        ArrayList<WhiteCard> userhand1 = hand1.getCardsFromHand();
-        //ArrayList<User> users = new ArrayList<>();
-        //users.add(user);
+
         given(userService.findUserById(user.getId())).willReturn(user);
         given(userService.updateUserReadyStatus(user)).willReturn(ReadyStatus.UNREADY);
         given(gameService.updateUserReadyStatus(0L, 2L)).willReturn("Successfully updated readyStatus in Lobby through gameManager");
-        //given(match.getRound()).willReturn(round);
-        //given(round.getHandByUserId(user.getId())).willReturn(userHand);
-        //given(userHand.getCardsFromHand()).willReturn(hand);
-
-
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId());
 
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent())
-                //.andExpect(jsonPath("$", hasSize(10)))
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // PUT flip ready status no success -> complete
@@ -799,61 +665,19 @@ public class  UserControllerTest {
         user.setPassword("password");
         user.setIsReady(ReadyStatus.READY);
         user.setId(2L);
-//        ArrayList<User> users = new ArrayList<>();
-//        users.add(user);
-//
-//        ArrayList<WhiteCard> hand = new ArrayList<>();
-//
-//        int numberOfCards = 0;
-//        while (numberOfCards < 10){
-//            WhiteCard newCard = new WhiteCard(user);
-//            newCard.setText(numberOfCards+"th card");
-//            hand.add(newCard);
-//            numberOfCards++;
-//        }
-//
-//        Hand userHand = new Hand(user);
-//        userHand.setUserHand(hand);
-//
-//        Match match = new Match(1L);
-//        match.setMatchPlayers(users);
-//        match.createRound();
-//        Round round = match.getRound();
-//        Hand hand1 = round.getHandByUserId(user.getId());
-//        hand1.setUserHand(hand);
-//        ArrayList<WhiteCard> userhand1 = hand1.getCardsFromHand();
-        //ArrayList<User> users = new ArrayList<>();
-        //users.add(user);
+
         given(userService.findUserById(user.getId())).willReturn(user);
         given(userService.updateUserReadyStatus(user)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
         given(gameService.updateUserReadyStatus(0L, 2L)).willReturn("Successfully updated readyStatus in Lobby through gameManager");
-        //given(match.getRound()).willReturn(round);
-        //given(round.getHandByUserId(user.getId())).willReturn(userHand);
-        //given(userHand.getCardsFromHand()).willReturn(hand);
-
-
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId());
 
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent())
-                //.andExpect(jsonPath("$", hasSize(10)))
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // PUT reset ready status  success -> complete
@@ -864,60 +688,18 @@ public class  UserControllerTest {
         user.setPassword("password");
         user.setIsReady(ReadyStatus.READY);
         user.setId(2L);
-//        ArrayList<User> users = new ArrayList<>();
-//        users.add(user);
-//
-//        ArrayList<WhiteCard> hand = new ArrayList<>();
-//
-//        int numberOfCards = 0;
-//        while (numberOfCards < 10){
-//            WhiteCard newCard = new WhiteCard(user);
-//            newCard.setText(numberOfCards+"th card");
-//            hand.add(newCard);
-//            numberOfCards++;
-//        }
-//
-//        Hand userHand = new Hand(user);
-//        userHand.setUserHand(hand);
-//
-//        Match match = new Match(1L);
-//        match.setMatchPlayers(users);
-//        match.createRound();
-//        Round round = match.getRound();
-//        Hand hand1 = round.getHandByUserId(user.getId());
-//        hand1.setUserHand(hand);
-//        ArrayList<WhiteCard> userhand1 = hand1.getCardsFromHand();
-        //ArrayList<User> users = new ArrayList<>();
-        //users.add(user);
+
         given(userService.findUserById(user.getId())).willReturn(user);
         doNothing().when(userService).resetUserReadyStatus(user);
-        //given(match.getRound()).willReturn(round);
-        //given(round.getHandByUserId(user.getId())).willReturn(userHand);
-        //given(userHand.getCardsFromHand()).willReturn(hand);
-
-
-        //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
-        //given(lobby.getCurrentPlayers()).willReturn(users);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId()+"/status")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId()+"/status");
 
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent())
-                //.andExpect(jsonPath("$", hasSize(10)))
-//                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.isReady", is(ReadyStatus.UNREADY.toString())))
-//                .andExpect(jsonPath("$.userStatus", is(UserStatus.OFFLINE.toString())))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // PUT reset ready status no success -> complete
@@ -935,20 +717,14 @@ public class  UserControllerTest {
         //doNothing().when(gameManager).removePlayerFromAllLobbies(user.getId());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId()+"/status")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/"+0L+"/users/"+user.getId()+"/status");
 
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // PUT reset score  success -> complete
@@ -966,20 +742,13 @@ public class  UserControllerTest {
         doNothing().when(userService).resetUserScore(user);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder deleteRequest = delete("/users/"+user.getId()+"/scores")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder deleteRequest = delete("/users/"+user.getId()+"/scores");
 
 
         // then
         MvcResult result = mockMvc.perform(deleteRequest)
-                .andExpect(status().isNoContent())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
-                .andReturn();
+                .andExpect(status().isNoContent()).andReturn();
 
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
     @Test // PUT reset score no success -> complete
@@ -997,19 +766,13 @@ public class  UserControllerTest {
         doNothing().when(userService).resetUserScore(user);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder deleteRequest = delete("/users/"+user.getId()+"/scores")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder deleteRequest = delete("/users/"+user.getId()+"/scores");
 
         // then
         MvcResult result = mockMvc.perform(deleteRequest)
                 .andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("test", result.getResponse().getContentAsString());
     }
 
 
@@ -1023,17 +786,11 @@ public class  UserControllerTest {
         doNothing().when(gameManager).startNewRound(match.getId());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/rounds")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/rounds");
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
         assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
@@ -1042,9 +799,6 @@ public class  UserControllerTest {
         // then
         MvcResult result2 = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
         assertEquals("\"GameOver\"", result2.getResponse().getContentAsString());
@@ -1060,20 +814,13 @@ public class  UserControllerTest {
         doNothing().when(gameManager).startNewRound(match.getId());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/rounds")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/rounds");
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
-                //.andExpect(status().isOk())
                 .andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
     }
 
     @Test // PUT start next round/end game -> complete
@@ -1095,17 +842,11 @@ public class  UserControllerTest {
         given(gameManager.evaluateNewRoundStart(match.getId())).willReturn(true); // true= open next round
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/scores/1")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/scores/1");
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent())
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
         User user = new User();
@@ -1114,19 +855,12 @@ public class  UserControllerTest {
         doNothing().when(userService).incrementPlayedGames(Mockito.anyLong());
         doNothing().when(userService).updateOverallWins(user.getId(), match.getId()); //<----------
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest2 = put("/matches/"+match.getId()+"/scores/1")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest2 = put("/matches/"+match.getId()+"/scores/1");
 
         // then
-        MvcResult result2 = mockMvc.perform(putRequest)
+        MvcResult result2 = mockMvc.perform(putRequest2)
                 .andExpect(status().isNoContent())
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
     }
 
     @Test // PUT start next round/end game -> complete
@@ -1148,17 +882,11 @@ public class  UserControllerTest {
         given(gameManager.evaluateNewRoundStart(match.getId())).willReturn(true); // true= open next round
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/scores/1")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/scores/1");
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
-                //.andExpect(status().isConflict())
                 .andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
     }
 
@@ -1169,20 +897,13 @@ public class  UserControllerTest {
         match.setMatchStatus(MatchStatus.MatchOngoing);
 
         given(gameManager.getMatch(match.getId())).willReturn(match);
-        //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status");
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
         assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
@@ -1191,9 +912,6 @@ public class  UserControllerTest {
         // then
         MvcResult result2 = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
         assertEquals("\"GameOver\"", result2.getResponse().getContentAsString());
@@ -1209,20 +927,13 @@ public class  UserControllerTest {
         //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status");
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", is("NotYetCreated")))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
 
     }
 
@@ -1247,25 +958,17 @@ public class  UserControllerTest {
         doNothing().when(userService).setSuperVotes(users, match.getAvailable_Supervotes());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobby.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobby.getId());
 
         // then
         MvcResult result = mockMvc.perform(postRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.id", is(match.getId().intValue())))
                 .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
                 .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
                 .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
-                //.andExpect(jsonPath("$", is("NotYetCreated")))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
 
     }
 
@@ -1290,26 +993,12 @@ public class  UserControllerTest {
         doNothing().when(userService).setSuperVotes(users, match.getAvailable_Supervotes());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobby.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder postRequest = post("/matches/"+lobby.getId());
 
         // then
         MvcResult result = mockMvc.perform(postRequest)
                 .andExpect(status().isConflict())
-                //.andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
-//                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
-//                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
-                //.andExpect(jsonPath("$", is("NotYetCreated")))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
-
     }
 
     @Test // PUT cast supervote, decrease supervote by 1 success -> complete
@@ -1334,26 +1023,13 @@ public class  UserControllerTest {
         doNothing().when(userService).updateSupervote(user.getId());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId());
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isOk())
-                //.andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
-//                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
-//                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
                 .andExpect(jsonPath("$", is(true)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
-
     }
 
     @Test // PUT change LaugingStatus with supervote no success -> no complete
@@ -1376,28 +1052,14 @@ public class  UserControllerTest {
 
         given(gameManager.getMatch(match.getId())).willReturn(match);
         doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(userService).updateSupervote(user.getId());
-        //doNothing().when(userService).updateSupervote(user.getId());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId());
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isBadRequest())
-                //.andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.id", is(match.getId().intValue())))
-//                .andExpect(jsonPath("$.matchStatus", is(MatchStatus.MatchOngoing.toString())))
-//                .andExpect(jsonPath("$.matchPlayers[0].username", is(user.getUsername())))
-//                .andExpect(jsonPath("$.matchPlayers[0].id", is(user.getId().intValue())))
-//                .andExpect(jsonPath("$.matchPlayers[0].isReady", is(user.getIsReady().toString())))
-                //.andExpect(jsonPath("$", is(true)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
-
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
 
     }
 
@@ -1412,33 +1074,22 @@ public class  UserControllerTest {
         //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/laughStatus")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/laughStatus");
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("Laughing")))
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
 
         match.setLaughStatus(LaughStatus.Silence);
         // then
         MvcResult result2 = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("Silence")))
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("\"GameOver\"", result2.getResponse().getContentAsString());
     }
 
     @Test // GET laugh status no success -> complete
@@ -1449,24 +1100,15 @@ public class  UserControllerTest {
         match.setLaughStatus(LaughStatus.Laughing);
 
         given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
-        //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/laughStatus")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/laughStatus");
 
         // then
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", is("Laughing")))
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
     }
 
     @Test // PUT increase laughCount success ->  complete
@@ -1480,21 +1122,12 @@ public class  UserControllerTest {
         //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh");
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
-                .andExpect(status().isOk())
-                //.andExpect(jsonPath("$", is("Laughing")))
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
-                .andReturn();
+                .andExpect(status().isOk()).andReturn();
 
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
     }
 
     @Test // PUT increase laughCount no success -> not complete
@@ -1508,21 +1141,13 @@ public class  UserControllerTest {
         //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(userPutDTO))
-                ;
+        MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh");
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", is("Laughing")))
-                //.andExpect(status().isNotFound())
-                //.andExpect(jsonPath("$", hasSize(10)))
-                //.andDo(MockMvcResultHandlers.print());
                 .andReturn();
 
-        //assertEquals("\"MatchOngoing\"", result.getResponse().getContentAsString());
     }
 
 
