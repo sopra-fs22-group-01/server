@@ -151,10 +151,6 @@ public class UserService {
         return requestedUser;
     }
 
-    public User findUserByUsername(String username){
-        User requestedUser = userRepository.findByUsername(username);
-        return requestedUser;
-    }
 
     public void updateUserUsername(UserPutDTO userPutDTO){
         User databaseUser=findUserById(userPutDTO.getId());
@@ -216,27 +212,8 @@ public class UserService {
   public String updateUser(UserPutDTO userPutDTO) {
       updateUserUsername(userPutDTO);
       updateUserPassword(userPutDTO);
-      //updateSupervote(userPutDTO.getId());
-      //updateUserReadyStatus(userPutDTO);
       return "User successfully updated";
   }
-
-  /*
-    public LobbyStatus getLobbyStatus() {
-        List<User> users = getUsers();
-        for (User user : users){
-            if (user.getIsReady()== ReadyStatus.UNREADY){
-                return LobbyStatus.Waiting;
-            }
-        }
-        return LobbyStatus.All_Ready;
-  }
-  */
-    //----------------parts which were in gameservice before and got moved--------------------
-
-    public List<User> test_getUsers() {
-        return this.userRepository.findAll();
-    }
 
 
     //updates scores of all currentRound winners in database
@@ -247,7 +224,6 @@ public class UserService {
             int oldScore = userToBeUpdated.getScore();
             userToBeUpdated.setScore(oldScore+1);
         }
-
     }
 
     public void resetMatchPlayers(long matchId) throws IncorrectIdException {
@@ -261,7 +237,6 @@ public class UserService {
             User user = findUserById(id);
             user.setIsReady(ReadyStatus.UNREADY);
             user.setScore(0);
-
         }
     }
 
