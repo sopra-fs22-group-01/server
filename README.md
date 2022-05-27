@@ -138,7 +138,7 @@ This software makes use of the following third party libraries:
 - Accessible functionalities to personalize properties of matches, like the timers, how many points for the win are needed, and the number of supervotes each player gets.
 - Multiple sets of Cards to choose from; for example a family friendly with less offensive and less sexual content could be added.
 
-## Authors and acknowledgement
+## Authors and Acknowledgement
 ### Authors
 - [Larissa Senning](https://github.com/orgs/sopra-fs22-group-01/people/lsenni)
 - [Nevio Liberato](https://github.com/orgs/sopra-fs22-group-01/people/sircher)
@@ -146,7 +146,9 @@ This software makes use of the following third party libraries:
 - [Seyyid Palta](https://github.com/orgs/sopra-fs22-group-01/people/SeyyidPalta)
 - [Thu An Phan](https://github.com/orgs/sopra-fs22-group-01/people/thphan21)
 
-We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli).
+
+### Acknowledgement
+We want acknowledge the work that was done for the template we used to create this project upon. The template was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli).
 
 
 ## License
