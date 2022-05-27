@@ -42,7 +42,7 @@ public class UserService {
 
     private GameManager gameManager;
 
-    @Autowired //what does @Autowired do exactly?
+    @Autowired
     public UserService(@Qualifier("userRepository") UserRepository userRepository, GameManager gameManager) {
         this.userRepository = userRepository;
         this.gameManager = gameManager;

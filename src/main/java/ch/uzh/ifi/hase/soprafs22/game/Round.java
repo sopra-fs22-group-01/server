@@ -32,7 +32,7 @@ public class Round {
 
 
 
-    private int maxScore = 2;
+    private int maxScore = 5;
 
     //countdown of a specific round
     private Countdown selectionCountdown ;

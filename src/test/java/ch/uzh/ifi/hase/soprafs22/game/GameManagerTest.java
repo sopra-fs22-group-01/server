@@ -115,7 +115,7 @@ class GameManagerTest {
         Match testMatch = gameManager.createMatch(players,0L);
         Round currentRound = testMatch.getRound();
         for(User player:players){
-            player.setScore(2);
+            player.setScore(currentRound.getMaxScore());
         }
         currentRound.startNewRound();
 

@@ -66,18 +66,6 @@ public class GameManager {
         throw new IncorrectIdException("The match was not found");
     }
 
-/*
-    //could be that this method has a bug
-    public void deleteLobby(long lobbyId) {
-        for (Lobby lobby : lobbies) {
-            if (lobby.getId() == lobbyId) {
-                lobbies.remove(lobby);
-                break;
-            }
-        }
-    }
-*/
-
     // removes player from all lobbies
     public void removePlayerFromAllLobbies(long userId) throws Exception {
         for (Lobby lobby : this.lobbies){
