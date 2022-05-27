@@ -148,7 +148,7 @@ This software makes use of the following third party libraries:
 
 
 ### Acknowledgement
-We want acknowledge the work that was done for the template we used to create this project upon. The template was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli).
+We want acknowledge the work that was done for the template we used to create this project upon. The server template was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli).
 
 
 ## License
