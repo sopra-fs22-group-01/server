@@ -16,7 +16,7 @@ import java.util.Objects;
  * Responsibilities: Round Logic
  * - creates a new black card for new Round
  * - updates players' hands
- * -  determines the winner
+ * -  determin es the winner
  * To Do:
  *      creating the hands of the  round
  * */
