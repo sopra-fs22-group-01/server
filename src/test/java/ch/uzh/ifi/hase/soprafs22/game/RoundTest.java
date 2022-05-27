@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs22.game.card.WhiteCard;
 import ch.uzh.ifi.hase.soprafs22.game.helpers.Countdown;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -105,6 +106,7 @@ class RoundTest {
         assertEquals(1, actual);
     }
 
+
     @Test
     public void startCountdownSuccess() throws InterruptedException {
         testRound.startSelectionCountdown();
@@ -127,6 +129,10 @@ class RoundTest {
         assertTrue(startTimeSelection > selectionTimeAfterOneSec);
         assertTrue(startTimeVoting > votingTimeAfterOneSec);
         assertTrue(startTimeRanking > rankingTimeAfterOneSecond);
+
+//        assertEquals(selectionTimeAfterOneSec,startTimeSelection);
+//        assertTrue(startTimeVoting > votingTimeAfterOneSec);
+//        assertEquals(startTimeRanking > rankingTimeAfterOneSecond);
 
     }
 }
