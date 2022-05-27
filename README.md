@@ -139,7 +139,7 @@ This software makes use of the following third party libraries:
 - Multiple sets of Cards to choose from; for example a family friendly with less offensive and less sexual content could be added.
 
 ## Authors and acknowledgement
-**Authors**
+### Authors
 - [Larissa Senning](https://github.com/orgs/sopra-fs22-group-01/people/lsenni)
 - [Nevio Liberato](https://github.com/orgs/sopra-fs22-group-01/people/sircher)
 - [Patric Salvisberg](https://github.com/orgs/sopra-fs22-group-01/people/PatSalvis)
