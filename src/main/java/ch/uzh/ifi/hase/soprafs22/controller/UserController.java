@@ -63,7 +63,7 @@ public class UserController {
     @GetMapping("/users/") // tested: ok and fail
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO getUsername(@RequestParam long id) {
+    public UserGetDTO getUserById(@RequestParam long id) {
         User requestedUser = userService.findUserData(id);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(requestedUser);
     }
@@ -190,17 +190,6 @@ public class UserController {
         return ResponseEntity.ok(playerHandCards);
     }
 
-    // get all hands by matchId NEED WHERE?
-    @GetMapping("/matches/{matchId}/hands") // NOT TESTED
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<ArrayList<Hand>> getAllHands(@PathVariable long matchId) throws Exception {
-        Match currentMatch = gameManager.getMatch(matchId);
-        Round currentRound= currentMatch.getRound();
-        ArrayList<Hand> allHands = currentRound.getHands();
-        return ResponseEntity.ok(allHands);
-    }
-
     //Maps data from ready-status changes
     //used to flip the ready-status
     @PutMapping("/lobbies/{lobbyId}/users/{userId}") // tested: ok, fail
@@ -217,7 +206,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, baseErrorMessage1);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage1);
         }
     }
 
@@ -321,19 +310,6 @@ public class UserController {
             return ResponseEntity.ok(MatchStatus.NotYetCreated);
         }
     }
-/*
-    //testendpoint to get chosencard to see if chosen card is even saved in hand
-    @GetMapping("/matches/{matchId}/chosencard/{userId}") // NOT TESTED
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<WhiteCard> getChosenCard(@PathVariable long matchId, @PathVariable long userId) throws Exception {
-        Match currentMatch = gameManager.getMatch(matchId);
-        Round currentRound = currentMatch.getRound();
-        Hand playerHand = currentRound.getHandByUserId(userId);
-        WhiteCard chosenCard = playerHand.getChosenCard();
-
-        return ResponseEntity.ok(chosenCard);
-    }*/
 
     //----------------------MOVED FROM GAMECONTROLLER---------------------------------------------------
     //Creates a new match and puts all players from the lobby into  it
@@ -387,10 +363,10 @@ public class UserController {
     }
 
     // only turn laughstatus to "silence" once everyone hear a laughter
-    @PutMapping("/matches/{matchId}/laugh")
+    @PutMapping("/matches/{matchId}/laugh") // tested: ok, failed
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void countLaughs(@PathVariable long matchId) throws IncorrectIdException {
+    public void countLaughs(@PathVariable long matchId) {
         try{
             Match currentMatch = gameManager.getMatch(matchId);
             currentMatch.updateLaughStatus();
@@ -402,7 +378,7 @@ public class UserController {
 
 
     // delete lobby only once even if several requests
-    @DeleteMapping("/lobbies/{lobbyId}")
+    @DeleteMapping("/lobbies/{lobbyId}") // tested: ok
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteLobby(@PathVariable long lobbyId) throws Exception {

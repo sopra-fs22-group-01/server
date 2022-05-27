@@ -71,7 +71,7 @@ public class  UserControllerTest {
     public UserRepository userRepository;
 
     @Test
-    public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
+    void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
         // given
         User user = new User();
         //user.setName("Firstname Lastname");
@@ -175,7 +175,9 @@ public class  UserControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/users/"+user.getToken());
 
         // performing request should return NOT FOUND status
-        mockMvc.perform(getRequest).andExpect(status().isNotFound());
+        MvcResult result = mockMvc.perform(getRequest).andExpect(status()
+                .isNotFound())
+                .andReturn();
     }
 
     //@Disabled
@@ -310,9 +312,12 @@ public class  UserControllerTest {
                 .content(asJsonString(userPostDTO));
 
         // then
-        mockMvc.perform(postRequest)
+        MvcResult result = mockMvc.perform(postRequest)
                 .andExpect(status().isBadRequest())
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(MockMvcResultHandlers.print()). andReturn();
+
+        assertTrue(result.getResolvedException().getMessage().contains("The Password or Username provided is wrong!")); //
+
     }
 
     @Test // PUT update username/pw success -> complete
@@ -362,7 +367,7 @@ public class  UserControllerTest {
                 .content(asJsonString(userPutDTO));//converts userPutDTO to JSON
 
         // then
-        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+        MvcResult result = mockMvc.perform(putRequest).andExpect(status().isNotFound()).andReturn();
         //since no user has been created in the database, a 404 error is expected.
     }
 
@@ -415,9 +420,10 @@ public class  UserControllerTest {
                 ;
 
         // then
-        mockMvc.perform(putRequest)
+        MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+
     }
 
     @Test // POST add user to lobby with lobbyId and userId -> complete
@@ -484,9 +490,12 @@ public class  UserControllerTest {
         MockHttpServletRequestBuilder postRequest = post("/lobbies/1/lists/players/2");
 
         // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isConflict()) // "No lobby with this id could be found."
-                .andDo(MockMvcResultHandlers.print());
+        MvcResult result = mockMvc.perform(postRequest)
+                .andExpect(status().isConflict()) //
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+
+        assertTrue(result.getResolvedException().getMessage().contains("No lobby with this id could be found.")); // MvcResult result = .andReturn()
+
     }
 
     @Test // PUT create custom card SUCCESS -> complete
@@ -514,7 +523,6 @@ public class  UserControllerTest {
         MockHttpServletRequestBuilder putRequest = put("/matches/"+lobby.getId()+"/white-cards/"+user.getId()+"/custom")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO));
-                ;
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
@@ -550,7 +558,6 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isBadRequest())
                 .andReturn();
-
     }
 
     @Test // GET hand by userId success -> complete
@@ -582,9 +589,6 @@ public class  UserControllerTest {
         Round round = match.getRound();
         Hand hand1 = round.getHandByUserId(user.getId());
         hand1.setUserHand(hand);
-        ArrayList<WhiteCard> userhand1 = hand1.getCardsFromHand();
-        //ArrayList<User> users = new ArrayList<>();
-        //users.add(user);
         given(gameManager.getMatch(match.getId())).willReturn(match);
 
         // when/then -> do the request + validate the result
@@ -595,6 +599,9 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(10)))
+                .andExpect(jsonPath("$[0].text", is("0th card")))
+                .andExpect(jsonPath("$[5].text", is("5th card")))
+                .andExpect(jsonPath("$[9].text", is("9th card")))
                 .andReturn();
     }
 
@@ -676,8 +683,11 @@ public class  UserControllerTest {
 
         // then
         MvcResult result = mockMvc.perform(putRequest)
-                .andExpect(status().isNoContent())
+                .andExpect(status().isNotFound())
                 .andReturn();
+
+        assertTrue(result.getResolvedException().getMessage().contains("No lobby with this id could be found.")); // MvcResult result = .andReturn()
+
     }
 
     @Test // PUT reset ready status  success -> complete
@@ -724,7 +734,6 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
                 .andReturn();
-
     }
 
     @Test // PUT reset score  success -> complete
@@ -760,8 +769,6 @@ public class  UserControllerTest {
         user.setIsReady(ReadyStatus.READY);
         user.setId(2L);
 
-
-        //doNothing().when(userService).resetUserReadyStatus(user);
         given(userService.findUserById(Mockito.anyLong())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
         doNothing().when(userService).resetUserScore(user);
 
@@ -772,7 +779,6 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(deleteRequest)
                 .andExpect(status().isNotFound())
                 .andReturn();
-
     }
 
 
@@ -820,7 +826,6 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isNotFound())
                 .andReturn();
-
     }
 
     @Test // PUT start next round/end game -> complete
@@ -924,7 +929,6 @@ public class  UserControllerTest {
         match.setMatchStatus(MatchStatus.MatchOngoing);
 
         given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
-        //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/matches/"+match.getId()+"/status");
@@ -934,7 +938,6 @@ public class  UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("NotYetCreated")))
                 .andReturn();
-
     }
 
     @Test // POST create new match success -> not complete
@@ -1130,7 +1133,7 @@ public class  UserControllerTest {
 
     }
 
-    @Test // PUT increase laughCount no success -> not complete
+    @Test // PUT increase laughCount no success -> complete
     void increase_laughCount_noSuccess() throws Exception {
         // given
         Match match = new Match(0L);
@@ -1138,7 +1141,6 @@ public class  UserControllerTest {
         match.setLaughStatus(LaughStatus.Laughing);
 
         given(gameManager.getMatch(match.getId())).willThrow(new IncorrectIdException("The match was not found"));
-        //doNothing().when(userService).updateScores(Mockito.any());
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/laugh");
@@ -1149,6 +1151,24 @@ public class  UserControllerTest {
                 .andReturn();
 
     }
+
+    @Test // PUT increase laughCount no success ->  complete
+    void deleteLobby_Success() throws Exception {
+        // given
+        Lobby lobby = new Lobby(0L);
+
+        doNothing().when(gameService).deleteLobby(lobby.getId());
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/"+lobby.getId());
+
+        // then
+        MvcResult result = mockMvc.perform(deleteRequest)
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
 
 
     /**
