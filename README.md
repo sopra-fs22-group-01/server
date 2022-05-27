@@ -153,4 +153,4 @@ We want acknowledge the work that was done for the template we used to create th
 
 ## License
 
-Consult this [License] for further information.
+Consult this [License](LICENSE) for further information.
