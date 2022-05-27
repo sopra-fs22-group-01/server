@@ -74,7 +74,6 @@ public class  UserControllerTest {
     void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
         // given
         User user = new User();
-        //user.setName("Firstname Lastname");
         user.setUsername("firstname@lastname");
         user.setUserStatus(UserStatus.OFFLINE);
 
@@ -128,13 +127,13 @@ public class  UserControllerTest {
 
         // this mocks the UserService -> we define above what the userService should
         // return when getUsers() is called
-        given(userService.findUserData(user.getId())).willThrow(new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED));
+        given(userService.findUserData(user.getId())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/?id="+user.getId().toString());
 
         // then
-        mockMvc.perform(getRequest).andExpect(status().isMethodNotAllowed());
+        mockMvc.perform(getRequest).andExpect(status().isNotFound());
     }
 
     @Test //with userToken get userProfile -> complete
@@ -422,8 +421,8 @@ public class  UserControllerTest {
         // then
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
-                .andDo(MockMvcResultHandlers.print()).andReturn();
-
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
     }
 
     @Test // POST add user to lobby with lobbyId and userId -> complete
@@ -893,6 +892,7 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
                 .andReturn();
+
     }
 
     @Test // GET match status success -> complete
@@ -1054,7 +1054,7 @@ public class  UserControllerTest {
         match.setLaughStatus(LaughStatus.Laughing);
 
         given(gameManager.getMatch(match.getId())).willReturn(match);
-        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(userService).updateSupervote(user.getId());
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "You used up your supervotes!")).when(userService).updateSupervote(user.getId());
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/matches/"+match.getId()+"/supervotes/"+user.getId());
@@ -1064,6 +1064,7 @@ public class  UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
+        assertTrue(result.getResolvedException().getMessage().contains("You used up your supervotes!"));
     }
 
     @Test // GET laugh status success -> complete
@@ -1111,7 +1112,6 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(getRequest)
                 .andExpect(status().isNotFound())
                 .andReturn();
-
     }
 
     @Test // PUT increase laughCount success ->  complete
@@ -1149,7 +1149,6 @@ public class  UserControllerTest {
         MvcResult result = mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound())
                 .andReturn();
-
     }
 
     @Test // PUT increase laughCount no success ->  complete

@@ -239,7 +239,6 @@ public class UserController {
     }
 
 
-
     // checks  status of the match, to know if the game is over or there are still rounds to play
     @GetMapping("/matches/{matchId}/rounds") // tested: ok, fail
     @ResponseStatus(HttpStatus.OK)
