@@ -28,7 +28,7 @@ In our backend code, we have five main components that are crucial for the game.
 5.   The [User](src/main/java/ch/uzh/ifi/hase/soprafs22/entity/User.java) entity class, used to store information about the user in the database like the userID, username, password and statistical information about the game they participated in.
 
 # Launch and Development
-To help you get started with this application, in the following paragraph you will find all the important information on the used framwork, what commands are used to build and run the project, how to run the tests and which dependencies exist.
+To help you get started with this application, in the following paragraph you will find all the important information on the used framework, what commands are used to build and run the project, how to run the tests and which dependencies exist.
 
 ## Getting started with Spring Boot
 First of all we advise everyone that is not familiar with Spring Boot ro read the following documentation and Guides:
