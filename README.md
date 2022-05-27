@@ -140,11 +140,11 @@ This software makes use of the following third party libraries:
 
 ## Authors and acknowledgement
 **Authors**
-- Larissa Senning
-- Nevio Liberato
-- Patric Salvisberg
-- Seyyid Palta
-- Thu An Phan
+- [Larissa Senning](https://github.com/orgs/sopra-fs22-group-01/people/lsenni)
+- [Nevio Liberato](https://github.com/orgs/sopra-fs22-group-01/people/sircher)
+- [Patric Salvisberg](https://github.com/orgs/sopra-fs22-group-01/people/PatSalvis)
+- [Seyyid Palta](https://github.com/orgs/sopra-fs22-group-01/people/SeyyidPalta)
+- [Thu An Phan](https://github.com/orgs/sopra-fs22-group-01/people/thphan21)
 
 We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli).
 
