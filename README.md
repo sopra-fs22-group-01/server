@@ -125,12 +125,11 @@ If you want to write your own testcases and for more information about testing i
 To test new REST API Endpoints quickly, we  recommend to use [Postman](https://www.getpostman.com).
 
 ## Server deployement
-For the deployement of the server, we recommend Heroku: https://id.heroku.com/
+For the deployement of the server, we recommend using [Heroku](https://id.heroku.com/)
 
 ## External dependencies
 This software makes use of the following third party libraries:
 - SimpleJSON API
-- Webspeech API 
 - Gradle
 - Spring Boot
 
@@ -147,7 +146,7 @@ This software makes use of the following third party libraries:
 - Seyyid Palta
 - Thu An Phan
 
-We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli)
+We want acknowledge the work that was done for the template we used to create this project upon. The template we used for this project was created by [royru](https://github.com/royru), [raffi07](https://github.com/raffi07), [meck93](https://github.com/meck93), [JaanWilli](https://github.com/JaanWilli).
 
 
 ## License
