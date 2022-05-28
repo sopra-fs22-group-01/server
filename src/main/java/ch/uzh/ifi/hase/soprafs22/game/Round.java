@@ -165,9 +165,15 @@ public class Round {
             }
         }
 
-
-
         //adding the chosen card to the array of all chosen cards
+        //if chosenCard.owner in chosenCards -- do nothing
+        if(!chosenCards.isEmpty()){
+            for(WhiteCard card :chosenCards){
+                if(card.getOwner().getId().equals(whiteCard.getOwner().getId())){
+                    return;
+                }
+            }
+        }
         chosenCards.add(whiteCard);
     }
 
