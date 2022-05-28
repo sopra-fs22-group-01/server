@@ -15,4 +15,4 @@ The round is now finished and the winner of the round gets displayed. If it isn'
 End of the Match:
 The game ends as soon as a player reaches five points and the ranking of the players get displayed.
 You can always take a look at your overall statistic, which can be found on the profile page.
-
+If you run into problems with the text to speech feature, delete the cache of your browser.
