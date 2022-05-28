@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- *  This class creates a round for players in the lobby
+ *   This class creates a round for players in the lobby
  * Responsibilities: Round Logic
  * - creates a new black card for new Round
  * - updates players' hands
